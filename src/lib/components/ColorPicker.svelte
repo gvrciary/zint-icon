@@ -105,21 +105,6 @@
 			gradientAngle
 		});
 	}
-
-	const gradientPreview = $derived(() => {
-		if (type === 'solid') return solidColor;
-
-		const stops = gradientStops
-			.sort((a, b) => a.position - b.position)
-			.map((stop) => `${stop.color} ${stop.position}%`)
-			.join(', ');
-
-		if (type === 'radial') {
-			return `radial-gradient(circle, ${stops})`;
-		}
-
-		return `linear-gradient(${gradientAngle}deg, ${stops})`;
-	});
 </script>
 
 <div class={cn('space-y-4 overflow-hidden', className)} {...restProps}>
@@ -164,18 +149,6 @@
 		</div>
 	{:else}
 		<div class="space-y-4 overflow-hidden">
-			<div class="flex items-center justify-between">
-				<div class="flex items-center gap-3">
-					<div
-						class="h-8 w-16 flex-shrink-0 rounded-lg border border-zinc-700"
-						style="background: {gradientPreview}"
-					></div>
-					<span class="text-sm font-medium text-zinc-300">
-						{type === 'linear' ? 'Linear' : 'Radial'} Gradient
-					</span>
-				</div>
-			</div>
-
 			{#if type === 'linear'}
 				<div class="rounded-lg border border-zinc-800 bg-black/10 p-3">
 					<Slider
