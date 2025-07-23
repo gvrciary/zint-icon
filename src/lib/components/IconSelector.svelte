@@ -26,7 +26,7 @@
 </script>
 
 <div class={cn('flex h-full flex-col', className)} {...restProps}>
-	<div class="border-b border-white/5 p-4">
+	<div class="flex-shrink-0 border-b border-white/5 p-4">
 		<div class="relative">
 			<Search class="absolute top-1/2 left-3 h-4 w-4 -translate-y-1/2 transform text-zinc-500" />
 			<input
@@ -38,7 +38,7 @@
 		</div>
 	</div>
 
-	<div class="flex-1 overflow-y-auto p-4">
+	<div class="min-h-0 flex-1 overflow-y-auto p-4">
 		<div class="grid grid-cols-4 gap-2">
 			{#each filteredIcons() as iconName (iconName)}
 				<Button
@@ -53,7 +53,6 @@
 							: '!border-zinc-800 hover:!border-zinc-700'
 					)}
 				>
-					<!-- Custom SVG Icon -->
 					<svg
 						width="20"
 						height="20"

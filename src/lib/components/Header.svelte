@@ -110,7 +110,7 @@
 	class={cn('fixed top-0 right-0 left-0 z-50 transition-all duration-300', className)}
 	{...restProps}
 >
-	<div class="container py-4 md:py-6">
+	<div class="px-4 py-4 md:px-6 md:py-6">
 		<nav class="flex items-center justify-between">
 			<a href="/" class="group flex items-center space-x-3">
 				<div class="relative h-8 w-8 overflow-hidden">
@@ -145,7 +145,7 @@
 
 	{#if isMobileMenuOpen}
 		<div class="border-t border-white/5 bg-black/90 backdrop-blur-sm md:hidden">
-			<div class="container py-4">
+			<div class="px-4 py-4 md:px-6">
 				<div class="flex gap-2">
 					<Button variant="download" size="md" onclick={downloadSVG} class="flex-1">
 						<Download class="h-4 w-4" />

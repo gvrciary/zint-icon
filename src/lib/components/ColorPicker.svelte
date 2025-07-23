@@ -2,6 +2,7 @@
 	import { cn } from '$lib/utils';
 	import { Plus, Minus } from 'lucide-svelte';
 	import Button from './ui/button.svelte';
+	import Slider from './ui/slider.svelte';
 
 	interface GradientStop {
 		color: string;
@@ -117,25 +118,25 @@
 	});
 </script>
 
-<div class={cn('space-y-4', className)} {...restProps}>
+<div class={cn('space-y-4 overflow-hidden', className)} {...restProps}>
 	{#if type === 'solid'}
-		<div class="space-y-3">
+		<div class="space-y-3 overflow-hidden">
 			<div class="flex items-center gap-3">
 				<div
-					class="h-8 w-8 rounded-lg border border-zinc-700"
+					class="h-8 w-8 flex-shrink-0 rounded-lg border border-zinc-700"
 					style="background: {solidColor}"
 				></div>
 				<input
 					type="color"
 					bind:value={solidColor}
 					oninput={(e) => updateSolidColor(e.currentTarget.value)}
-					class="h-8 w-12 cursor-pointer rounded-lg border border-zinc-700 bg-transparent"
+					class="h-8 w-12 flex-shrink-0 cursor-pointer rounded-lg border border-zinc-700 bg-transparent"
 				/>
 				<input
 					type="text"
 					bind:value={solidColor}
 					oninput={(e) => updateSolidColor(e.currentTarget.value)}
-					class="flex-1 rounded-lg border border-zinc-800 bg-black/20 px-3 py-2 text-sm text-white placeholder:text-zinc-500 focus:ring-2 focus:ring-[#8564FA]/50 focus:outline-none"
+					class="min-w-0 flex-1 rounded-lg border border-zinc-800 bg-black/20 px-3 py-2 text-sm text-white placeholder:text-zinc-500 focus:ring-2 focus:ring-[#8564FA]/50 focus:outline-none"
 					placeholder="#8564FA"
 				/>
 			</div>
@@ -158,28 +159,27 @@
 			</div>
 		</div>
 	{:else}
-		<div class="space-y-4">
+		<div class="space-y-4 overflow-hidden">
 			<div class="flex items-center gap-3">
 				<div
-					class="h-8 w-16 rounded-lg border border-zinc-700"
+					class="h-8 w-16 flex-shrink-0 rounded-lg border border-zinc-700"
 					style="background: {gradientPreview}"
 				></div>
-				<div class="flex-1">
+				<div class="min-w-0 flex-1">
 					<label for="gradient-angle" class="mb-1 block text-xs text-zinc-400">Angle</label>
-					<input
-						id="gradient-angle"
-						type="range"
-						min="0"
-						max="360"
-						bind:value={gradientAngle}
-						oninput={(e) => updateGradientAngle(parseInt(e.currentTarget.value))}
-						class="slider h-2 w-full cursor-pointer appearance-none rounded-lg bg-zinc-800"
+					<Slider
+						value={gradientAngle}
+						min={0}
+						max={360}
+						step={1}
+						onChange={updateGradientAngle}
+						class="mt-1"
 					/>
 					<div class="mt-1 text-xs text-zinc-500">{gradientAngle}°</div>
 				</div>
 			</div>
 
-			<div class="space-y-3">
+			<div class="space-y-3 overflow-hidden">
 				<div class="flex items-center justify-between">
 					<span class="text-sm text-zinc-300">Color Stops</span>
 					<Button variant="secondary" size="sm" onclick={addGradientStop}>
@@ -188,70 +188,53 @@
 					</Button>
 				</div>
 
-				{#each gradientStops as stop, index (index)}
-					<div class="flex items-center gap-2 rounded-lg border border-zinc-800 bg-black/20 p-3">
-						<div
-							class="h-6 w-6 rounded-md border border-zinc-700"
-							style="background: {stop.color}"
-						></div>
-						<input
-							type="color"
-							bind:value={stop.color}
-							oninput={(e) => updateGradientStop(index, e.currentTarget.value)}
-							class="h-6 w-8 cursor-pointer rounded-md border border-zinc-700 bg-transparent"
-						/>
-						<input
-							type="text"
-							bind:value={stop.color}
-							oninput={(e) => updateGradientStop(index, e.currentTarget.value)}
-							class="flex-1 rounded-md border border-zinc-700 bg-zinc-900/50 px-2 py-1 text-xs text-white"
-						/>
-						<div class="flex items-center gap-1">
+				<div class="max-h-48 space-y-2 overflow-y-auto">
+					{#each gradientStops as stop, index (index)}
+						<div class="flex items-center gap-2 rounded-lg border border-zinc-800 bg-black/20 p-2">
+							<div
+								class="h-5 w-5 flex-shrink-0 rounded-md border border-zinc-700"
+								style="background: {stop.color}"
+							></div>
 							<input
-								type="number"
-								min="0"
-								max="100"
-								bind:value={stop.position}
-								oninput={(e) => updateGradientPosition(index, parseInt(e.currentTarget.value))}
-								class="w-12 rounded-md border border-zinc-700 bg-zinc-900/50 px-1 py-1 text-center text-xs text-white"
+								type="color"
+								bind:value={stop.color}
+								oninput={(e) => updateGradientStop(index, e.currentTarget.value)}
+								class="h-5 w-6 flex-shrink-0 cursor-pointer rounded-md border border-zinc-700 bg-transparent"
 							/>
-							<span class="text-xs text-zinc-500">%</span>
+							<input
+								type="text"
+								bind:value={stop.color}
+								oninput={(e) => updateGradientStop(index, e.currentTarget.value)}
+								class="min-w-0 flex-1 rounded-md border border-zinc-700 bg-zinc-900/50 px-2 py-1 text-xs text-white"
+							/>
+							<div class="flex flex-shrink-0 items-center gap-1">
+								<input
+									type="number"
+									min="0"
+									max="100"
+									bind:value={stop.position}
+									oninput={(e) => updateGradientPosition(index, parseInt(e.currentTarget.value))}
+									class="w-10 rounded-md border border-zinc-700 bg-zinc-900/50 px-1 py-1 text-center text-xs text-white"
+								/>
+								<span class="text-xs text-zinc-500">%</span>
+							</div>
+							{#if gradientStops.length > 2}
+								<Button
+									variant="secondary"
+									size="sm"
+									onclick={() => removeGradientStop(index)}
+									class="flex-shrink-0 !p-1 hover:!bg-red-500/20"
+								>
+									<Minus class="h-3 w-3 text-red-400" />
+								</Button>
+							{/if}
 						</div>
-						{#if gradientStops.length > 2}
-							<Button
-								variant="secondary"
-								size="sm"
-								onclick={() => removeGradientStop(index)}
-								class="!p-1 hover:!bg-red-500/20"
-							>
-								<Minus class="h-3 w-3 text-red-400" />
-							</Button>
-						{/if}
-					</div>
-				{/each}
+					{/each}
+				</div>
 			</div>
 		</div>
 	{/if}
 </div>
 
 <style>
-	.slider::-webkit-slider-thumb {
-		appearance: none;
-		width: 16px;
-		height: 16px;
-		border-radius: 50%;
-		background: #8564fa;
-		cursor: pointer;
-		border: 2px solid #fff;
-	}
-
-	.slider::-moz-range-thumb {
-		width: 16px;
-		height: 16px;
-		border-radius: 50%;
-		background: #8564fa;
-		cursor: pointer;
-		border: 2px solid #fff;
-		box-sizing: border-box;
-	}
 </style>

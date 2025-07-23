@@ -82,18 +82,22 @@
 	{iconColor}
 />
 
-<main class="min-h-screen pt-20 md:pt-24">
-	<div class="container h-full">
-		<div class="grid h-full min-h-[calc(100vh-6rem)] grid-cols-1 gap-6 lg:grid-cols-12">
-			<aside class="rounded-xl border border-white/5 bg-black/20 backdrop-blur-sm lg:col-span-3">
+<main class="h-screen overflow-hidden pt-20 md:pt-24">
+	<div class="h-full px-4 md:px-6">
+		<div
+			class="grid h-[calc(100vh-5rem)] grid-cols-1 gap-6 md:h-[calc(100vh-6rem)] lg:grid-cols-12"
+		>
+			<aside
+				class="flex h-full flex-col overflow-hidden rounded-xl border border-white/5 bg-black/20 backdrop-blur-sm lg:col-span-3"
+			>
 				<div class="border-b border-white/5 p-4">
 					<h2 class="text-lg font-medium text-white">Icons</h2>
 					<p class="mt-1 text-sm text-zinc-400">Choose from Lucide icons</p>
 				</div>
-				<IconSelector {selectedIcon} onSelect={handleIconSelect} class="h-[calc(100%-5rem)]" />
+				<IconSelector {selectedIcon} onSelect={handleIconSelect} class="flex-1 overflow-hidden" />
 			</aside>
 
-			<section class="flex items-center justify-center py-8 lg:col-span-6">
+			<section class="flex h-full items-center justify-center overflow-hidden py-8 lg:col-span-6">
 				<IconPreview
 					{selectedIcon}
 					{backgroundType}
@@ -104,13 +108,15 @@
 				/>
 			</section>
 
-			<aside class="rounded-xl border border-white/5 bg-black/20 backdrop-blur-sm lg:col-span-3">
+			<aside
+				class="flex h-full flex-col overflow-hidden rounded-xl border border-white/5 bg-black/20 backdrop-blur-sm lg:col-span-3"
+			>
 				<div class="border-b border-white/5 p-4">
 					<h2 class="text-lg font-medium text-white">Settings</h2>
 					<p class="mt-1 text-sm text-zinc-400">Customize your icon</p>
 				</div>
 
-				<div class="space-y-6 p-4">
+				<div class="flex-1 space-y-6 overflow-y-auto p-4">
 					<div class="space-y-3">
 						<label for="" class="block text-sm font-medium text-zinc-300"> Background Type </label>
 						<Dropdown
