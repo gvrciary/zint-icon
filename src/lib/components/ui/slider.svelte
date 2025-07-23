@@ -7,6 +7,8 @@
 		max?: number;
 		step?: number;
 		disabled?: boolean;
+		label?: string;
+		showValue?: boolean;
 		class?: string;
 		onChange?: (value: number) => void;
 	}
@@ -17,6 +19,8 @@
 		max = 100,
 		step = 1,
 		disabled = false,
+		label = '',
+		showValue = true,
 		class: className = '',
 		onChange,
 		...restProps
@@ -34,80 +38,78 @@
 	const percentage = $derived(((value - min) / (max - min)) * 100);
 </script>
 
-<div class={cn('relative w-full', className)} {...restProps}>
-	<input
-		bind:this={sliderRef}
-		type="range"
-		{min}
-		{max}
-		{step}
-		{disabled}
-		bind:value
-		oninput={handleInput}
-		class="slider h-2 w-full cursor-pointer appearance-none rounded-lg bg-zinc-800 outline-none transition-opacity hover:opacity-80 disabled:cursor-not-allowed disabled:opacity-50"
-		style="background: linear-gradient(to right, #8564FA 0%, #8564FA {percentage}%, rgb(39 39 42) {percentage}%, rgb(39 39 42) 100%)"
-	/>
+<div class={cn('flex items-center gap-3', className)} {...restProps}>
+	{#if label}
+		<span class="min-w-fit text-sm text-zinc-300">{label}</span>
+	{/if}
+
+	<div class="relative flex-1">
+		<div class="relative h-3 overflow-hidden rounded-full bg-zinc-800">
+			<div
+				class="absolute top-0 left-0 h-full rounded-full bg-[#8564FA] transition-all duration-200"
+				style="width: {percentage}%"
+			></div>
+		</div>
+		<input
+			bind:this={sliderRef}
+			type="range"
+			{min}
+			{max}
+			{step}
+			{disabled}
+			bind:value
+			oninput={handleInput}
+			class="absolute inset-0 h-3 w-full cursor-pointer opacity-0 disabled:cursor-not-allowed"
+		/>
+	</div>
+
+	{#if showValue}
+		<span class="min-w-[2rem] text-right font-mono text-sm text-zinc-400">
+			{Math.round(value)}
+		</span>
+	{/if}
 </div>
 
 <style>
-	.slider::-webkit-slider-thumb {
+	input[type='range'] {
+		-webkit-appearance: none;
 		appearance: none;
-		width: 18px;
-		height: 18px;
+	}
+
+	input[type='range']::-webkit-slider-thumb {
+		-webkit-appearance: none;
+		appearance: none;
+		width: 16px;
+		height: 16px;
 		border-radius: 50%;
 		background: #8564fa;
 		cursor: pointer;
 		border: 2px solid #fff;
 		box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.2);
-		transition: all 0.2s ease;
+		position: relative;
+		z-index: 10;
 	}
 
-	.slider::-webkit-slider-thumb:hover {
-		transform: scale(1.1);
-		box-shadow: 0 4px 8px 0 rgba(133, 100, 250, 0.3);
-	}
-
-	.slider::-webkit-slider-thumb:active {
-		transform: scale(1.05);
-	}
-
-	.slider::-moz-range-thumb {
-		width: 18px;
-		height: 18px;
+	input[type='range']::-moz-range-thumb {
+		width: 16px;
+		height: 16px;
 		border-radius: 50%;
 		background: #8564fa;
 		cursor: pointer;
 		border: 2px solid #fff;
 		box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.2);
 		box-sizing: border-box;
-		transition: all 0.2s ease;
+		border: none;
 	}
 
-	.slider::-moz-range-thumb:hover {
-		transform: scale(1.1);
-		box-shadow: 0 4px 8px 0 rgba(133, 100, 250, 0.3);
-	}
-
-	.slider::-moz-range-thumb:active {
-		transform: scale(1.05);
-	}
-
-	.slider::-moz-range-track {
-		height: 8px;
+	input[type='range']::-moz-range-track {
 		background: transparent;
 		border: none;
 	}
 
-	.slider:disabled::-webkit-slider-thumb,
-	.slider:disabled::-moz-range-thumb {
+	input[type='range']:disabled::-webkit-slider-thumb,
+	input[type='range']:disabled::-moz-range-thumb {
 		background: rgb(113 113 122);
 		cursor: not-allowed;
-		transform: none;
-	}
-
-	.slider:disabled::-webkit-slider-thumb:hover,
-	.slider:disabled::-moz-range-thumb:hover {
-		transform: none;
-		box-shadow: none;
 	}
 </style>

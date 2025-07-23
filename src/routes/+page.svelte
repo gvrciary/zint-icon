@@ -14,7 +14,7 @@
 	}
 
 	let selectedIcon = $state(DEFAULT_ICON);
-	let backgroundType: 'solid' | 'linear' = $state('solid');
+	let backgroundType: 'solid' | 'linear' | 'radial' = $state('solid');
 	let backgroundColor = $state('#8564FA');
 	let gradientStops: GradientStop[] = $state([
 		{ color: '#8564FA', position: 0 },
@@ -25,7 +25,8 @@
 
 	const backgroundOptions = [
 		{ label: 'Solid', value: 'solid' },
-		{ label: 'Linear', value: 'linear' }
+		{ label: 'Linear', value: 'linear' },
+		{ label: 'Radial', value: 'radial' }
 	];
 
 	const iconColorOptions = [
@@ -48,11 +49,11 @@
 	}
 
 	function handleBackgroundTypeChange(type: string) {
-		backgroundType = type as 'solid' | 'linear';
+		backgroundType = type as 'solid' | 'linear' | 'radial';
 	}
 
 	function handleBackgroundColorChange(config: {
-		type: 'solid' | 'linear';
+		type: 'solid' | 'linear' | 'radial';
 		solidColor?: string;
 		gradientStops?: GradientStop[];
 		gradientAngle?: number;

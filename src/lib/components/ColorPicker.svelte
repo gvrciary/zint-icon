@@ -10,13 +10,13 @@
 	}
 
 	interface Props {
-		type: 'solid' | 'linear';
+		type: 'solid' | 'linear' | 'radial';
 		solidColor?: string;
 		gradientStops?: GradientStop[];
 		gradientAngle?: number;
 		class?: string;
 		onChange?: (config: {
-			type: 'solid' | 'linear';
+			type: 'solid' | 'linear' | 'radial';
 			solidColor?: string;
 			gradientStops?: GradientStop[];
 			gradientAngle?: number;
@@ -114,6 +114,10 @@
 			.map((stop) => `${stop.color} ${stop.position}%`)
 			.join(', ');
 
+		if (type === 'radial') {
+			return `radial-gradient(circle, ${stops})`;
+		}
+
 		return `linear-gradient(${gradientAngle}deg, ${stops})`;
 	});
 </script>
@@ -160,24 +164,31 @@
 		</div>
 	{:else}
 		<div class="space-y-4 overflow-hidden">
-			<div class="flex items-center gap-3">
-				<div
-					class="h-8 w-16 flex-shrink-0 rounded-lg border border-zinc-700"
-					style="background: {gradientPreview}"
-				></div>
-				<div class="min-w-0 flex-1">
-					<label for="gradient-angle" class="mb-1 block text-xs text-zinc-400">Angle</label>
+			<div class="flex items-center justify-between">
+				<div class="flex items-center gap-3">
+					<div
+						class="h-8 w-16 flex-shrink-0 rounded-lg border border-zinc-700"
+						style="background: {gradientPreview}"
+					></div>
+					<span class="text-sm font-medium text-zinc-300">
+						{type === 'linear' ? 'Linear' : 'Radial'} Gradient
+					</span>
+				</div>
+			</div>
+
+			{#if type === 'linear'}
+				<div class="rounded-lg border border-zinc-800 bg-black/10 p-3">
 					<Slider
 						value={gradientAngle}
 						min={0}
 						max={360}
 						step={1}
+						label="Angle"
+						showValue={true}
 						onChange={updateGradientAngle}
-						class="mt-1"
 					/>
-					<div class="mt-1 text-xs text-zinc-500">{gradientAngle}°</div>
 				</div>
-			</div>
+			{/if}
 
 			<div class="space-y-3 overflow-hidden">
 				<div class="flex items-center justify-between">
@@ -190,22 +201,23 @@
 
 				<div class="max-h-48 space-y-2 overflow-y-auto">
 					{#each gradientStops as stop, index (index)}
-						<div class="flex items-center gap-2 rounded-lg border border-zinc-800 bg-black/20 p-2">
+						<div class="flex items-center gap-2 rounded-lg border border-zinc-800 bg-black/20 p-3">
 							<div
-								class="h-5 w-5 flex-shrink-0 rounded-md border border-zinc-700"
+								class="h-6 w-6 flex-shrink-0 rounded-md border border-zinc-700"
 								style="background: {stop.color}"
 							></div>
 							<input
 								type="color"
 								bind:value={stop.color}
 								oninput={(e) => updateGradientStop(index, e.currentTarget.value)}
-								class="h-5 w-6 flex-shrink-0 cursor-pointer rounded-md border border-zinc-700 bg-transparent"
+								class="h-6 w-8 flex-shrink-0 cursor-pointer rounded-md border border-zinc-700 bg-transparent"
 							/>
 							<input
 								type="text"
 								bind:value={stop.color}
 								oninput={(e) => updateGradientStop(index, e.currentTarget.value)}
 								class="min-w-0 flex-1 rounded-md border border-zinc-700 bg-zinc-900/50 px-2 py-1 text-xs text-white"
+								placeholder="#000000"
 							/>
 							<div class="flex flex-shrink-0 items-center gap-1">
 								<input
@@ -214,7 +226,7 @@
 									max="100"
 									bind:value={stop.position}
 									oninput={(e) => updateGradientPosition(index, parseInt(e.currentTarget.value))}
-									class="w-10 rounded-md border border-zinc-700 bg-zinc-900/50 px-1 py-1 text-center text-xs text-white"
+									class="w-14 rounded-md border border-zinc-700 bg-zinc-900/50 px-2 py-1 text-center text-xs text-white focus:border-[#8564FA]/50 focus:ring-1 focus:ring-[#8564FA]/50 focus:outline-none"
 								/>
 								<span class="text-xs text-zinc-500">%</span>
 							</div>

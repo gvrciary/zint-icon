@@ -12,7 +12,7 @@
 	interface Props {
 		class?: string;
 		selectedIcon?: string;
-		backgroundType?: 'solid' | 'linear';
+		backgroundType?: 'solid' | 'linear' | 'radial';
 		backgroundColor?: string;
 		gradientStops?: GradientStop[];
 		gradientAngle?: number;
@@ -46,14 +46,18 @@
 		let gradientDef = '';
 		let fillValue = backgroundColor;
 
-		if (backgroundType === 'linear') {
+		if (backgroundType === 'linear' || backgroundType === 'radial') {
 			const sortedStops = gradientStops.slice().sort((a, b) => a.position - b.position);
 
 			const stops = sortedStops
 				.map((stop) => `<stop offset="${stop.position}%" stop-color="${stop.color}" />`)
 				.join('');
 
-			gradientDef = `<defs><linearGradient id="${gradientId}" gradientTransform="rotate(${gradientAngle} 256 256)">${stops}</linearGradient></defs>`;
+			if (backgroundType === 'linear') {
+				gradientDef = `<defs><linearGradient id="${gradientId}" gradientTransform="rotate(${gradientAngle} 256 256)">${stops}</linearGradient></defs>`;
+			} else {
+				gradientDef = `<defs><radialGradient id="${gradientId}" cx="50%" cy="50%" r="50%">${stops}</radialGradient></defs>`;
+			}
 			fillValue = `url(#${gradientId})`;
 		}
 

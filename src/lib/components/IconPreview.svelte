@@ -9,7 +9,7 @@
 
 	interface Props {
 		selectedIcon?: string;
-		backgroundType?: 'solid' | 'linear';
+		backgroundType?: 'solid' | 'linear' | 'radial';
 		backgroundColor?: string;
 		gradientStops?: GradientStop[];
 		gradientAngle?: number;
@@ -61,6 +61,12 @@
 							<stop offset="{stop.position}%" stop-color={stop.color} />
 						{/each}
 					</linearGradient>
+				{:else if backgroundType === 'radial'}
+					<radialGradient id={gradientId} cx="50%" cy="50%" r="50%">
+						{#each sortedGradientStops as stop (stop.position)}
+							<stop offset="{stop.position}%" stop-color={stop.color} />
+						{/each}
+					</radialGradient>
 				{/if}
 			</defs>
 
