@@ -1,6 +1,6 @@
 <script lang="ts">
 	import { cn } from '$lib/utils';
-	import { getIconPath, DEFAULT_ICON } from '$lib/icons';
+	import { getIconPath, DEFAULT_ICON } from '$lib/data/icons';
 
 	interface GradientStop {
 		color: string;
@@ -46,7 +46,6 @@
 
 <div class={cn('flex flex-col items-center space-y-6', className)} {...restProps}>
 	<div class="relative">
-		<!-- Main SVG Preview -->
 		<svg
 			bind:this={svgRef}
 			width="512"
@@ -65,10 +64,8 @@
 				{/if}
 			</defs>
 
-			<!-- Background -->
 			<rect width="512" height="512" rx="24" ry="24" fill={backgroundFill} />
 
-			<!-- Icon -->
 			<g transform="translate(256, 256)">
 				<g transform="scale(8) translate(-12, -12)">
 					<path

@@ -1,8 +1,8 @@
 <script lang="ts">
 	import { cn } from '$lib/utils';
 	import { Search } from 'lucide-svelte';
-	import { AVAILABLE_ICONS, ICON_NAMES } from '$lib/icons';
-	import Button from './Button.svelte';
+	import { AVAILABLE_ICONS, ICON_NAMES } from '$lib/data/icons';
+	import Button from './ui/button.svelte';
 
 	interface Props {
 		selectedIcon?: string;

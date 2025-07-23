@@ -1,7 +1,7 @@
 <script lang="ts">
 	import { cn } from '$lib/utils';
 	import { Plus, Minus } from 'lucide-svelte';
-	import Button from './Button.svelte';
+	import Button from './ui/button.svelte';
 
 	interface GradientStop {
 		color: string;

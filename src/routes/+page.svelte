@@ -3,10 +3,10 @@
 	import IconSelector from '$lib/components/IconSelector.svelte';
 	import IconPreview from '$lib/components/IconPreview.svelte';
 	import ColorPicker from '$lib/components/ColorPicker.svelte';
-	import Dropdown from '$lib/components/Dropdown.svelte';
+	import Dropdown from '$lib/components/ui/dropdown.svelte';
 	import { cn } from '$lib/utils';
-	import { DEFAULT_ICON } from '$lib/icons';
-	import Button from '$lib/components/Button.svelte';
+	import { DEFAULT_ICON } from '$lib/data/icons';
+	import Button from '$lib/components/ui/button.svelte';
 
 	interface GradientStop {
 		color: string;

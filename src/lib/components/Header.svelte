@@ -1,8 +1,8 @@
 <script lang="ts">
 	import { cn } from '$lib/utils';
 	import { Menu, Palette, Download } from 'lucide-svelte';
-	import { getIconPath, DEFAULT_ICON } from '$lib/icons';
-	import Button from './Button.svelte';
+	import { getIconPath, DEFAULT_ICON } from '$lib/data/icons';
+	import Button from './ui/button.svelte';
 
 	interface GradientStop {
 		color: string;
