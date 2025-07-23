@@ -132,7 +132,7 @@
 						<ColorPicker
 							type={backgroundType}
 							solidColor={backgroundColor}
-							{gradientStops}
+							bind:gradientStops
 							{gradientAngle}
 							onChange={handleBackgroundColorChange}
 						/>

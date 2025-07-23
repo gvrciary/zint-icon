@@ -57,13 +57,13 @@
 			<defs>
 				{#if backgroundType === 'linear'}
 					<linearGradient id={gradientId} gradientTransform="rotate({gradientAngle} 256 256)">
-						{#each sortedGradientStops as stop (stop.position)}
+						{#each sortedGradientStops as stop, index (`${index}-${stop.position}-${stop.color}`)}
 							<stop offset="{stop.position}%" stop-color={stop.color} />
 						{/each}
 					</linearGradient>
 				{:else if backgroundType === 'radial'}
 					<radialGradient id={gradientId} cx="50%" cy="50%" r="50%">
-						{#each sortedGradientStops as stop (stop.position)}
+						{#each sortedGradientStops as stop, index (`${index}-${stop.position}-${stop.color}`)}
 							<stop offset="{stop.position}%" stop-color={stop.color} />
 						{/each}
 					</radialGradient>

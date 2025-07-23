@@ -26,10 +26,10 @@
 	let {
 		type = 'solid',
 		solidColor = '#8564FA',
-		gradientStops = [
+		gradientStops = $bindable([
 			{ color: '#8564FA', position: 0 },
 			{ color: '#FF6B6B', position: 100 }
-		],
+		]),
 		gradientAngle = 45,
 		class: className = '',
 		onChange,
@@ -63,12 +63,12 @@
 	}
 
 	function updateGradientStop(index: number, color: string) {
-		gradientStops[index].color = color;
+		gradientStops = gradientStops.map((stop, i) => (i === index ? { ...stop, color } : stop));
 		emitChange();
 	}
 
 	function updateGradientPosition(index: number, position: number) {
-		gradientStops[index].position = position;
+		gradientStops = gradientStops.map((stop, i) => (i === index ? { ...stop, position } : stop));
 		emitChange();
 	}
 
@@ -81,13 +81,13 @@
 						2
 				: 50;
 
-		gradientStops.push({ color: '#8564FA', position: newPosition });
+		gradientStops = [...gradientStops, { color: '#8564FA', position: newPosition }];
 		emitChange();
 	}
 
 	function removeGradientStop(index: number) {
 		if (gradientStops.length > 2) {
-			gradientStops.splice(index, 1);
+			gradientStops = gradientStops.filter((_, i) => i !== index);
 			emitChange();
 		}
 	}
@@ -200,7 +200,7 @@
 				</div>
 
 				<div class="max-h-48 space-y-2 overflow-y-auto">
-					{#each gradientStops as stop, index (index)}
+					{#each gradientStops as stop, index (`${index}-${stop.color}-${stop.position}`)}
 						<div class="flex items-center gap-2 rounded-lg border border-zinc-800 bg-black/20 p-3">
 							<div
 								class="h-6 w-6 flex-shrink-0 rounded-md border border-zinc-700"
