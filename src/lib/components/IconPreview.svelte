@@ -41,6 +41,24 @@
 
 	const sortedGradientStops = $derived([...gradientStops].sort((a, b) => a.position - b.position));
 
+	const gradientCoords = $derived(() => {
+		if (backgroundType !== 'linear') return { x1: '0%', y1: '0%', x2: '100%', y2: '0%' };
+
+		const angleRad = (gradientAngle * Math.PI) / 180;
+
+		const x1 = 50 + 50 * Math.cos(angleRad + Math.PI / 2);
+		const y1 = 50 + 50 * Math.sin(angleRad + Math.PI / 2);
+		const x2 = 50 + 50 * Math.cos(angleRad - Math.PI / 2);
+		const y2 = 50 + 50 * Math.sin(angleRad - Math.PI / 2);
+
+		return {
+			x1: `${x1}%`,
+			y1: `${y1}%`,
+			x2: `${x2}%`,
+			y2: `${y2}%`
+		};
+	});
+
 	const iconPath = $derived(getIconPath(selectedIcon));
 </script>
 
@@ -56,7 +74,13 @@
 		>
 			<defs>
 				{#if backgroundType === 'linear'}
-					<linearGradient id={gradientId} gradientTransform="rotate({gradientAngle} 256 256)">
+					<linearGradient
+						id={gradientId}
+						x1={gradientCoords().x1}
+						y1={gradientCoords().y1}
+						x2={gradientCoords().x2}
+						y2={gradientCoords().y2}
+					>
 						{#each sortedGradientStops as stop, index (`${index}-${stop.position}-${stop.color}`)}
 							<stop offset="{stop.position}%" stop-color={stop.color} />
 						{/each}

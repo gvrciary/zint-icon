@@ -54,7 +54,13 @@
 				.join('');
 
 			if (backgroundType === 'linear') {
-				gradientDef = `<defs><linearGradient id="${gradientId}" gradientTransform="rotate(${gradientAngle} 256 256)">${stops}</linearGradient></defs>`;
+				const angleRad = (gradientAngle * Math.PI) / 180;
+				const x1 = 50 + 50 * Math.cos(angleRad + Math.PI / 2);
+				const y1 = 50 + 50 * Math.sin(angleRad + Math.PI / 2);
+				const x2 = 50 + 50 * Math.cos(angleRad - Math.PI / 2);
+				const y2 = 50 + 50 * Math.sin(angleRad - Math.PI / 2);
+
+				gradientDef = `<defs><linearGradient id="${gradientId}" x1="${x1}%" y1="${y1}%" x2="${x2}%" y2="${y2}%">${stops}</linearGradient></defs>`;
 			} else {
 				gradientDef = `<defs><radialGradient id="${gradientId}" cx="50%" cy="50%" r="50%">${stops}</radialGradient></defs>`;
 			}
