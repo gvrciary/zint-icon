@@ -345,27 +345,24 @@
 				{/if}
 
 				{#if $liquidGlass}
-					<linearGradient id="glassMainGradient" x1="0%" y1="0%" x2="0%" y2="100%">
-						<stop offset="0%" stop-color="#ffffff" stop-opacity="0.4" />
-						<stop offset="100%" stop-color="#cccccc" stop-opacity="0.2" />
-					</linearGradient>
-
-					<linearGradient id="glassBlurGradient" x1="0%" y1="0%" x2="0%" y2="100%">
-						<stop offset="0%" stop-color="#ffffff" stop-opacity="0.3" />
-						<stop offset="100%" stop-color="#ffffff" stop-opacity="0.1" />
-					</linearGradient>
-
-					<linearGradient id="glassShineGradient" x1="0%" y1="0%" x2="0%" y2="50%">
-						<stop offset="0%" stop-color="#fff" stop-opacity="0.6" />
-						<stop offset="100%" stop-color="#fff" stop-opacity="0" />
-					</linearGradient>
-
-					<filter id="glassBlurFilter" x="-150%" y="-150%" width="500%" height="500%">
-						<feGaussianBlur stdDeviation="4" result="blur" />
+					<filter id="glassBlur1" x="-100%" y="-100%" width="400%" height="400%">
+						<feGaussianBlur stdDeviation="2" result="blur1" />
 					</filter>
 
-					<filter id="glassDeepBlur" x="-200%" y="-200%" width="600%" height="600%">
-						<feGaussianBlur stdDeviation="6" result="deepBlur" />
+					<filter id="glassBlur2" x="-150%" y="-150%" width="500%" height="500%">
+						<feGaussianBlur stdDeviation="4" result="blur2" />
+					</filter>
+
+					<filter id="glassBlur3" x="-200%" y="-200%" width="600%" height="600%">
+						<feGaussianBlur stdDeviation="6" result="blur3" />
+					</filter>
+
+					<filter id="glassBlur4" x="-250%" y="-250%" width="700%" height="700%">
+						<feGaussianBlur stdDeviation="8" result="blur4" />
+					</filter>
+
+					<filter id="glassBlur5" x="-300%" y="-300%" width="800%" height="800%">
+						<feGaussianBlur stdDeviation="12" result="blur5" />
 					</filter>
 
 					<clipPath id="glassClipPath">
@@ -405,48 +402,113 @@
 			<g transform="translate({256 + $iconOffsetX}, {256 + $iconOffsetY})">
 				<g transform="scale({$iconSize / 24}) translate(-12, -12)">
 					{#if $liquidGlass}
-						<!-- Deep blur background layer -->
 						<path
 							d={iconPath}
 							fill="none"
-							stroke="url(#glassBlurGradient)"
+							stroke="rgba({parseInt($iconColor.slice(1, 3), 16)}, {parseInt(
+								$iconColor.slice(3, 5),
+								16
+							)}, {parseInt($iconColor.slice(5, 7), 16)}, 0.06)"
+							stroke-width="16"
+							stroke-linecap="round"
+							stroke-linejoin="round"
+							filter="url(#glassBlur5)"
+							opacity="0.12"
+						/>
+
+						<path
+							d={iconPath}
+							fill="none"
+							stroke="rgba({parseInt($iconColor.slice(1, 3), 16)}, {parseInt(
+								$iconColor.slice(3, 5),
+								16
+							)}, {parseInt($iconColor.slice(5, 7), 16)}, 0.08)"
+							stroke-width="12"
+							stroke-linecap="round"
+							stroke-linejoin="round"
+							filter="url(#glassBlur4)"
+							opacity="0.15"
+						/>
+
+						<path
+							d={iconPath}
+							fill="none"
+							stroke="rgba({parseInt($iconColor.slice(1, 3), 16)}, {parseInt(
+								$iconColor.slice(3, 5),
+								16
+							)}, {parseInt($iconColor.slice(5, 7), 16)}, 0.1)"
 							stroke-width="8"
 							stroke-linecap="round"
 							stroke-linejoin="round"
-							filter="url(#glassDeepBlur)"
-							opacity="0.3"
+							filter="url(#glassBlur3)"
+							opacity="0.18"
 						/>
 
-						<!-- Medium blur layer -->
 						<path
 							d={iconPath}
 							fill="none"
-							stroke="url(#glassBlurGradient)"
+							stroke="rgba({parseInt($iconColor.slice(1, 3), 16)}, {parseInt(
+								$iconColor.slice(3, 5),
+								16
+							)}, {parseInt($iconColor.slice(5, 7), 16)}, 0.12)"
+							stroke-width="6"
+							stroke-linecap="round"
+							stroke-linejoin="round"
+							filter="url(#glassBlur2)"
+							opacity="0.22"
+						/>
+
+						<path
+							d={iconPath}
+							fill="none"
+							stroke="rgba({parseInt($iconColor.slice(1, 3), 16)}, {parseInt(
+								$iconColor.slice(3, 5),
+								16
+							)}, {parseInt($iconColor.slice(5, 7), 16)}, 0.15)"
 							stroke-width="4"
 							stroke-linecap="round"
 							stroke-linejoin="round"
-							filter="url(#glassBlurFilter)"
+							filter="url(#glassBlur1)"
+							opacity="0.25"
+						/>
+
+						<path
+							d={iconPath}
+							fill="none"
+							stroke="rgba({parseInt($iconColor.slice(1, 3), 16)}, {parseInt(
+								$iconColor.slice(3, 5),
+								16
+							)}, {parseInt($iconColor.slice(5, 7), 16)}, 0.25)"
+							stroke-width="2.5"
+							stroke-linecap="round"
+							stroke-linejoin="round"
+							opacity="0.7"
+						/>
+
+						<path
+							d={iconPath}
+							fill="none"
+							stroke="rgba({Math.min(255, parseInt($iconColor.slice(1, 3), 16) + 40)}, {Math.min(
+								255,
+								parseInt($iconColor.slice(3, 5), 16) + 40
+							)}, {Math.min(255, parseInt($iconColor.slice(5, 7), 16) + 40)}, 0.3)"
+							stroke-width="1.5"
+							stroke-linecap="round"
+							stroke-linejoin="round"
 							opacity="0.5"
 						/>
 
-						<!-- Main glass stroke -->
 						<path
 							d={iconPath}
 							fill="none"
-							stroke="url(#glassMainGradient)"
-							stroke-width="2"
-							stroke-linecap="round"
-							stroke-linejoin="round"
-						/>
-
-						<!-- Shine highlight stroke -->
-						<path
-							d={iconPath}
-							fill="none"
-							stroke="url(#glassShineGradient)"
+							stroke="rgba({Math.min(255, parseInt($iconColor.slice(1, 3), 16) + 80)}, {Math.min(
+								255,
+								parseInt($iconColor.slice(3, 5), 16) + 80
+							)}, {Math.min(255, parseInt($iconColor.slice(5, 7), 16) + 80)}, 0.4)"
 							stroke-width="1"
 							stroke-linecap="round"
 							stroke-linejoin="round"
+							opacity="0.6"
 						/>
 					{:else}
 						<path
