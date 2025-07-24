@@ -26,3 +26,4 @@ export const meshGradientColors: Writable<{ color: string; x: number; y: number 
 export const iconSize: Writable<number> = writable(192);
 export const iconOffsetX: Writable<number> = writable(0);
 export const iconOffsetY: Writable<number> = writable(0);
+export const liquidGlass: Writable<boolean> = writable(false);

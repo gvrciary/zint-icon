@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { iconColor, iconSize, iconOffsetX, iconOffsetY } from '$lib/stores/icon';
+	import { iconColor, iconSize, iconOffsetX, iconOffsetY, liquidGlass } from '$lib/stores/icon';
 	import Input from '$lib/components/ui/input.svelte';
 	import Slider from '$lib/components/ui/slider.svelte';
 </script>
@@ -52,6 +52,22 @@
 				label="Offset Y"
 				onChange={(value) => iconOffsetY.set(value)}
 			/>
+		</div>
+	</div>
+
+	<div class="space-y-3 overflow-hidden">
+		<div class="rounded-lg border border-zinc-800 bg-black/10 p-3">
+			<div class="flex items-center justify-between">
+				<span class="text-sm text-zinc-300">Liquid Glass Effect</span>
+				<label class="relative inline-flex cursor-pointer items-center">
+					<input
+						type="checkbox"
+						bind:checked={$liquidGlass}
+						class="peer sr-only"
+					/>
+					<div class="peer h-6 w-11 rounded-full bg-zinc-700 after:absolute after:left-[2px] after:top-[2px] after:h-5 after:w-5 after:rounded-full after:border after:border-zinc-600 after:bg-white after:transition-all after:content-[''] peer-checked:bg-[#8564FA] peer-checked:after:translate-x-full peer-checked:after:border-white peer-focus:outline-none peer-focus:ring-2 peer-focus:ring-[#8564FA]/50"></div>
+				</label>
+			</div>
 		</div>
 	</div>
 </div>

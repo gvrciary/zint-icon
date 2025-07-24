@@ -1,6 +1,7 @@
 <script lang="ts">
 	import { cn } from '$lib/utils';
 	import { getIconPath } from '$lib/data/icons';
+	import { generateLiquidGlassEffect } from '$lib/utils/liquidGlass';
 	import {
 		selectedIcon,
 		backgroundType,
@@ -16,7 +17,8 @@
 		meshGradientColors,
 		iconSize,
 		iconOffsetX,
-		iconOffsetY
+		iconOffsetY,
+		liquidGlass
 	} from '$lib/stores/icon';
 	import { onMount } from 'svelte';
 
@@ -230,6 +232,11 @@
 
 	const iconPath = $derived(getIconPath($selectedIcon));
 
+	const liquidGlassEffect = $derived(() => {
+		if (!$liquidGlass) return null;
+		return generateLiquidGlassEffect();
+	});
+
 	const borderStrokeStyle = $derived(() => {
 		if ($borderStroke === 0) return {};
 		const opacity = $borderOpacity / 100;
@@ -336,6 +343,40 @@
 						/>
 					</filter>
 				{/if}
+
+				{#if $liquidGlass}
+					<linearGradient id="glassMainGradient" x1="0%" y1="0%" x2="0%" y2="100%">
+						<stop offset="0%" stop-color="#ffffff" stop-opacity="0.4" />
+						<stop offset="100%" stop-color="#cccccc" stop-opacity="0.2" />
+					</linearGradient>
+
+					<linearGradient id="glassBlurGradient" x1="0%" y1="0%" x2="0%" y2="100%">
+						<stop offset="0%" stop-color="#ffffff" stop-opacity="0.3" />
+						<stop offset="100%" stop-color="#ffffff" stop-opacity="0.1" />
+					</linearGradient>
+
+					<linearGradient id="glassShineGradient" x1="0%" y1="0%" x2="0%" y2="50%">
+						<stop offset="0%" stop-color="#fff" stop-opacity="0.6" />
+						<stop offset="100%" stop-color="#fff" stop-opacity="0" />
+					</linearGradient>
+
+					<filter id="glassBlurFilter" x="-150%" y="-150%" width="500%" height="500%">
+						<feGaussianBlur stdDeviation="4" result="blur" />
+					</filter>
+
+					<filter id="glassDeepBlur" x="-200%" y="-200%" width="600%" height="600%">
+						<feGaussianBlur stdDeviation="6" result="deepBlur" />
+					</filter>
+
+					<clipPath id="glassClipPath">
+						<path d={iconPath} />
+					</clipPath>
+
+					<mask id="glassMask">
+						<rect width="100%" height="100%" fill="#FFF" />
+						<path d={iconPath} fill="#000" />
+					</mask>
+				{/if}
 			</defs>
 
 			{#if $backgroundType !== 'mesh'}
@@ -363,14 +404,60 @@
 
 			<g transform="translate({256 + $iconOffsetX}, {256 + $iconOffsetY})">
 				<g transform="scale({$iconSize / 24}) translate(-12, -12)">
-					<path
-						d={iconPath}
-						fill="none"
-						stroke={$iconColor}
-						stroke-width="1.5"
-						stroke-linecap="round"
-						stroke-linejoin="round"
-					/>
+					{#if $liquidGlass}
+						<!-- Deep blur background layer -->
+						<path
+							d={iconPath}
+							fill="none"
+							stroke="url(#glassBlurGradient)"
+							stroke-width="8"
+							stroke-linecap="round"
+							stroke-linejoin="round"
+							filter="url(#glassDeepBlur)"
+							opacity="0.3"
+						/>
+
+						<!-- Medium blur layer -->
+						<path
+							d={iconPath}
+							fill="none"
+							stroke="url(#glassBlurGradient)"
+							stroke-width="4"
+							stroke-linecap="round"
+							stroke-linejoin="round"
+							filter="url(#glassBlurFilter)"
+							opacity="0.5"
+						/>
+
+						<!-- Main glass stroke -->
+						<path
+							d={iconPath}
+							fill="none"
+							stroke="url(#glassMainGradient)"
+							stroke-width="2"
+							stroke-linecap="round"
+							stroke-linejoin="round"
+						/>
+
+						<!-- Shine highlight stroke -->
+						<path
+							d={iconPath}
+							fill="none"
+							stroke="url(#glassShineGradient)"
+							stroke-width="1"
+							stroke-linecap="round"
+							stroke-linejoin="round"
+						/>
+					{:else}
+						<path
+							d={iconPath}
+							fill="none"
+							stroke={$iconColor}
+							stroke-width="1.5"
+							stroke-linecap="round"
+							stroke-linejoin="round"
+						/>
+					{/if}
 				</g>
 			</g>
 		</svg>
