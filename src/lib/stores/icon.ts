@@ -17,9 +17,10 @@ export const borderStroke: Writable<number> = writable(0);
 export const borderColor: Writable<string> = writable('#ffffff');
 export const borderOpacity: Writable<number> = writable(100);
 export const meshGradientColors: Writable<{ color: string; x: number; y: number }[]> = writable([
-	{ color: '#8564fa', x: -20, y: -10 },
-	{ color: '#FF6B6B', x: 120, y: 40 },
-	{ color: '#4ECDC4', x: 60, y: 110 },
-	{ color: '#FFD93D', x: -10, y: 80 },
-	{ color: '#6BCF7F', x: 90, y: -15 }
+	{ color: '#7B9B05', x: -20, y: -10 },
+	{ color: '#0094FF', x: 120, y: 40 },
+	{ color: '#CD4E57', x: 60, y: 110 },
+	{ color: '#0032FF', x: -10, y: 80 },
+	{ color: '#C84BE0', x: 90, y: -15 }
 ]);
+
