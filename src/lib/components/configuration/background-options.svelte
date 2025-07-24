@@ -3,7 +3,17 @@
 	import { Plus, Minus } from 'lucide-svelte';
 	import Button from '$lib/components/ui/button.svelte';
 	import Slider from '$lib/components/ui/slider.svelte';
-	import { backgroundType, backgroundColor, gradientStops, gradientAngle } from '$lib/stores/icon';
+	import {
+		backgroundType,
+		backgroundColor,
+		gradientStops,
+		gradientAngle,
+		noise,
+		borderRadius,
+		borderStroke,
+		borderColor,
+		borderOpacity
+	} from '$lib/stores/icon';
 
 	function updateSolidColor(color: string) {
 		backgroundColor.set(color);
@@ -39,6 +49,26 @@
 
 	function updateGradientAngle(angle: number) {
 		gradientAngle.set(angle);
+	}
+
+	function updateNoise(value: number) {
+		noise.set(value);
+	}
+
+	function updateBorderRadius(value: number) {
+		borderRadius.set(value);
+	}
+
+	function updateBorderStroke(value: number) {
+		borderStroke.set(value);
+	}
+
+	function updateBorderColor(color: string) {
+		borderColor.set(color);
+	}
+
+	function updateBorderOpacity(value: number) {
+		borderOpacity.set(value);
 	}
 </script>
 
@@ -129,4 +159,77 @@
 			</div>
 		</div>
 	{/if}
+
+	<div class="space-y-3 overflow-hidden">
+		<div class="rounded-lg border border-zinc-800 bg-black/10 p-3">
+			<Slider
+				value={$noise}
+				min={0}
+				max={100}
+				step={1}
+				label="Noise"
+				showValue={true}
+				onChange={updateNoise}
+			/>
+		</div>
+	</div>
+
+	<div class="space-y-3 overflow-hidden">
+		<div class="rounded-lg border border-zinc-800 bg-black/10 p-3">
+			<Slider
+				value={$borderRadius}
+				min={0}
+				max={300}
+				step={1}
+				label="Border Radius (px)"
+				showValue={true}
+				onChange={updateBorderRadius}
+			/>
+		</div>
+	</div>
+
+	<div class="space-y-3 overflow-hidden">
+		<div class="rounded-lg border border-zinc-800 bg-black/10 p-3">
+			<Slider
+				value={$borderStroke}
+				min={0}
+				max={20}
+				step={1}
+				label="Border Stroke"
+				showValue={true}
+				onChange={updateBorderStroke}
+			/>
+		</div>
+
+		{#if $borderStroke > 0}
+			<div class="space-y-3 overflow-hidden">
+				<div class="flex items-center gap-3">
+					<input
+						type="color"
+						bind:value={$borderColor}
+						oninput={(e) => updateBorderColor(e.currentTarget.value)}
+						class="h-8 w-12 flex-shrink-0 cursor-pointer rounded-lg border border-zinc-700 bg-transparent"
+					/>
+					<input
+						type="text"
+						bind:value={$borderColor}
+						oninput={(e) => updateBorderColor(e.currentTarget.value)}
+						class="min-w-0 flex-1 rounded-lg border border-zinc-800 bg-black/20 px-3 py-2 text-sm text-white placeholder:text-zinc-500 focus:outline-none focus:ring-2 focus:ring-[#8564FA]/50"
+						placeholder="#ffffff"
+					/>
+				</div>
+				<div class="rounded-lg border border-zinc-800 bg-black/10 p-3">
+					<Slider
+						value={$borderOpacity}
+						min={0}
+						max={100}
+						step={1}
+						label="Border Opacity"
+						showValue={true}
+						onChange={updateBorderOpacity}
+					/>
+				</div>
+			</div>
+		{/if}
+	</div>
 </div>

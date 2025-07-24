@@ -9,5 +9,10 @@ export const gradientStops: Writable<GradientStop[]> = writable([
 	{ color: '#8564fa', position: 0 },
 	{ color: '#FF6B6B', position: 100 }
 ]);
-export const gradientAngle : Writable<number> = writable(45);
-export const iconColor : Writable<string> = writable('#ffffff');
+export const gradientAngle: Writable<number> = writable(45);
+export const iconColor: Writable<string> = writable('#ffffff');
+export const noise: Writable<number> = writable(0);
+export const borderRadius: Writable<number> = writable(120);
+export const borderStroke: Writable<number> = writable(0);
+export const borderColor: Writable<string> = writable('#ffffff');
+export const borderOpacity: Writable<number> = writable(100);

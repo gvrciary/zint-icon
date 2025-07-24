@@ -1,11 +1,24 @@
 <script lang="ts">
 	import { cn } from '$lib/utils';
 	import { getIconPath } from '$lib/data/icons';
-	import { selectedIcon, backgroundType, backgroundColor, gradientStops, gradientAngle, iconColor } from '$lib/stores/icon';
+	import {
+		selectedIcon,
+		backgroundType,
+		backgroundColor,
+		gradientStops,
+		gradientAngle,
+		iconColor,
+		noise,
+		borderRadius,
+		borderStroke,
+		borderColor,
+		borderOpacity
+	} from '$lib/stores/icon';
 
 	let svgRef: SVGSVGElement;
 
 	const gradientId = 'icon-gradient';
+	const noiseId = 'noise-filter';
 
 	const backgroundFill = $derived(
 		$backgroundType === 'solid' ? $backgroundColor : `url(#${gradientId})`
@@ -32,17 +45,41 @@
 	});
 
 	const iconPath = $derived(getIconPath($selectedIcon));
+
+	const borderStrokeStyle = $derived(() => {
+		if ($borderStroke === 0) return {};
+		const opacity = $borderOpacity / 100;
+		const r = parseInt($borderColor.slice(1, 3), 16);
+		const g = parseInt($borderColor.slice(3, 5), 16);
+		const b = parseInt($borderColor.slice(5, 7), 16);
+		const strokeColor = `rgba(${r}, ${g}, ${b}, ${opacity})`;
+		return {
+			stroke: strokeColor,
+			'stroke-width': $borderStroke,
+			fill: backgroundFill
+		};
+	});
+
+	const rectRadius = $derived($borderRadius);
 </script>
 
 <div class={cn('flex flex-col items-center space-y-6')}>
-	<div class="relative">
+	<div
+		class="relative overflow-hidden bg-transparent shadow-2xl"
+		style="border-radius: {$borderRadius}px;"
+	>
+		<div
+			class="absolute inset-0 opacity-20"
+			style="background-image: url('data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMjAiIGhlaWdodD0iMjAiIHZpZXdCb3g9IjAgMCAyMCAyMCIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KPHJlY3Qgd2lkdGg9IjEwIiBoZWlnaHQ9IjEwIiBmaWxsPSIjZmZmZmZmIiBmaWxsLW9wYWNpdHk9IjAuMSIvPgo8cmVjdCB4PSIxMCIgeT0iMTAiIHdpZHRoPSIxMCIgaGVpZ2h0PSIxMCIgZmlsbD0iI2ZmZmZmZiIgZmlsbC1vcGFjaXR5PSIwLjEiLz4KPC9zdmc+'); background-size: 20px 20px;"
+		></div>
 		<svg
 			bind:this={svgRef}
 			width="512"
 			height="512"
 			viewBox="0 0 512 512"
 			xmlns="http://www.w3.org/2000/svg"
-			class="rounded-3xl border border-white/5 shadow-2xl"
+			class="relative z-10 block"
+			style="background: transparent;"
 		>
 			<defs>
 				{#if $backgroundType === 'linear'}
@@ -64,9 +101,31 @@
 						{/each}
 					</radialGradient>
 				{/if}
+
+				{#if $noise > 0}
+					<filter id={noiseId}>
+						<feTurbulence baseFrequency="0.65" numOctaves="4" seed="1" result="noise" />
+						<feColorMatrix in="noise" type="saturate" values="0" result="monoNoise" />
+						<feBlend
+							in="SourceGraphic"
+							in2="monoNoise"
+							mode="multiply"
+							opacity={($noise / 100) * 0.6}
+						/>
+					</filter>
+				{/if}
 			</defs>
 
-			<rect width="512" height="512" rx="24" ry="24" fill={backgroundFill} />
+			<rect
+				width="512"
+				height="512"
+				rx={rectRadius}
+				ry={rectRadius}
+				fill={backgroundFill}
+				stroke={$borderStroke > 0 ? borderStrokeStyle().stroke : 'none'}
+				stroke-width={$borderStroke}
+				filter={$noise > 0 ? `url(#${noiseId})` : undefined}
+			/>
 
 			<g transform="translate(256, 256)">
 				<g transform="scale(8) translate(-12, -12)">
