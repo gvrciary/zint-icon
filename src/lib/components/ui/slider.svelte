@@ -27,12 +27,21 @@
 	}: Props = $props();
 
 	let sliderRef: HTMLInputElement;
+	let animationId: number | null = null;
 
 	function handleInput(event: Event) {
 		const target = event.target as HTMLInputElement;
 		const newValue = parseFloat(target.value);
 		value = newValue;
-		onChange?.(newValue);
+
+		if (animationId) {
+			cancelAnimationFrame(animationId);
+		}
+
+		animationId = requestAnimationFrame(() => {
+			onChange?.(newValue);
+			animationId = null;
+		});
 	}
 
 	const percentage = $derived(((value - min) / (max - min)) * 100);
@@ -46,7 +55,7 @@
 	<div class="relative flex-1">
 		<div class="relative h-3 overflow-hidden rounded-full bg-zinc-800">
 			<div
-				class="absolute top-0 left-0 h-full rounded-full bg-[#8564FA] transition-all duration-200"
+				class="absolute left-0 top-0 h-full rounded-full bg-[#8564FA] transition-all duration-200"
 				style="width: {percentage}%"
 			></div>
 		</div>
@@ -60,6 +69,7 @@
 			bind:value
 			oninput={handleInput}
 			class="absolute inset-0 h-3 w-full cursor-pointer opacity-0 disabled:cursor-not-allowed"
+			style="will-change: transform;"
 		/>
 	</div>
 
