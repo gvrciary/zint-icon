@@ -1,6 +1,6 @@
 <script lang="ts">
 	import { cn } from '$lib/utils';
-	import { Plus, Minus } from 'lucide-svelte';
+	import { Plus, Minus, RefreshCw } from 'lucide-svelte';
 	import Button from '$lib/components/ui/button.svelte';
 	import Slider from '$lib/components/ui/slider.svelte';
 	import Input from '$lib/components/ui/input.svelte';
@@ -13,7 +13,8 @@
 		borderRadius,
 		borderStroke,
 		borderColor,
-		borderOpacity
+		borderOpacity,
+		meshGradientColors
 	} from '$lib/stores/icon';
 
 	function updateSolidColor(color: string) {
@@ -71,6 +72,39 @@
 	function updateBorderOpacity(value: number) {
 		borderOpacity.set(value);
 	}
+
+	function updateMeshGradientColor(index: number, color: string) {
+		meshGradientColors.set(
+			$meshGradientColors.map((item, i) => (i === index ? { ...item, color } : item))
+		);
+	}
+
+	function generateRandomPosition() {
+		return {
+			x: Math.random() * 120 - 10, // -10 to 110 (better visibility)
+			y: Math.random() * 120 - 10 // -10 to 110 (better visibility)
+		};
+	}
+
+	function addMeshGradientColor() {
+		const { x, y } = generateRandomPosition();
+		meshGradientColors.set([...$meshGradientColors, { color: '#8564FA', x, y }]);
+	}
+
+	function refreshMeshPositions() {
+		meshGradientColors.set(
+			$meshGradientColors.map((item) => ({
+				...item,
+				...generateRandomPosition()
+			}))
+		);
+	}
+
+	function removeMeshGradientColor(index: number) {
+		if ($meshGradientColors.length > 1) {
+			meshGradientColors.set($meshGradientColors.filter((_, i) => i !== index));
+		}
+	}
 </script>
 
 <div class={cn('space-y-4 overflow-hidden')}>
@@ -92,7 +126,7 @@
 				/>
 			</div>
 		</div>
-	{:else}
+	{:else if $backgroundType === 'linear' || $backgroundType === 'radial'}
 		<div class="space-y-4 overflow-hidden">
 			{#if $backgroundType === 'linear'}
 				<div class="rounded-lg border border-zinc-800 bg-black/10 p-3">
@@ -149,6 +183,54 @@
 									variant="secondary"
 									size="sm"
 									onclick={() => removeGradientStop(index)}
+									class="flex-shrink-0 !p-1 hover:!bg-red-500/20"
+								>
+									<Minus class="h-3 w-3 text-red-400" />
+								</Button>
+							{/if}
+						</div>
+					{/each}
+				</div>
+			</div>
+		</div>
+	{:else if $backgroundType === 'mesh'}
+		<div class="space-y-4 overflow-hidden">
+			<div class="space-y-3 overflow-hidden">
+				<div class="flex items-center justify-between">
+					<span class="text-sm text-zinc-300">Mesh Colors</span>
+					<div class="flex gap-2">
+						<Button variant="secondary" size="sm" onclick={refreshMeshPositions}>
+							<RefreshCw class="h-3 w-3" />
+							Refresh
+						</Button>
+						<Button variant="secondary" size="sm" onclick={addMeshGradientColor}>
+							<Plus class="h-3 w-3" />
+							Add
+						</Button>
+					</div>
+				</div>
+
+				<div class="max-h-48 space-y-2 overflow-y-auto">
+					{#each $meshGradientColors as meshColor, index (index)}
+						<div class="flex items-center gap-2 rounded-lg border border-zinc-800 bg-black/20 p-3">
+							<input
+								type="color"
+								bind:value={meshColor.color}
+								oninput={(e) => updateMeshGradientColor(index, e.currentTarget.value)}
+								class="h-6 w-8 flex-shrink-0 cursor-pointer rounded-md border border-zinc-700 bg-transparent"
+							/>
+							<Input
+								type="text"
+								bind:value={meshColor.color}
+								oninput={(e) => updateMeshGradientColor(index, e.currentTarget.value)}
+								class="min-w-0 flex-1 !rounded-md !border-zinc-700 !bg-zinc-900/50 !px-2 !py-1 !text-xs"
+								placeholder="#000000"
+							/>
+							{#if $meshGradientColors.length > 1}
+								<Button
+									variant="secondary"
+									size="sm"
+									onclick={() => removeMeshGradientColor(index)}
 									class="flex-shrink-0 !p-1 hover:!bg-red-500/20"
 								>
 									<Minus class="h-3 w-3 text-red-400" />

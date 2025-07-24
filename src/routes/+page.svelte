@@ -43,7 +43,8 @@
 						<Dropdown
 							options={backgroundOptions}
 							value={$backgroundType}
-							onSelect={(type: string) => backgroundType.set(type as 'solid' | 'linear' | 'radial')}
+							onSelect={(type: string) =>
+								backgroundType.set(type as 'solid' | 'linear' | 'radial' | 'mesh')}
 						/>
 					</div>
 

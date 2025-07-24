@@ -12,7 +12,8 @@
 		borderRadius,
 		borderStroke,
 		borderColor,
-		borderOpacity
+		borderOpacity,
+		meshGradientColors
 	} from '$lib/stores/icon';
 
 	let svgRef: SVGSVGElement;
@@ -20,9 +21,11 @@
 	const gradientId = 'icon-gradient';
 	const noiseId = 'noise-filter';
 
-	const backgroundFill = $derived(
-		$backgroundType === 'solid' ? $backgroundColor : `url(#${gradientId})`
-	);
+	const backgroundFill = $derived(() => {
+		if ($backgroundType === 'solid') return $backgroundColor;
+		if ($backgroundType === 'mesh') return `url(#mesh-gradient)`;
+		return `url(#${gradientId})`;
+	});
 
 	const sortedGradientStops = $derived([...$gradientStops].sort((a, b) => a.position - b.position));
 
@@ -100,6 +103,51 @@
 							<stop offset="{stop.position}%" stop-color={stop.color} />
 						{/each}
 					</radialGradient>
+				{:else if $backgroundType === 'mesh'}
+					<defs>
+						{#each $meshGradientColors as meshColor, index (`mesh-${index}-${meshColor.color}-${meshColor.x}-${meshColor.y}`)}
+							<radialGradient id="mesh-{index}" cx="{meshColor.x}%" cy="{meshColor.y}%" r="70%">
+								<stop offset="0%" stop-color={meshColor.color} stop-opacity="0.9" />
+								<stop offset="40%" stop-color={meshColor.color} stop-opacity="0.6" />
+								<stop offset="100%" stop-color={meshColor.color} stop-opacity="0" />
+							</radialGradient>
+						{/each}
+						<filter id="mesh-gradient">
+							<feGaussianBlur stdDeviation="40" />
+						</filter>
+					</defs>
+
+
+					<rect
+						id="mesh-bg"
+						width="512"
+						height="512"
+						fill={$meshGradientColors[0]?.color || '#000000'}
+					/>
+					{#each $meshGradientColors as meshColor, index (`mesh-overlay-${index}`)}
+						<circle
+							cx={(meshColor.x / 100) * 512}
+							cy={(meshColor.y / 100) * 512}
+							r="200"
+							fill="url(#mesh-{index})"
+							filter="url(#mesh-gradient)"
+							mix-blend-mode="multiply"
+						/>
+					{/each}
+
+					<pattern id="mesh-gradient" patternUnits="userSpaceOnUse" width="512" height="512">
+						<use href="#mesh-bg" />
+						{#each $meshGradientColors as meshColor, index (`mesh-pattern-${index}`)}
+							<use href="#mesh-overlay-{index}" />
+						{/each}
+					</pattern>
+				{/if}
+
+				<!-- Mesh gradient mask -->
+				{#if $backgroundType === 'mesh'}
+					<mask id="mesh-mask">
+						<rect width="512" height="512" rx={rectRadius} ry={rectRadius} fill="white" />
+					</mask>
 				{/if}
 
 				{#if $noise > 0}
@@ -125,16 +173,51 @@
 				{/if}
 			</defs>
 
-			<rect
-				width="512"
-				height="512"
-				rx={rectRadius}
-				ry={rectRadius}
-				fill={backgroundFill}
-				stroke={$borderStroke > 0 ? borderStrokeStyle().stroke : 'none'}
-				stroke-width={$borderStroke}
-				filter={$noise > 0 ? `url(#${noiseId})` : undefined}
-			/>
+			{#if $backgroundType === 'mesh'}
+				<rect
+					width="512"
+					height="512"
+					rx={rectRadius}
+					ry={rectRadius}
+					fill="#1a1a1a"
+					stroke={$borderStroke > 0 ? borderStrokeStyle().stroke : 'none'}
+					stroke-width={$borderStroke}
+				/>
+				{#each $meshGradientColors as meshColor, index (`mesh-render-${index}`)}
+					<circle
+						cx={(meshColor.x / 100) * 512}
+						cy={(meshColor.y / 100) * 512}
+						r="320"
+						fill="url(#mesh-{index})"
+						filter="url(#mesh-gradient)"
+						style="mix-blend-mode: screen;"
+						mask="url(#mesh-mask)"
+						opacity="0.85"
+					/>
+				{/each}
+				{#if $noise > 0}
+					<rect
+						width="512"
+						height="512"
+						rx={rectRadius}
+						ry={rectRadius}
+						fill="transparent"
+						filter="url(#{noiseId})"
+						pointer-events="none"
+					/>
+				{/if}
+			{:else}
+				<rect
+					width="512"
+					height="512"
+					rx={rectRadius}
+					ry={rectRadius}
+					fill={backgroundFill()}
+					stroke={$borderStroke > 0 ? borderStrokeStyle().stroke : 'none'}
+					stroke-width={$borderStroke}
+					filter={$noise > 0 ? `url(#${noiseId})` : undefined}
+				/>
+			{/if}
 
 			<g transform="translate(256, 256)">
 				<g transform="scale(8) translate(-12, -12)">
