@@ -23,4 +23,6 @@ export const meshGradientColors: Writable<{ color: string; x: number; y: number 
 	{ color: '#0032FF', x: -10, y: 80 },
 	{ color: '#C84BE0', x: 90, y: -15 }
 ]);
-
+export const iconSize: Writable<number> = writable(192);
+export const iconOffsetX: Writable<number> = writable(0);
+export const iconOffsetY: Writable<number> = writable(0);

@@ -13,7 +13,10 @@
 		borderStroke,
 		borderColor,
 		borderOpacity,
-		meshGradientColors
+		meshGradientColors,
+		iconSize,
+		iconOffsetX,
+		iconOffsetY
 	} from '$lib/stores/icon';
 	import { onMount } from 'svelte';
 
@@ -358,8 +361,8 @@
 				/>
 			{/if}
 
-			<g transform="translate(256, 256)">
-				<g transform="scale(8) translate(-12, -12)">
+			<g transform="translate({256 + $iconOffsetX}, {256 + $iconOffsetY})">
+				<g transform="scale({$iconSize / 24}) translate(-12, -12)">
 					<path
 						d={iconPath}
 						fill="none"
@@ -371,10 +374,5 @@
 				</g>
 			</g>
 		</svg>
-	</div>
-
-	<div class="space-y-1 text-center">
-		<p class="text-sm font-medium text-zinc-300">{$selectedIcon}</p>
-		<p class="text-xs text-zinc-500">512 × 512 pixels</p>
 	</div>
 </div>

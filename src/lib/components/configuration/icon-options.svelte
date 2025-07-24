@@ -1,17 +1,57 @@
 <script lang="ts">
-    import { iconColor } from "$lib/stores/icon";
+	import { iconColor, iconSize, iconOffsetX, iconOffsetY } from '$lib/stores/icon';
+	import Input from '$lib/components/ui/input.svelte';
+	import Slider from '$lib/components/ui/slider.svelte';
 </script>
 
-<div class="flex items-center gap-3">
-	<input
-		type="color"
-		bind:value={$iconColor}
-		class="h-8 w-12 cursor-pointer rounded-lg border border-zinc-700 bg-transparent"
-	/>
-	<input
-		type="text"
-		bind:value={$iconColor}
-		class="flex-1 rounded-lg border border-zinc-800 bg-black/20 px-3 py-2 text-sm text-white placeholder:text-zinc-500 focus:ring-2 focus:ring-[#8564FA]/50 focus:outline-none"
-		placeholder="#ffffff"
-	/>
+<div class="space-y-4 overflow-hidden">
+	<div class="space-y-3 overflow-hidden">
+		<div class="flex items-center gap-3">
+			<input
+				type="color"
+				bind:value={$iconColor}
+				class="h-8 w-12 flex-shrink-0 cursor-pointer rounded-lg border border-zinc-700 bg-transparent"
+			/>
+			<Input type="text" bind:value={$iconColor} placeholder="#ffffff" class="min-w-0 flex-1" />
+		</div>
+	</div>
+
+	<div class="space-y-3 overflow-hidden">
+		<div class="rounded-lg border border-zinc-800 bg-black/10 p-3">
+			<Slider
+				value={$iconSize}
+				min={20}
+				max={512}
+				step={1}
+				label="Tamaño del icono"
+				onChange={(value) => iconSize.set(value)}
+			/>
+		</div>
+	</div>
+
+	<div class="space-y-3 overflow-hidden">
+		<div class="rounded-lg border border-zinc-800 bg-black/10 p-3">
+			<Slider
+				value={$iconOffsetX}
+				min={-256}
+				max={256}
+				step={1}
+				label="Offset X"
+				onChange={(value) => iconOffsetX.set(value)}
+			/>
+		</div>
+	</div>
+
+	<div class="space-y-3 overflow-hidden">
+		<div class="rounded-lg border border-zinc-800 bg-black/10 p-3">
+			<Slider
+			    value={$iconOffsetY}
+				min={-256}
+				max={256}
+				step={1}
+				label="Offset Y"
+				onChange={(value) => iconOffsetY.set(value)}
+			/>
+		</div>
+	</div>
 </div>
