@@ -8,8 +8,6 @@
 	function updateSolidColor(color: string) {
 		backgroundColor.set(color);
 	}
-	
-	console.log('hola')
 
 	function updateGradientStop(index: number, color: string) {
 		gradientStops.set($gradientStops.map((stop, i) => (i === index ? { ...stop, color } : stop)));
@@ -89,7 +87,7 @@
 				</div>
 
 				<div class="max-h-48 space-y-2 overflow-y-auto">
-					{#each $gradientStops as stop, index (`${index}-${stop.color}-${stop.position}`)}
+					{#each $gradientStops as stop, index (index)}
 						<div class="flex items-center gap-2 rounded-lg border border-zinc-800 bg-black/20 p-3">
 							<input
 								type="color"
@@ -111,7 +109,7 @@
 									max="100"
 									bind:value={stop.position}
 									oninput={(e) => updateGradientPosition(index, parseInt(e.currentTarget.value))}
-									class="w-14 rounded-md border border-zinc-700 bg-zinc-900/50 px-2 py-1 text-center text-xs text-white focus:border-[#8564FA]/50 focus:outline-none focus:ring-1 focus:ring-[#8564FA]/50"
+									class="w-28 rounded-md border border-zinc-700 bg-zinc-900/50 px-2 py-1 text-center text-xs text-white focus:border-[#8564FA]/50 focus:outline-none focus:ring-1 focus:ring-[#8564FA]/50"
 								/>
 								<span class="text-xs text-zinc-500">%</span>
 							</div>
