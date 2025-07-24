@@ -1,50 +1,22 @@
 <script lang="ts">
 	import { cn } from '$lib/utils';
-	import { getIconPath, DEFAULT_ICON } from '$lib/data/icons';
-
-	interface GradientStop {
-		color: string;
-		position: number;
-	}
-
-	interface Props {
-		selectedIcon?: string;
-		backgroundType?: 'solid' | 'linear' | 'radial';
-		backgroundColor?: string;
-		gradientStops?: GradientStop[];
-		gradientAngle?: number;
-		iconColor?: string;
-		class?: string;
-	}
-
-	let {
-		selectedIcon = DEFAULT_ICON,
-		backgroundType = 'solid',
-		backgroundColor = '#8564FA',
-		gradientStops = [
-			{ color: '#8564FA', position: 0 },
-			{ color: '#FF6B6B', position: 100 }
-		],
-		gradientAngle = 45,
-		iconColor = '#ffffff',
-		class: className = '',
-		...restProps
-	}: Props = $props();
+	import { getIconPath } from '$lib/data/icons';
+	import { selectedIcon, backgroundType, backgroundColor, gradientStops, gradientAngle, iconColor } from '$lib/stores/icon';
 
 	let svgRef: SVGSVGElement;
 
 	const gradientId = 'icon-gradient';
 
 	const backgroundFill = $derived(
-		backgroundType === 'solid' ? backgroundColor : `url(#${gradientId})`
+		$backgroundType === 'solid' ? $backgroundColor : `url(#${gradientId})`
 	);
 
-	const sortedGradientStops = $derived([...gradientStops].sort((a, b) => a.position - b.position));
+	const sortedGradientStops = $derived([...$gradientStops].sort((a, b) => a.position - b.position));
 
 	const gradientCoords = $derived(() => {
-		if (backgroundType !== 'linear') return { x1: '0%', y1: '0%', x2: '100%', y2: '0%' };
+		if ($backgroundType !== 'linear') return { x1: '0%', y1: '0%', x2: '100%', y2: '0%' };
 
-		const angleRad = (gradientAngle * Math.PI) / 180;
+		const angleRad = ($gradientAngle * Math.PI) / 180;
 
 		const x1 = 50 + 50 * Math.cos(angleRad + Math.PI / 2);
 		const y1 = 50 + 50 * Math.sin(angleRad + Math.PI / 2);
@@ -59,10 +31,10 @@
 		};
 	});
 
-	const iconPath = $derived(getIconPath(selectedIcon));
+	const iconPath = $derived(getIconPath($selectedIcon));
 </script>
 
-<div class={cn('flex flex-col items-center space-y-6', className)} {...restProps}>
+<div class={cn('flex flex-col items-center space-y-6')}>
 	<div class="relative">
 		<svg
 			bind:this={svgRef}
@@ -73,7 +45,7 @@
 			class="rounded-3xl border border-white/5 shadow-2xl"
 		>
 			<defs>
-				{#if backgroundType === 'linear'}
+				{#if $backgroundType === 'linear'}
 					<linearGradient
 						id={gradientId}
 						x1={gradientCoords().x1}
@@ -85,7 +57,7 @@
 							<stop offset="{stop.position}%" stop-color={stop.color} />
 						{/each}
 					</linearGradient>
-				{:else if backgroundType === 'radial'}
+				{:else if $backgroundType === 'radial'}
 					<radialGradient id={gradientId} cx="50%" cy="50%" r="50%">
 						{#each sortedGradientStops as stop, index (`${index}-${stop.position}-${stop.color}`)}
 							<stop offset="{stop.position}%" stop-color={stop.color} />
@@ -101,7 +73,7 @@
 					<path
 						d={iconPath}
 						fill="none"
-						stroke={iconColor}
+						stroke={$iconColor}
 						stroke-width="1.5"
 						stroke-linecap="round"
 						stroke-linejoin="round"
@@ -112,7 +84,7 @@
 	</div>
 
 	<div class="space-y-1 text-center">
-		<p class="text-sm font-medium text-zinc-300">{selectedIcon}</p>
+		<p class="text-sm font-medium text-zinc-300">{$selectedIcon}</p>
 		<p class="text-xs text-zinc-500">512 × 512 pixels</p>
 	</div>
 </div>

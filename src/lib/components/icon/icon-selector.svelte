@@ -2,30 +2,18 @@
 	import { cn } from '$lib/utils';
 	import { Search } from 'lucide-svelte';
 	import { AVAILABLE_ICONS, ICON_NAMES } from '$lib/data/icons';
-	import Button from './ui/button.svelte';
-
-	interface Props {
-		selectedIcon?: string;
-		onSelect?: (iconName: string) => void;
-		class?: string;
-	}
-
-	let { selectedIcon = 'Star', onSelect, class: className = '', ...restProps }: Props = $props();
-
+	import Button from '$lib/components/ui/button.svelte';
+	import { selectedIcon } from '$lib/stores/icon';
+	
 	let searchQuery = $state('');
 
 	const filteredIcons = $derived(() => {
 		if (!searchQuery.trim()) return ICON_NAMES;
 		return ICON_NAMES.filter((name) => name.toLowerCase().includes(searchQuery.toLowerCase()));
 	});
-
-	function selectIcon(iconName: string) {
-		selectedIcon = iconName;
-		onSelect?.(iconName);
-	}
 </script>
 
-<div class={cn('flex h-full flex-col', className)} {...restProps}>
+<div class={cn('flex h-full flex-col flex-1 overflow-hidden')}>
 	<div class="flex-shrink-0 border-b border-white/5 p-4">
 		<div class="relative">
 			<Search class="absolute top-1/2 left-3 h-4 w-4 -translate-y-1/2 transform text-zinc-500" />
@@ -44,11 +32,11 @@
 				<Button
 					variant="secondary"
 					size="sm"
-					onclick={() => selectIcon(iconName)}
+					onclick={() => selectedIcon.set(iconName)}
 					title={iconName}
 					class={cn(
 						'group !flex-col !p-3 hover:!bg-zinc-800/30',
-						selectedIcon === iconName
+						$selectedIcon === iconName
 							? '!border-[#8564FA] !bg-[#8564FA]/10'
 							: '!border-zinc-800 hover:!border-zinc-700'
 					)}
@@ -59,7 +47,7 @@
 						viewBox="0 0 24 24"
 						class={cn(
 							'transition-colors',
-							selectedIcon === iconName
+							$selectedIcon === iconName
 								? 'text-[#8564FA]'
 								: 'text-zinc-400 group-hover:text-zinc-300'
 						)}
@@ -75,7 +63,7 @@
 					<span
 						class={cn(
 							'mt-1.5 w-full truncate text-center text-xs transition-colors',
-							selectedIcon === iconName
+							$selectedIcon === iconName
 								? 'text-[#8564FA]'
 								: 'text-zinc-500 group-hover:text-zinc-400'
 						)}

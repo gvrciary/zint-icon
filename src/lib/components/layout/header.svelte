@@ -1,38 +1,16 @@
 <script lang="ts">
 	import { cn } from '$lib/utils';
 	import { Menu, Palette, Download } from 'lucide-svelte';
-	import { getIconPath, DEFAULT_ICON } from '$lib/data/icons';
-	import Button from './ui/button.svelte';
-
-	interface GradientStop {
-		color: string;
-		position: number;
-	}
-
-	interface Props {
-		class?: string;
-		selectedIcon?: string;
-		backgroundType?: 'solid' | 'linear' | 'radial';
-		backgroundColor?: string;
-		gradientStops?: GradientStop[];
-		gradientAngle?: number;
-		iconColor?: string;
-	}
-
-	let {
-		class: className = '',
-		selectedIcon = DEFAULT_ICON,
-		backgroundType = 'solid',
-		backgroundColor = '#8564FA',
-		gradientStops = [
-			{ color: '#8564FA', position: 0 },
-			{ color: '#FF6B6B', position: 100 }
-		],
-		gradientAngle = 45,
-		iconColor = '#ffffff',
-		...restProps
-	}: Props = $props();
-
+	import { getIconPath } from '$lib/data/icons';
+	import Button from '$lib/components/ui/button.svelte';
+	import {
+		selectedIcon,
+		backgroundType,
+		backgroundColor,
+		gradientStops,
+		gradientAngle,
+		iconColor
+	} from '$lib/stores/icon';
 	let isMobileMenuOpen = $state(false);
 
 	function toggleMobileMenu() {
@@ -41,20 +19,20 @@
 
 	function createSVG() {
 		const gradientId = `gradient-${Math.random().toString(36).substr(2, 9)}`;
-		const iconPath = getIconPath(selectedIcon);
+		const iconPath = getIconPath($selectedIcon);
 
 		let gradientDef = '';
-		let fillValue = backgroundColor;
+		let fillValue = $backgroundColor;
 
-		if (backgroundType === 'linear' || backgroundType === 'radial') {
-			const sortedStops = gradientStops.slice().sort((a, b) => a.position - b.position);
+		if ($backgroundType === 'linear' || $backgroundType === 'radial') {
+			const sortedStops = $gradientStops.slice().sort((a, b) => a.position - b.position);
 
 			const stops = sortedStops
 				.map((stop) => `<stop offset="${stop.position}%" stop-color="${stop.color}" />`)
 				.join('');
 
-			if (backgroundType === 'linear') {
-				const angleRad = (gradientAngle * Math.PI) / 180;
+			if ($backgroundType === 'linear') {
+				const angleRad = ($gradientAngle * Math.PI) / 180;
 				const x1 = 50 + 50 * Math.cos(angleRad + Math.PI / 2);
 				const y1 = 50 + 50 * Math.sin(angleRad + Math.PI / 2);
 				const x2 = 50 + 50 * Math.cos(angleRad - Math.PI / 2);
@@ -72,7 +50,7 @@
 			<rect width="512" height="512" rx="24" ry="24" fill="${fillValue}"/>
 			<g transform="translate(256, 256)">
 				<g transform="scale(8) translate(-12, -12)">
-					<path d="${iconPath}" fill="none" stroke="${iconColor}" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+					<path d="${iconPath}" fill="none" stroke="${$iconColor}" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
 				</g>
 			</g>
 		</svg>`;
@@ -84,7 +62,7 @@
 		const url = URL.createObjectURL(svgBlob);
 
 		const link = document.createElement('a');
-		link.download = `${selectedIcon}-icon.svg`;
+		link.download = `${$selectedIcon}-icon.svg`;
 		link.href = url;
 		link.click();
 
@@ -104,7 +82,7 @@
 			if (ctx) {
 				ctx.drawImage(img, 0, 0);
 				const link = document.createElement('a');
-				link.download = `${selectedIcon}-icon.png`;
+				link.download = `${$selectedIcon}-icon.png`;
 				link.href = canvas.toDataURL();
 				link.click();
 			}
@@ -116,10 +94,7 @@
 	}
 </script>
 
-<header
-	class={cn('fixed top-0 right-0 left-0 z-50 transition-all duration-300', className)}
-	{...restProps}
->
+<header class={cn('fixed left-0 right-0 top-0 z-50 transition-all duration-300')}>
 	<div class="px-4 py-4 md:px-6 md:py-6">
 		<nav class="flex items-center justify-between">
 			<a href="/" class="group flex items-center space-x-3">
