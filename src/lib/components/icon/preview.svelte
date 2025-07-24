@@ -194,7 +194,7 @@
 		gl.uniform3fv(gl.getUniformLocation(shaderProgram, 'u_colors'), colors);
 		gl.uniform2fv(gl.getUniformLocation(shaderProgram, 'u_positions'), positions);
 		gl.uniform1i(gl.getUniformLocation(shaderProgram, 'u_numberPoints'), numPoints);
-		gl.uniform1f(gl.getUniformLocation(shaderProgram, 'u_noiseRatio'), ($noise / 100) * 0.3);
+		gl.uniform1f(gl.getUniformLocation(shaderProgram, 'u_noiseRatio'), ($noise / 100) * 0.1);
 
 		gl.drawArrays(gl.TRIANGLE_STRIP, 0, 4);
 	}
@@ -315,21 +315,21 @@
 				{#if $noise > 0}
 					<filter id={noiseId}>
 						<feTurbulence
-							baseFrequency={0.4 + ($noise / 100) * 0.6}
-							numOctaves="4"
+							baseFrequency="0.9"
+							numOctaves="1"
 							seed="2"
 							result="noise"
-							type="turbulence"
+							type="fractalNoise"
 						/>
 						<feColorMatrix in="noise" type="saturate" values="0" result="monoNoise" />
 						<feComponentTransfer in="monoNoise" result="contrastNoise">
-							<feFuncA type="discrete" tableValues="0.3 0.7 0.9 0.4 0.6 0.8" />
+							<feFuncA type="discrete" tableValues="0.5 0.5" />
 						</feComponentTransfer>
 						<feBlend
 							in="SourceGraphic"
 							in2="contrastNoise"
 							mode="overlay"
-							opacity={Math.min(1, ($noise / 100) * 2)}
+							opacity={($noise / 100) * 0.3}
 						/>
 					</filter>
 				{/if}
