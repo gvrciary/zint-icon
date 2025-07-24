@@ -3,6 +3,7 @@
 	import { Plus, Minus } from 'lucide-svelte';
 	import Button from '$lib/components/ui/button.svelte';
 	import Slider from '$lib/components/ui/slider.svelte';
+	import Input from '$lib/components/ui/input.svelte';
 	import {
 		backgroundType,
 		backgroundColor,
@@ -82,11 +83,11 @@
 					oninput={(e) => updateSolidColor(e.currentTarget.value)}
 					class="h-8 w-12 flex-shrink-0 cursor-pointer rounded-lg border border-zinc-700 bg-transparent"
 				/>
-				<input
+				<Input
 					type="text"
 					bind:value={$backgroundColor}
 					oninput={(e) => updateSolidColor(e.currentTarget.value)}
-					class="min-w-0 flex-1 rounded-lg border border-zinc-800 bg-black/20 px-3 py-2 text-sm text-white placeholder:text-zinc-500 focus:outline-none focus:ring-2 focus:ring-[#8564FA]/50"
+					class="min-w-0 flex-1"
 					placeholder="#8564FA"
 				/>
 			</div>
@@ -125,21 +126,21 @@
 								oninput={(e) => updateGradientStop(index, e.currentTarget.value)}
 								class="h-6 w-8 flex-shrink-0 cursor-pointer rounded-md border border-zinc-700 bg-transparent"
 							/>
-							<input
+							<Input
 								type="text"
 								bind:value={stop.color}
 								oninput={(e) => updateGradientStop(index, e.currentTarget.value)}
-								class="min-w-0 flex-1 rounded-md border border-zinc-700 bg-zinc-900/50 px-2 py-1 text-xs text-white"
+								class="min-w-0 flex-1 !rounded-md !border-zinc-700 !bg-zinc-900/50 !px-2 !py-1 !text-xs"
 								placeholder="#000000"
 							/>
 							<div class="flex flex-shrink-0 items-center gap-1">
-								<input
+								<Input
 									type="number"
-									min="0"
-									max="100"
+									min={0}
+									max={100}
 									bind:value={stop.position}
 									oninput={(e) => updateGradientPosition(index, parseInt(e.currentTarget.value))}
-									class="w-28 rounded-md border border-zinc-700 bg-zinc-900/50 px-2 py-1 text-center text-xs text-white focus:border-[#8564FA]/50 focus:outline-none focus:ring-1 focus:ring-[#8564FA]/50"
+									class="w-28 !rounded-md !border-zinc-700 !bg-zinc-900/50 !px-2 !py-1 !text-center !text-xs"
 								/>
 								<span class="text-xs text-zinc-500">%</span>
 							</div>
@@ -210,11 +211,11 @@
 						oninput={(e) => updateBorderColor(e.currentTarget.value)}
 						class="h-8 w-12 flex-shrink-0 cursor-pointer rounded-lg border border-zinc-700 bg-transparent"
 					/>
-					<input
+					<Input
 						type="text"
 						bind:value={$borderColor}
 						oninput={(e) => updateBorderColor(e.currentTarget.value)}
-						class="min-w-0 flex-1 rounded-lg border border-zinc-800 bg-black/20 px-3 py-2 text-sm text-white placeholder:text-zinc-500 focus:outline-none focus:ring-2 focus:ring-[#8564FA]/50"
+						class="min-w-0 flex-1"
 						placeholder="#ffffff"
 					/>
 				</div>
