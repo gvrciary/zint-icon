@@ -104,13 +104,22 @@
 
 				{#if $noise > 0}
 					<filter id={noiseId}>
-						<feTurbulence baseFrequency="0.65" numOctaves="4" seed="1" result="noise" />
+						<feTurbulence
+							baseFrequency={0.4 + ($noise / 100) * 0.6}
+							numOctaves="4"
+							seed="2"
+							result="noise"
+							type="turbulence"
+						/>
 						<feColorMatrix in="noise" type="saturate" values="0" result="monoNoise" />
+						<feComponentTransfer in="monoNoise" result="contrastNoise">
+							<feFuncA type="discrete" tableValues="0.3 0.7 0.9 0.4 0.6 0.8" />
+						</feComponentTransfer>
 						<feBlend
 							in="SourceGraphic"
-							in2="monoNoise"
-							mode="multiply"
-							opacity={($noise / 100) * 0.6}
+							in2="contrastNoise"
+							mode="overlay"
+							opacity={Math.min(1, ($noise / 100) * 2)}
 						/>
 					</filter>
 				{/if}
