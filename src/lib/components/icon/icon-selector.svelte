@@ -1,9 +1,15 @@
 <script lang="ts">
 	import { cn } from '$lib/utils';
-	import { Search } from 'lucide-svelte';
+	import { RotateCcwIcon, Search } from 'lucide-svelte';
 	import { ICON_NAMES, getIconElements } from '$lib/data/icons';
 	import Button from '$lib/components/ui/button.svelte';
 	import { selectedIcon } from '$lib/stores/icon';
+
+	function selectRandomIcon() {
+		const randomIndex = Math.floor(Math.random() * ICON_NAMES.length);
+		const randomIcon = ICON_NAMES[randomIndex];
+		selectedIcon.set(randomIcon);
+	}
 
 	let searchQuery = $state('');
 
@@ -15,6 +21,15 @@
 
 <div class="flex h-full flex-1 flex-col overflow-hidden">
 	<div class="flex-shrink-0 border-b border-white/5 p-4">
+		<Button
+			variant="secondary"
+			size="sm"
+			onclick={selectRandomIcon}
+			class="mb-4 !text-zinc-300 hover:!border-[#8564FA] hover:!bg-[#8564FA]/10 hover:!text-[#8564FA]"
+		>
+			<RotateCcwIcon class="mr-2 h-4 w-4" />
+		</Button>
+
 		<div class="relative">
 			<Search class="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 transform text-zinc-500" />
 			<input
