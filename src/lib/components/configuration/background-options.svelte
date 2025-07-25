@@ -162,7 +162,7 @@
 				min={0}
 				max={300}
 				step={1}
-				label="Border Radius (px)"
+				label="Border Radius"
 				showValue={true}
 				onChange={updateBorderRadius}
 			/>

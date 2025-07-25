@@ -23,7 +23,7 @@
 				min={20}
 				max={512}
 				step={1}
-				label="Tamaño del icono"
+				label="Size"
 				onChange={(value) => iconSize.set(value)}
 			/>
 		</div>
@@ -58,7 +58,7 @@
 	<div class="space-y-3 overflow-hidden">
 		<div class="rounded-lg border border-zinc-800 bg-black/10 p-3">
 			<div class="flex items-center justify-between">
-				<span class="text-sm text-zinc-300">Liquid Glass Effect</span>
+				<span class="text-sm text-zinc-300">Glass Effect</span>
 				<label class="relative inline-flex cursor-pointer items-center">
 					<input
 						type="checkbox"
