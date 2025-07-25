@@ -15,7 +15,10 @@
 		iconGlass,
 		background3D,
 		background3DRotation,
-		iconGlow
+		iconGlow,
+		contrast,
+		saturation,
+		brightness
 	} from '$lib/stores/icon';
 	import vertexShader from '$lib/shaders/shaders.vert?raw';
 	import fragmentShader from '$lib/shaders/shaders.frag?raw';
@@ -45,15 +48,18 @@
 
 		render = initRender(canvasRef, vertexShader, fragmentShader, {
 			meshGradientColors: $meshGradientColors,
-			noise: $noise
+			noise: $noise,
+			contrast: $contrast,
+			saturation: $saturation,
+			brightness: $brightness
 		});
 
 		render();
 	});
 
-	$effect(() => {		
+	$effect(() => {
 		if (!render) return;
-		
+
 		render();
 	});
 

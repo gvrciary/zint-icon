@@ -22,3 +22,6 @@ export const iconGlass: Writable<boolean> = writable(false);
 export const background3D: Writable<boolean> = writable(true);
 export const background3DRotation: Writable<number> = writable(0);
 export const iconGlow: Writable<boolean> = writable(false);
+export const contrast: Writable<number> = writable(100);
+export const saturation: Writable<number> = writable(100);
+export const brightness: Writable<number> = writable(100);

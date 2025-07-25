@@ -8,6 +8,9 @@ export function initRender(
 	options: {
 		meshGradientColors: { color: string; x: number; y: number }[];
 		noise: number;
+		contrast: number;
+		saturation: number;
+		brightness: number;
 	}
 ): () => void {
 	const gl = canvas.getContext('webgl');
@@ -63,6 +66,9 @@ export function initRender(
 		gl.uniform2fv(gl.getUniformLocation(program, 'u_positions'), positions);
 		gl.uniform1i(gl.getUniformLocation(program, 'u_numberPoints'), numPoints);
 		gl.uniform1f(gl.getUniformLocation(program, 'u_noiseRatio'), (options.noise / 100) * 0.1);
+		gl.uniform1f(gl.getUniformLocation(program, 'u_contrast'), options.contrast / 100);
+		gl.uniform1f(gl.getUniformLocation(program, 'u_saturation'), options.saturation / 100);
+		gl.uniform1f(gl.getUniformLocation(program, 'u_brightness'), options.brightness / 100);
 
 		gl.drawArrays(gl.TRIANGLE_STRIP, 0, 4);
 	}

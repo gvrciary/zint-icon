@@ -8,6 +8,9 @@ uniform vec3 u_colors[10];
 uniform vec2 u_positions[10];
 uniform int u_numberPoints;
 uniform float u_noiseRatio;
+uniform float u_contrast;
+uniform float u_saturation;
+uniform float u_brightness;
 
 float rand(vec2 n) {
     return fract(sin(dot(n, vec2(12.9898, 4.1414))) * 43758.5453);
@@ -37,5 +40,13 @@ void main() {
     colorGradient = (colorGradient / pointGradient) * totalLight;
     vec3 bgGradient = (1. - totalLight) * u_bgColor;
     vec3 total = mix(clamp(colorGradient, 0., 1.) + bgGradient, noise, u_noiseRatio);
-    gl_FragColor = vec4(vec3(total), 1.);
+
+    total *= u_brightness;
+
+    total = (total - 0.5) * u_contrast + 0.5;
+
+    float gray = dot(total, vec3(0.299, 0.587, 0.114));
+    total = mix(vec3(gray), total, u_saturation);
+
+    gl_FragColor = vec4(clamp(total, 0., 1.), 1.);
 }

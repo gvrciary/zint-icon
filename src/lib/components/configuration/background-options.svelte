@@ -11,7 +11,10 @@
 		borderOpacity,
 		meshGradientColors,
 		background3D,
-		background3DRotation
+		background3DRotation,
+		contrast,
+		saturation,
+		brightness
 	} from '$lib/stores/icon';
 
 	function updateNoise(value: number) {
@@ -69,6 +72,18 @@
 
 	function updateBackground3DRotation(value: number) {
 		background3DRotation.set(value);
+	}
+
+	function updateContrast(value: number) {
+		contrast.set(value);
+	}
+
+	function updateSaturation(value: number) {
+		saturation.set(value);
+	}
+
+	function updateBrightness(value: number) {
+		brightness.set(value);
 	}
 </script>
 
@@ -153,6 +168,48 @@
 				label="Noise"
 				showValue={true}
 				onChange={updateNoise}
+			/>
+		</div>
+	</div>
+
+	<div class="space-y-3 overflow-hidden">
+		<div class="rounded-lg border border-zinc-800 bg-black/10 p-3">
+			<Slider
+				value={$contrast}
+				min={0}
+				max={200}
+				step={1}
+				label="Contrast"
+				showValue={true}
+				onChange={updateContrast}
+			/>
+		</div>
+	</div>
+
+	<div class="space-y-3 overflow-hidden">
+		<div class="rounded-lg border border-zinc-800 bg-black/10 p-3">
+			<Slider
+				value={$saturation}
+				min={0}
+				max={200}
+				step={1}
+				label="Saturation"
+				showValue={true}
+				onChange={updateSaturation}
+			/>
+		</div>
+	</div>
+
+	<div class="space-y-3 overflow-hidden">
+		<div class="rounded-lg border border-zinc-800 bg-black/10 p-3">
+			<Slider
+				value={$brightness}
+				min={0}
+				max={200}
+				step={1}
+				label="Brightness"
+				showValue={true}
+				onChange={updateBrightness}
 			/>
 		</div>
 	</div>
