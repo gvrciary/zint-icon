@@ -16,9 +16,6 @@
 			<aside
 				class="flex h-full flex-col overflow-hidden rounded-xl border border-white/5 bg-black/20 backdrop-blur-sm lg:col-span-3"
 			>
-				<div class="border-b border-white/5 p-4">
-					<h2 class="text-lg font-medium text-white">Icons</h2>
-				</div>
 				<IconSelector />
 			</aside>
 
