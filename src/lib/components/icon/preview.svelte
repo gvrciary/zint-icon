@@ -100,21 +100,24 @@
 				{#if $noise > 0}
 					<filter id={noiseId}>
 						<feTurbulence
-							baseFrequency="0.9"
-							numOctaves="1"
+							baseFrequency={2.0 - ($noise / 100) * 1.5}
+							numOctaves="2"
 							seed="2"
 							result="noise"
 							type="fractalNoise"
 						/>
 						<feColorMatrix in="noise" type="saturate" values="0" result="monoNoise" />
 						<feComponentTransfer in="monoNoise" result="contrastNoise">
-							<feFuncA type="discrete" tableValues="0.5 0.5" />
+							<feFuncA
+								type="discrete"
+								tableValues={`${0.7 - ($noise / 100) * 0.4} ${0.3 + ($noise / 100) * 0.4}`}
+							/>
 						</feComponentTransfer>
 						<feBlend
 							in="SourceGraphic"
 							in2="contrastNoise"
-							mode="overlay"
-							opacity={($noise / 100) * 0.3}
+							mode="multiply"
+							opacity={((100 - $noise) / 100) * 0.8}
 						/>
 					</filter>
 				{/if}
