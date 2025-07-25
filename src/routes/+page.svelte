@@ -29,11 +29,6 @@
 			<aside
 				class="flex h-full flex-col overflow-hidden rounded-xl border border-white/5 bg-black/20 backdrop-blur-sm lg:col-span-3"
 			>
-				<div class="border-b border-white/5 p-4">
-					<h2 class="text-lg font-medium text-white">Settings</h2>
-					<p class="mt-1 text-sm text-zinc-400">Customize your icon</p>
-				</div>
-
 				<div class="flex-1 space-y-6 overflow-y-auto p-4">
 					<div class="space-y-3">
 						<label for="" class="block text-sm font-medium text-zinc-300"> Background </label>
