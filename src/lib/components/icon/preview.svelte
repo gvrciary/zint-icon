@@ -338,20 +338,6 @@
 						<path
 							d={iconPath}
 							fill="none"
-							stroke="rgba({parseInt($iconColor.slice(1, 3), 16) * 0.3}, {parseInt(
-								$iconColor.slice(3, 5),
-								16
-							) * 0.3}, {parseInt($iconColor.slice(5, 7), 16) * 0.3}, 0.4)"
-							stroke-width="3"
-							stroke-linecap="round"
-							stroke-linejoin="round"
-							filter="url(#liquidGlass_blur)"
-							opacity="0.8"
-						/>
-
-						<path
-							d={iconPath}
-							fill="none"
 							stroke="url(#liquidGlass_stroke)"
 							stroke-width="2"
 							stroke-linecap="round"
