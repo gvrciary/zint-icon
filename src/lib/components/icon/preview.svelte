@@ -153,9 +153,7 @@
 					<filter id="glassBlur4" x="-300%" y="-300%" width="800%" height="800%">
 						<feGaussianBlur stdDeviation="12" result="blur4" />
 					</filter>
-				{/if}
-
-				{#if $liquidGlass}
+					
 					<filter id="glassBlur5" x="-500%" y="-500%" width="1200%" height="1200%">
 						<feGaussianBlur stdDeviation="30" result="blur5" />
 					</filter>
