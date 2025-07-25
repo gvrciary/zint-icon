@@ -1,6 +1,5 @@
 <script lang="ts">
 	import { Menu, Palette, Download } from 'lucide-svelte';
-	import { getIconPath } from '$lib/data/icons';
 	import Button from '$lib/components/ui/button.svelte';
 	import {
 		selectedIcon,
@@ -13,7 +12,7 @@
 	}
 
 	function createSVG() {
-		const iconPath = getIconPath($selectedIcon);
+		const iconPath = "";
 
 		let gradientDef = '';
 		let fillValue = 'none';
