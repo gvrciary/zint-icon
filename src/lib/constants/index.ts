@@ -1,4 +1,4 @@
 export const backgroundOptions = [
-	{ label: 'Solid', value: 'solid' },
-	{ label: 'Mesh', value: 'mesh' }
+	{ label: 'Mesh', value: 'mesh' },
+	{ label: 'Solid', value: 'solid' }
 ];

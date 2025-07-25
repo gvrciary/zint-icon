@@ -2,9 +2,9 @@ import { writable, type Writable } from 'svelte/store';
 import { DEFAULT_ICON } from '$lib/data/icons';
 
 export const selectedIcon: Writable<string> = writable(DEFAULT_ICON);
-export const backgroundType: Writable<'solid' | 'mesh'> = writable('solid');
+export const backgroundType: Writable<'solid' | 'mesh'> = writable('mesh');
 export const meshGradientColors: Writable<{ color: string; x: number; y: number }[]> = writable([
-	{ color: '#7B9B05', x: -20, y: -10 },
+	{ color: '#000000', x: -20, y: -10 },
 	{ color: '#0094FF', x: 120, y: 40 },
 	{ color: '#CD4E57', x: 60, y: 110 },
 	{ color: '#0032FF', x: -10, y: 80 },
