@@ -21,3 +21,4 @@ export const iconSize: Writable<number> = writable(250);
 export const iconOffsetX: Writable<number> = writable(0);
 export const iconOffsetY: Writable<number> = writable(0);
 export const liquidGlass: Writable<boolean> = writable(false);
+export const background3D: Writable<boolean> = writable(true);

@@ -14,7 +14,8 @@
 		iconSize,
 		iconOffsetX,
 		iconOffsetY,
-		liquidGlass
+		liquidGlass,
+		background3D
 	} from '$lib/stores/icon';
 	import vertexShader from '$lib/shaders/shaders.vert?raw';
 	import fragmentShader from '$lib/shaders/shaders.frag?raw';
@@ -45,7 +46,7 @@
 			fill: backgroundFill
 		};
 	});
-	
+
 	$effect(() => {
 		if ($backgroundType === 'mesh' && canvasRef) {
 			renderMesh = initRender(canvasRef, vertexShader, fragmentShader, {
@@ -116,6 +117,27 @@
 					</filter>
 				{/if}
 
+				{#if $background3D}
+					<defs>
+						<linearGradient
+							id="edge3D"
+							x1="0%"
+							y1="0%"
+							x2="100%"
+							y2="100%"
+							gradientTransform="rotate(-20)"
+						>
+							<stop offset="0%" style="stop-color:rgba(255,255,255,0.5);stop-opacity:1" />
+							<stop offset="30%" style="stop-color:rgba(255,255,255,0.0);stop-opacity:1" />
+							<stop offset="70%" style="stop-color:rgba(255,255,255,0.0);stop-opacity:1" />
+							<stop offset="100%" style="stop-color:rgba(0,0,0,0.5);stop-opacity:1" />
+						</linearGradient>
+						<filter id="edge3DBlur" x="-50%" y="-50%" width="200%" height="200%">
+							<feGaussianBlur stdDeviation="3" result="blurred" />
+						</filter>
+					</defs>
+				{/if}
+
 				{#if $liquidGlass}
 					<filter id="glassBlur1" x="-100%" y="-100%" width="400%" height="400%">
 						<feGaussianBlur stdDeviation="2" result="blur1" />
@@ -159,16 +181,42 @@
 					stroke-width={$borderStroke}
 					filter={$noise > 0 ? `url(#${noiseId})` : undefined}
 				/>
-			{:else if $borderStroke > 0}
-				<rect
-					width="512"
-					height="512"
-					rx={rectRadius}
-					ry={rectRadius}
-					fill="none"
-					stroke={borderStrokeStyle().stroke}
-					stroke-width={$borderStroke}
-				/>
+				{#if $background3D}
+					<rect
+						width="512"
+						height="512"
+						rx={rectRadius}
+						ry={rectRadius}
+						fill="none"
+						stroke="url(#edge3D)"
+						stroke-width="20"
+						filter="url(#edge3DBlur)"
+					/>
+				{/if}
+			{:else}
+				{#if $background3D}
+					<rect
+						width="512"
+						height="512"
+						rx={rectRadius}
+						ry={rectRadius}
+						fill="none"
+						stroke="url(#edge3D)"
+						stroke-width="20"
+						filter="url(#edge3DBlur)"
+					/>
+				{/if}
+				{#if $borderStroke > 0}
+					<rect
+						width="512"
+						height="512"
+						rx={rectRadius}
+						ry={rectRadius}
+						fill="none"
+						stroke={borderStrokeStyle().stroke}
+						stroke-width={$borderStroke}
+					/>
+				{/if}
 			{/if}
 
 			<g transform="translate({256 + $iconOffsetX}, {256 + $iconOffsetY})">
