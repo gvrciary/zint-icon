@@ -44,7 +44,7 @@
 							options={backgroundOptions}
 							value={$backgroundType}
 							onSelect={(type: string) =>
-								backgroundType.set(type as 'solid' | 'linear' | 'radial' | 'mesh')}
+								backgroundType.set(type as 'solid' | 'mesh')}
 						/>
 					</div>
 

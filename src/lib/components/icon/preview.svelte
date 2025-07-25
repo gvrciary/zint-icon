@@ -1,13 +1,10 @@
 <script lang="ts">
 	import { cn } from '$lib/utils';
 	import { getIconPath } from '$lib/data/icons';
-	import { generateLiquidGlassEffect } from '$lib/utils/liquidGlass';
 	import {
 		selectedIcon,
 		backgroundType,
 		backgroundColor,
-		gradientStops,
-		gradientAngle,
 		iconColor,
 		noise,
 		borderRadius,
@@ -210,32 +207,7 @@
 		return `url(#${gradientId})`;
 	});
 
-	const sortedGradientStops = $derived([...$gradientStops].sort((a, b) => a.position - b.position));
-
-	const gradientCoords = $derived(() => {
-		if ($backgroundType !== 'linear') return { x1: '0%', y1: '0%', x2: '100%', y2: '0%' };
-
-		const angleRad = ($gradientAngle * Math.PI) / 180;
-
-		const x1 = 50 + 50 * Math.cos(angleRad + Math.PI / 2);
-		const y1 = 50 + 50 * Math.sin(angleRad + Math.PI / 2);
-		const x2 = 50 + 50 * Math.cos(angleRad - Math.PI / 2);
-		const y2 = 50 + 50 * Math.sin(angleRad - Math.PI / 2);
-
-		return {
-			x1: `${x1}%`,
-			y1: `${y1}%`,
-			x2: `${x2}%`,
-			y2: `${y2}%`
-		};
-	});
-
 	const iconPath = $derived(getIconPath($selectedIcon));
-
-	const liquidGlassEffect = $derived(() => {
-		if (!$liquidGlass) return null;
-		return generateLiquidGlassEffect();
-	});
 
 	const borderStrokeStyle = $derived(() => {
 		if ($borderStroke === 0) return {};
@@ -302,26 +274,6 @@
 			style="background: transparent;"
 		>
 			<defs>
-				{#if $backgroundType === 'linear'}
-					<linearGradient
-						id={gradientId}
-						x1={gradientCoords().x1}
-						y1={gradientCoords().y1}
-						x2={gradientCoords().x2}
-						y2={gradientCoords().y2}
-					>
-						{#each sortedGradientStops as stop, index (`${index}-${stop.position}-${stop.color}`)}
-							<stop offset="{stop.position}%" stop-color={stop.color} />
-						{/each}
-					</linearGradient>
-				{:else if $backgroundType === 'radial'}
-					<radialGradient id={gradientId} cx="50%" cy="50%" r="50%">
-						{#each sortedGradientStops as stop, index (`${index}-${stop.position}-${stop.color}`)}
-							<stop offset="{stop.position}%" stop-color={stop.color} />
-						{/each}
-					</radialGradient>
-				{/if}
-
 				{#if $noise > 0}
 					<filter id={noiseId}>
 						<feTurbulence
@@ -402,7 +354,6 @@
 			<g transform="translate({256 + $iconOffsetX}, {256 + $iconOffsetY})">
 				<g transform="scale({$iconSize / 24}) translate(-12, -12)">
 					{#if $liquidGlass}
-						<!-- Ultra deep blur background -->
 						<path
 							d={iconPath}
 							fill="none"
