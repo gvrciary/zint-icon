@@ -153,9 +153,53 @@
 					<filter id="glassBlur4" x="-300%" y="-300%" width="800%" height="800%">
 						<feGaussianBlur stdDeviation="12" result="blur4" />
 					</filter>
-					
+
 					<filter id="glassBlur5" x="-500%" y="-500%" width="1200%" height="1200%">
 						<feGaussianBlur stdDeviation="30" result="blur5" />
+					</filter>
+				{/if}
+
+				{#if $liquidGlass}
+					<linearGradient
+						id="liquidGlass_stroke"
+						x1="0%"
+						y1="0%"
+						x2="0%"
+						y2="100%"
+						gradientUnits="objectBoundingBox"
+					>
+						<stop
+							offset="0%"
+							stop-color="rgba({parseInt($iconColor.slice(1, 3), 16)}, {parseInt(
+								$iconColor.slice(3, 5),
+								16
+							)}, {parseInt($iconColor.slice(5, 7), 16)}, 0.9)"
+						/>
+						<stop
+							offset="30%"
+							stop-color="rgba({parseInt($iconColor.slice(1, 3), 16)}, {parseInt(
+								$iconColor.slice(3, 5),
+								16
+							)}, {parseInt($iconColor.slice(5, 7), 16)}, 0.7)"
+						/>
+						<stop
+							offset="70%"
+							stop-color="rgba({parseInt($iconColor.slice(1, 3), 16)}, {parseInt(
+								$iconColor.slice(3, 5),
+								16
+							)}, {parseInt($iconColor.slice(5, 7), 16)}, 0.5)"
+						/>
+						<stop
+							offset="100%"
+							stop-color="rgba({parseInt($iconColor.slice(1, 3), 16)}, {parseInt(
+								$iconColor.slice(3, 5),
+								16
+							)}, {parseInt($iconColor.slice(5, 7), 16)}, 0.8)"
+						/>
+					</linearGradient>
+
+					<filter id="liquidGlass_blur" x="-50%" y="-50%" width="200%" height="200%">
+						<feGaussianBlur stdDeviation="1.5" result="blurred" />
 					</filter>
 				{/if}
 			</defs>
@@ -287,14 +331,24 @@
 						<path
 							d={iconPath}
 							fill="none"
-							stroke="rgba({parseInt($iconColor.slice(1, 3), 16)}, {parseInt(
+							stroke="rgba({parseInt($iconColor.slice(1, 3), 16) * 0.3}, {parseInt(
 								$iconColor.slice(3, 5),
 								16
-							)}, {parseInt($iconColor.slice(5, 7), 16)}, 0.25)"
-							stroke-width="2.5"
+							) * 0.3}, {parseInt($iconColor.slice(5, 7), 16) * 0.3}, 0.4)"
+							stroke-width="3"
 							stroke-linecap="round"
 							stroke-linejoin="round"
-							opacity="0.7"
+							filter="url(#liquidGlass_blur)"
+							opacity="0.8"
+						/>
+
+						<path
+							d={iconPath}
+							fill="none"
+							stroke="url(#liquidGlass_stroke)"
+							stroke-width="2"
+							stroke-linecap="round"
+							stroke-linejoin="round"
 						/>
 
 						<path
@@ -303,24 +357,11 @@
 							stroke="rgba({Math.min(255, parseInt($iconColor.slice(1, 3), 16) + 100)}, {Math.min(
 								255,
 								parseInt($iconColor.slice(3, 5), 16) + 100
-							)}, {Math.min(255, parseInt($iconColor.slice(5, 7), 16) + 100)}, 0.5)"
-							stroke-width="1.5"
-							stroke-linecap="round"
-							stroke-linejoin="round"
-							opacity="0.7"
-						/>
-
-						<path
-							d={iconPath}
-							fill="none"
-							stroke="rgba({Math.min(255, parseInt($iconColor.slice(1, 3), 16) + 20)}, {Math.min(
-								255,
-								parseInt($iconColor.slice(3, 5), 16) + 20
-							)}, {Math.min(255, parseInt($iconColor.slice(5, 7), 16) + 20)}, 1)"
+							)}, {Math.min(255, parseInt($iconColor.slice(5, 7), 16) + 100)}, 0.8)"
 							stroke-width="1"
 							stroke-linecap="round"
 							stroke-linejoin="round"
-							opacity="0.9"
+							opacity="0.7"
 						/>
 					{:else}
 						<path
