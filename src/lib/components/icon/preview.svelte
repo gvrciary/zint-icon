@@ -302,10 +302,10 @@
 						<path
 							d={iconPath}
 							fill="none"
-							stroke="rgba({Math.min(255, parseInt($iconColor.slice(1, 3), 16) + 40)}, {Math.min(
+							stroke="rgba({Math.min(255, parseInt($iconColor.slice(1, 3), 16) + 100)}, {Math.min(
 								255,
-								parseInt($iconColor.slice(3, 5), 16) + 40
-							)}, {Math.min(255, parseInt($iconColor.slice(5, 7), 16) + 40)}, 0.6)"
+								parseInt($iconColor.slice(3, 5), 16) + 100
+							)}, {Math.min(255, parseInt($iconColor.slice(5, 7), 16) + 100)}, 0.5)"
 							stroke-width="1.5"
 							stroke-linecap="round"
 							stroke-linejoin="round"
@@ -315,10 +315,10 @@
 						<path
 							d={iconPath}
 							fill="none"
-							stroke="rgba({Math.min(255, parseInt($iconColor.slice(1, 3), 16) + 100)}, {Math.min(
+							stroke="rgba({Math.min(255, parseInt($iconColor.slice(1, 3), 16) + 20)}, {Math.min(
 								255,
-								parseInt($iconColor.slice(3, 5), 16) + 100
-							)}, {Math.min(255, parseInt($iconColor.slice(5, 7), 16) + 100)}, 0.8)"
+								parseInt($iconColor.slice(3, 5), 16) + 20
+							)}, {Math.min(255, parseInt($iconColor.slice(5, 7), 16) + 20)}, 1)"
 							stroke-width="1"
 							stroke-linecap="round"
 							stroke-linejoin="round"

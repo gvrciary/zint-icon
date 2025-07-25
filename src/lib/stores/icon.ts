@@ -10,7 +10,7 @@ export const meshGradientColors: Writable<{ color: string; x: number; y: number 
 	{ color: '#0032FF', x: -10, y: 80 },
 	{ color: '#C84BE0', x: 90, y: -15 }
 ]);
-export const backgroundColor: Writable<string> = writable('#8564fa');
+export const backgroundColor: Writable<string> = writable('#3478f6');
 export const iconColor: Writable<string> = writable('#ffffff');
 export const noise: Writable<number> = writable(0);
 export const borderRadius: Writable<number> = writable(120);
