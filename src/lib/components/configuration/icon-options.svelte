@@ -1,5 +1,12 @@
 <script lang="ts">
-	import { iconColor, iconSize, iconOffsetX, iconOffsetY, iconGlass, iconGlow } from '$lib/stores/icon';
+	import {
+		iconColor,
+		iconSize,
+		iconOffsetX,
+		iconOffsetY,
+		iconGlass,
+		iconGlow
+	} from '$lib/stores/icon';
 	import Input from '$lib/components/ui/input.svelte';
 	import Slider from '$lib/components/ui/slider.svelte';
 </script>
@@ -45,7 +52,7 @@
 	<div class="space-y-3 overflow-hidden">
 		<div class="rounded-lg border border-zinc-800 bg-black/10 p-3">
 			<Slider
-			    value={$iconOffsetY}
+				value={$iconOffsetY}
 				min={-256}
 				max={256}
 				step={1}
@@ -57,33 +64,13 @@
 
 	<div class="space-y-3 overflow-hidden">
 		<div class="rounded-lg border border-zinc-800 bg-black/10 p-3">
-			<div class="flex items-center justify-between">
-				<span class="text-sm text-zinc-300">Glass</span>
-				<label class="relative inline-flex cursor-pointer items-center">
-					<input
-						type="checkbox"
-						bind:checked={$iconGlass}
-						class="peer sr-only"
-					/>
-					<div class="peer h-6 w-11 rounded-full bg-zinc-700 after:absolute after:left-[2px] after:top-[2px] after:h-5 after:w-5 after:rounded-full after:border after:border-zinc-600 after:bg-white after:transition-all after:content-[''] peer-checked:bg-[#8564FA] peer-checked:after:translate-x-full peer-checked:after:border-white peer-focus:outline-none peer-focus:ring-2 peer-focus:ring-[#8564FA]/50"></div>
-				</label>
-			</div>
+			<Input type="checkbox" bind:value={$iconGlass} label="Glass" />
 		</div>
 	</div>
-	
+
 	<div class="space-y-3 overflow-hidden">
 		<div class="rounded-lg border border-zinc-800 bg-black/10 p-3">
-			<div class="flex items-center justify-between">
-				<span class="text-sm text-zinc-300">Glow</span>
-				<label class="relative inline-flex cursor-pointer items-center">
-					<input
-						type="checkbox"
-						bind:checked={$iconGlow}
-						class="peer sr-only"
-					/>
-					<div class="peer h-6 w-11 rounded-full bg-zinc-700 after:absolute after:left-[2px] after:top-[2px] after:h-5 after:w-5 after:rounded-full after:border after:border-zinc-600 after:bg-white after:transition-all after:content-[''] peer-checked:bg-[#8564FA] peer-checked:after:translate-x-full peer-checked:after:border-white peer-focus:outline-none peer-focus:ring-2 peer-focus:ring-[#8564FA]/50"></div>
-				</label>
-			</div>
+			<Input type="checkbox" bind:value={$iconGlow} label="Glow" />
 		</div>
 	</div>
 </div>
