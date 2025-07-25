@@ -1,10 +1,10 @@
 <script lang="ts">
 	import { cn } from '$lib/utils';
 	import { Search } from 'lucide-svelte';
-	import { AVAILABLE_ICONS, ICON_NAMES } from '$lib/data/icons';
+	import { ICON_NAMES, getIconElements } from '$lib/data/icons';
 	import Button from '$lib/components/ui/button.svelte';
 	import { selectedIcon } from '$lib/stores/icon';
-	
+
 	let searchQuery = $state('');
 
 	const filteredIcons = $derived(() => {
@@ -13,15 +13,15 @@
 	});
 </script>
 
-<div class="flex h-full flex-col flex-1 overflow-hidden">
+<div class="flex h-full flex-1 flex-col overflow-hidden">
 	<div class="flex-shrink-0 border-b border-white/5 p-4">
 		<div class="relative">
-			<Search class="absolute top-1/2 left-3 h-4 w-4 -translate-y-1/2 transform text-zinc-500" />
+			<Search class="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 transform text-zinc-500" />
 			<input
 				type="text"
 				bind:value={searchQuery}
 				placeholder="Search icons..."
-				class="w-full rounded-lg border border-zinc-800 bg-black/20 py-2.5 pr-4 pl-10 text-sm text-white transition-colors placeholder:text-zinc-500 focus:border-transparent focus:ring-2 focus:ring-[#8564FA]/50 focus:outline-none"
+				class="w-full rounded-lg border border-zinc-800 bg-black/20 py-2.5 pl-10 pr-4 text-sm text-white transition-colors placeholder:text-zinc-500 focus:border-transparent focus:outline-none focus:ring-2 focus:ring-[#8564FA]/50"
 			/>
 		</div>
 	</div>
@@ -57,7 +57,10 @@
 						stroke-linecap="round"
 						stroke-linejoin="round"
 					>
-						<path d={AVAILABLE_ICONS[iconName]} />
+						{#each getIconElements(iconName) as element, index (index)}
+							<!-- eslint-disable-next-line svelte/no-at-html-tags -->
+							{@html element}
+						{/each}
 					</svg>
 
 					<span

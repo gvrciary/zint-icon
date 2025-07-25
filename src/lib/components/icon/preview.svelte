@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { getIconPath } from '$lib/data/icons';
+	import { getIconElements } from '$lib/data/icons';
 	import {
 		selectedIcon,
 		iconColor,
@@ -27,7 +27,7 @@
 	let canvasRef: HTMLCanvasElement;
 	let render: () => void;
 
-	const iconPath = $derived(getIconPath($selectedIcon));
+	const iconElements = $derived(getIconElements($selectedIcon));
 
 	const borderStrokeStyle = $derived(() => {
 		if ($borderStroke === 0) return {};
@@ -213,8 +213,7 @@
 			<g transform="translate({256 + $iconOffsetX}, {256 + $iconOffsetY})">
 				<g transform="scale({$iconSize / 24}) translate(-12, -12)">
 					{#if $iconGlow}
-						<path
-							d={iconPath}
+						<g
 							fill="none"
 							stroke="rgba({parseInt($iconColor.slice(1, 3), 16)}, {parseInt(
 								$iconColor.slice(3, 5),
@@ -225,10 +224,14 @@
 							stroke-linejoin="round"
 							filter="url(#glassBlur5)"
 							opacity="0.15"
-						/>
+						>
+							{#each iconElements as element, index (index)}
+								<!-- eslint-disable-next-line svelte/no-at-html-tags -->
+								{@html element}
+							{/each}
+						</g>
 
-						<path
-							d={iconPath}
+						<g
 							fill="none"
 							stroke="rgba({parseInt($iconColor.slice(1, 3), 16)}, {parseInt(
 								$iconColor.slice(3, 5),
@@ -239,10 +242,14 @@
 							stroke-linejoin="round"
 							filter="url(#glassBlur4)"
 							opacity="0.2"
-						/>
+						>
+							{#each iconElements as element, index (index)}
+								<!-- eslint-disable-next-line svelte/no-at-html-tags -->
+								{@html element}
+							{/each}
+						</g>
 
-						<path
-							d={iconPath}
+						<g
 							fill="none"
 							stroke="rgba({parseInt($iconColor.slice(1, 3), 16)}, {parseInt(
 								$iconColor.slice(3, 5),
@@ -253,10 +260,14 @@
 							stroke-linejoin="round"
 							filter="url(#glassBlur3)"
 							opacity="0.25"
-						/>
+						>
+							{#each iconElements as element, index (index)}
+								<!-- eslint-disable-next-line svelte/no-at-html-tags -->
+								{@html element}
+							{/each}
+						</g>
 
-						<path
-							d={iconPath}
+						<g
 							fill="none"
 							stroke="rgba({parseInt($iconColor.slice(1, 3), 16)}, {parseInt(
 								$iconColor.slice(3, 5),
@@ -267,10 +278,14 @@
 							stroke-linejoin="round"
 							filter="url(#glassBlur2)"
 							opacity="0.4"
-						/>
+						>
+							{#each iconElements as element, index (index)}
+								<!-- eslint-disable-next-line svelte/no-at-html-tags -->
+								{@html element}
+							{/each}
+						</g>
 
-						<path
-							d={iconPath}
+						<g
 							fill="none"
 							stroke="rgba({parseInt($iconColor.slice(1, 3), 16)}, {parseInt(
 								$iconColor.slice(3, 5),
@@ -281,21 +296,29 @@
 							stroke-linejoin="round"
 							filter="url(#glassBlur1)"
 							opacity="0.25"
-						/>
+						>
+							{#each iconElements as element, index (index)}
+								<!-- eslint-disable-next-line svelte/no-at-html-tags -->
+								{@html element}
+							{/each}
+						</g>
 					{/if}
 
 					{#if $iconGlass}
-						<path
-							d={iconPath}
+						<g
 							fill="none"
 							stroke="url(#liquidGlass_stroke)"
 							stroke-width="1.75"
 							stroke-linecap="round"
 							stroke-linejoin="round"
-						/>
+						>
+							{#each iconElements as element, index (index)}
+								<!-- eslint-disable-next-line svelte/no-at-html-tags -->
+								{@html element}
+							{/each}
+						</g>
 
-						<path
-							d={iconPath}
+						<g
 							fill="none"
 							stroke="rgba({Math.min(255, parseInt($iconColor.slice(1, 3), 16) + 20)}, {Math.min(
 								255,
@@ -305,16 +328,25 @@
 							stroke-linecap="round"
 							stroke-linejoin="round"
 							opacity="0.9"
-						/>
+						>
+							{#each iconElements as element, index (index)}
+								<!-- eslint-disable-next-line svelte/no-at-html-tags -->
+								{@html element}
+							{/each}
+						</g>
 					{:else}
-						<path
-							d={iconPath}
+						<g
 							fill="none"
 							stroke={$iconColor}
 							stroke-width="1.5"
 							stroke-linecap="round"
 							stroke-linejoin="round"
-						/>
+						>
+							{#each iconElements as element, index (index)}
+								<!-- eslint-disable-next-line svelte/no-at-html-tags -->
+								{@html element}
+							{/each}
+						</g>
 					{/if}
 				</g>
 			</g>
