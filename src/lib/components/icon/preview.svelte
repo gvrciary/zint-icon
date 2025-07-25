@@ -170,31 +170,38 @@
 					>
 						<stop
 							offset="0%"
-							stop-color="rgba({parseInt($iconColor.slice(1, 3), 16)}, {parseInt(
-								$iconColor.slice(3, 5),
-								16
-							)}, {parseInt($iconColor.slice(5, 7), 16)}, 0.9)"
+							stop-color="rgba({Math.min(
+								255,
+								parseInt($iconColor.slice(1, 3), 16) + 80
+							)}, {Math.min(255, parseInt($iconColor.slice(3, 5), 16) + 80)}, {Math.min(
+								255,
+								parseInt($iconColor.slice(5, 7), 16) + 80
+							)}, 0.9)"
 						/>
 						<stop
 							offset="30%"
-							stop-color="rgba({parseInt($iconColor.slice(1, 3), 16)}, {parseInt(
-								$iconColor.slice(3, 5),
-								16
-							)}, {parseInt($iconColor.slice(5, 7), 16)}, 0.7)"
+							stop-color="rgba({Math.min(
+								255,
+								parseInt($iconColor.slice(1, 3), 16) + 40
+							)}, {Math.min(255, parseInt($iconColor.slice(3, 5), 16) + 40)}, {Math.min(
+								255,
+								parseInt($iconColor.slice(5, 7), 16) + 40
+							)}, 0.8)"
 						/>
 						<stop
 							offset="70%"
 							stop-color="rgba({parseInt($iconColor.slice(1, 3), 16)}, {parseInt(
 								$iconColor.slice(3, 5),
 								16
-							)}, {parseInt($iconColor.slice(5, 7), 16)}, 0.5)"
+							)}, {parseInt($iconColor.slice(5, 7), 16)}, 0.7)"
 						/>
 						<stop
 							offset="100%"
-							stop-color="rgba({parseInt($iconColor.slice(1, 3), 16)}, {parseInt(
-								$iconColor.slice(3, 5),
-								16
-							)}, {parseInt($iconColor.slice(5, 7), 16)}, 0.8)"
+							stop-color="rgba({Math.floor(
+								parseInt($iconColor.slice(1, 3), 16) * 0.4
+							)}, {Math.floor(parseInt($iconColor.slice(3, 5), 16) * 0.4)}, {Math.floor(
+								parseInt($iconColor.slice(5, 7), 16) * 0.4
+							)}, 0.9)"
 						/>
 					</linearGradient>
 
