@@ -3,6 +3,8 @@
 	import Button from '$lib/components/ui/button.svelte';
 	import Slider from '$lib/components/ui/slider.svelte';
 	import Input from '$lib/components/ui/input.svelte';
+	import Dropdown from '$lib/components/ui/dropdown.svelte';
+	import { backgroundOptions } from '$lib/constants';
 	import {
 		backgroundType,
 		backgroundColor,
@@ -79,6 +81,15 @@
 </script>
 
 <div class="space-y-4 overflow-hidden">
+    
+	<div class="space-y-3">
+		<Dropdown
+			options={backgroundOptions}
+			value={$backgroundType}
+			onSelect={(type: string) => backgroundType.set(type as 'solid' | 'mesh')}
+		/>
+	</div>
+	
 	{#if $backgroundType === 'solid'}
 		<div class="space-y-3 overflow-hidden">
 			<div class="flex items-center gap-3">

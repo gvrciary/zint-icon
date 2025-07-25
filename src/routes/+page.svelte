@@ -3,10 +3,7 @@
 	import IconSelector from '$lib/components/icon/icon-selector.svelte';
 	import Preview from '$lib/components/icon/preview.svelte';
 	import BackgroundOptions from '$lib/components/configuration/background-options.svelte';
-	import Dropdown from '$lib/components/ui/dropdown.svelte';
 	import IconOptions from '$lib/components/configuration/icon-options.svelte';
-	import { backgroundOptions } from '$lib/constants';
-	import { backgroundType } from '$lib/stores/icon';
 </script>
 
 <Header />
@@ -38,16 +35,6 @@
 				</div>
 
 				<div class="flex-1 space-y-6 overflow-y-auto p-4">
-					<div class="space-y-3">
-						<label for="" class="block text-sm font-medium text-zinc-300"> Background Type </label>
-						<Dropdown
-							options={backgroundOptions}
-							value={$backgroundType}
-							onSelect={(type: string) =>
-								backgroundType.set(type as 'solid' | 'mesh')}
-						/>
-					</div>
-
 					<div class="space-y-3">
 						<label for="" class="block text-sm font-medium text-zinc-300"> Background </label>
 						<BackgroundOptions />
