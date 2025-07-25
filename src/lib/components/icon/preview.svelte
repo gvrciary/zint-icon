@@ -1,5 +1,4 @@
 <script lang="ts">
-	import { cn } from '$lib/utils';
 	import { getIconPath } from '$lib/data/icons';
 	import {
 		selectedIcon,
@@ -17,194 +16,18 @@
 		iconOffsetY,
 		liquidGlass
 	} from '$lib/stores/icon';
-	import { onMount } from 'svelte';
+	import vertexShader from '$lib/shaders/shaders.vert?raw';
+	import fragmentShader from '$lib/shaders/shaders.frag?raw';
+	import { initRender } from '$lib/webgl/mesh-render';
 
-	let svgRef: SVGSVGElement;
 	let canvasRef: HTMLCanvasElement;
-	let gl: WebGLRenderingContext | null = null;
-	let shaderProgram: WebGLProgram | null = null;
+	let renderMesh: () => void;
 
-	const gradientId = 'icon-gradient';
 	const noiseId = 'noise-filter';
 
-	const vertexShaderSource = `
-		#ifdef GL_ES
-		precision mediump float;
-		#endif
-
-		attribute vec3 aPosition;
-
-		void main() {
-			vec4 positionVec4 = vec4(aPosition, 1.0);
-			positionVec4.xy = positionVec4.xy * 2.0 - 1.0;
-			gl_Position = positionVec4;
-		}
-	`;
-
-	const fragmentShaderSource = `
-		#ifdef GL_ES
-		precision highp float;
-		#endif
-
-		uniform vec2 u_resolution;
-		uniform vec3 u_bgColor;
-		uniform vec3 u_colors[10];
-		uniform vec2 u_positions[10];
-		uniform int u_numberPoints;
-		uniform float u_noiseRatio;
-
-		float rand(vec2 n) {
-			return fract(sin(dot(n, vec2(12.9898, 4.1414))) * 43758.5453);
-		}
-
-		void main() {
-			vec2 st = gl_FragCoord.xy/u_resolution.xy;
-			st.y=1.-st.y;
-			vec3 noise=vec3(rand(vec2(st.x*5.,st.y*5.)));
-
-			float pointGradient=0.;
-			vec3 colorGradient=vec3(0.);
-			float totalLight=1.;
-
-			for(int i=0;i<10;i++){
-				if(i<u_numberPoints){
-					vec3 color=u_colors[i];
-					vec2 pointPos=u_positions[i];
-					float dist=1.-distance(st,pointPos)*1.1;
-					pointGradient+=clamp(dist,0.,1.);
-					colorGradient+=color*clamp(dist,0.,1.);
-					totalLight*=(1.-dist)*(1.-dist);
-				}
-			}
-
-			totalLight=smoothstep(0.,1.,clamp(1.-totalLight,0.,1.));
-			colorGradient=(colorGradient/pointGradient)*totalLight;
-			vec3 bgGradient=(1.-totalLight)*u_bgColor;
-			vec3 total=mix(clamp(colorGradient,0.,1.)+bgGradient,noise,u_noiseRatio);
-			gl_FragColor = vec4(vec3(total),1.);
-		}
-	`;
-
-	function createShader(
-		gl: WebGLRenderingContext,
-		type: number,
-		source: string
-	): WebGLShader | null {
-		const shader = gl.createShader(type);
-		if (!shader) return null;
-
-		gl.shaderSource(shader, source);
-		gl.compileShader(shader);
-
-		if (!gl.getShaderParameter(shader, gl.COMPILE_STATUS)) {
-			console.error('Error compiling shader:', gl.getShaderInfoLog(shader));
-			gl.deleteShader(shader);
-			return null;
-		}
-
-		return shader;
-	}
-
-	function createShaderProgram(gl: WebGLRenderingContext): WebGLProgram | null {
-		const vertexShader = createShader(gl, gl.VERTEX_SHADER, vertexShaderSource);
-		const fragmentShader = createShader(gl, gl.FRAGMENT_SHADER, fragmentShaderSource);
-
-		if (!vertexShader || !fragmentShader) return null;
-
-		const program = gl.createProgram();
-		if (!program) return null;
-
-		gl.attachShader(program, vertexShader);
-		gl.attachShader(program, fragmentShader);
-		gl.linkProgram(program);
-
-		if (!gl.getProgramParameter(program, gl.LINK_STATUS)) {
-			console.error('Error linking program:', gl.getProgramInfoLog(program));
-			gl.deleteProgram(program);
-			return null;
-		}
-
-		return program;
-	}
-
-	function hexToRgb(hex: string): [number, number, number] {
-		const r = parseInt(hex.slice(1, 3), 16) / 255;
-		const g = parseInt(hex.slice(3, 5), 16) / 255;
-		const b = parseInt(hex.slice(5, 7), 16) / 255;
-		return [r, g, b];
-	}
-
-	function initWebGL() {
-		if (!canvasRef) return;
-
-		gl = canvasRef.getContext('webgl');
-		if (!gl) {
-			console.error('WebGL not supported');
-			return;
-		}
-
-		shaderProgram = createShaderProgram(gl);
-		if (!shaderProgram) return;
-
-		const vertices = new Float32Array([-1, -1, 0, 1, -1, 0, -1, 1, 0, 1, 1, 0]);
-
-		const vertexBuffer = gl.createBuffer();
-		gl.bindBuffer(gl.ARRAY_BUFFER, vertexBuffer);
-		gl.bufferData(gl.ARRAY_BUFFER, vertices, gl.STATIC_DRAW);
-
-		const aPosition = gl.getAttribLocation(shaderProgram, 'aPosition');
-		gl.enableVertexAttribArray(aPosition);
-		gl.vertexAttribPointer(aPosition, 3, gl.FLOAT, false, 0, 0);
-
-		gl.useProgram(shaderProgram);
-		render();
-	}
-
-	function render() {
-		if (!gl || !shaderProgram) return;
-
-		gl.viewport(0, 0, 512, 512);
-		gl.clearColor(0, 0, 0, 1);
-		gl.clear(gl.COLOR_BUFFER_BIT);
-
-		gl.uniform2f(gl.getUniformLocation(shaderProgram, 'u_resolution'), 512, 512);
-
-		const bgColor = $meshGradientColors[0] ? hexToRgb($meshGradientColors[0].color) : [0, 0, 0];
-		gl.uniform3f(
-			gl.getUniformLocation(shaderProgram, 'u_bgColor'),
-			bgColor[0],
-			bgColor[1],
-			bgColor[2]
-		);
-
-		const colors: number[] = [];
-		const positions: number[] = [];
-		const numPoints = Math.min($meshGradientColors.length, 10);
-
-		for (let i = 0; i < 10; i++) {
-			if (i < numPoints) {
-				const meshColor = $meshGradientColors[i];
-				const rgb = hexToRgb(meshColor.color);
-				colors.push(rgb[0], rgb[1], rgb[2]);
-				positions.push(meshColor.x / 100, meshColor.y / 100);
-			} else {
-				colors.push(0, 0, 0);
-				positions.push(0, 0);
-			}
-		}
-
-		gl.uniform3fv(gl.getUniformLocation(shaderProgram, 'u_colors'), colors);
-		gl.uniform2fv(gl.getUniformLocation(shaderProgram, 'u_positions'), positions);
-		gl.uniform1i(gl.getUniformLocation(shaderProgram, 'u_numberPoints'), numPoints);
-		gl.uniform1f(gl.getUniformLocation(shaderProgram, 'u_noiseRatio'), ($noise / 100) * 0.1);
-
-		gl.drawArrays(gl.TRIANGLE_STRIP, 0, 4);
-	}
-
 	const backgroundFill = $derived(() => {
-		if ($backgroundType === 'solid') return $backgroundColor;
 		if ($backgroundType === 'mesh') return 'transparent';
-		return `url(#${gradientId})`;
+		return $backgroundColor;
 	});
 
 	const iconPath = $derived(getIconPath($selectedIcon));
@@ -222,29 +45,27 @@
 			fill: backgroundFill
 		};
 	});
-
-	const rectRadius = $derived($borderRadius);
-
-	onMount(() => {
-		if ($backgroundType === 'mesh') {
-			initWebGL();
-		}
-	});
-
+	
 	$effect(() => {
 		if ($backgroundType === 'mesh' && canvasRef) {
-			initWebGL();
+			renderMesh = initRender(canvasRef, vertexShader, fragmentShader, {
+				meshGradientColors: $meshGradientColors,
+				noise: $noise
+			});
+			renderMesh();
 		}
 	});
 
 	$effect(() => {
-		if ($backgroundType === 'mesh' && gl && shaderProgram) {
-			render();
+		if (renderMesh && $backgroundType === 'mesh') {
+			renderMesh();
 		}
 	});
+
+	const rectRadius = $derived($borderRadius);
 </script>
 
-<div class={cn('flex flex-col items-center space-y-6')}>
+<div class="flex flex-col items-center space-y-6">
 	<div
 		class="relative overflow-hidden bg-transparent shadow-2xl"
 		style="border-radius: {$borderRadius}px;"
@@ -265,7 +86,6 @@
 		{/if}
 
 		<svg
-			bind:this={svgRef}
 			width="512"
 			height="512"
 			viewBox="0 0 512 512"

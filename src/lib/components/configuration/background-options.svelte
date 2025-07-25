@@ -1,5 +1,4 @@
 <script lang="ts">
-	import { cn } from '$lib/utils';
 	import { Plus, Minus, RefreshCw } from 'lucide-svelte';
 	import Button from '$lib/components/ui/button.svelte';
 	import Slider from '$lib/components/ui/slider.svelte';
@@ -73,7 +72,7 @@
 	}
 </script>
 
-<div class={cn('space-y-4 overflow-hidden')}>
+<div class="space-y-4 overflow-hidden">
 	{#if $backgroundType === 'solid'}
 		<div class="space-y-3 overflow-hidden">
 			<div class="flex items-center gap-3">

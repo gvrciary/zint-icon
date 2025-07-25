@@ -1,11 +1,9 @@
 <script lang="ts">
-	import { cn } from '$lib/utils';
 	import { Menu, Palette, Download } from 'lucide-svelte';
 	import { getIconPath } from '$lib/data/icons';
 	import Button from '$lib/components/ui/button.svelte';
 	import {
 		selectedIcon,
-		backgroundType,
 		backgroundColor,
 		iconColor
 	} from '$lib/stores/icon';
@@ -70,7 +68,7 @@
 	}
 </script>
 
-<header class={cn('fixed left-0 right-0 top-0 z-50 transition-all duration-300')}>
+<header class="fixed left-0 right-0 top-0 z-50 transition-all duration-300">
 	<div class="px-4 py-4 md:px-6 md:py-6">
 		<nav class="flex items-center justify-between">
 			<a href="/" class="group flex items-center space-x-3">
