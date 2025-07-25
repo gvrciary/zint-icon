@@ -16,6 +16,7 @@
 		iconOffsetY,
 		iconGlass,
 		background3D,
+		background3DRotation,
 		iconGlow
 	} from '$lib/stores/icon';
 	import vertexShader from '$lib/shaders/shaders.vert?raw';
@@ -125,7 +126,7 @@
 						y1="0%"
 						x2="100%"
 						y2="100%"
-						gradientTransform="rotate(-20)"
+						gradientTransform="rotate({$background3DRotation})"
 					>
 						<stop offset="0%" style="stop-color:rgba(255,255,255,0.5);stop-opacity:1" />
 						<stop offset="30%" style="stop-color:rgba(255,255,255,0.0);stop-opacity:1" />

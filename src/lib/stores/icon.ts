@@ -22,4 +22,5 @@ export const iconOffsetX: Writable<number> = writable(0);
 export const iconOffsetY: Writable<number> = writable(0);
 export const iconGlass: Writable<boolean> = writable(false);
 export const background3D: Writable<boolean> = writable(true);
+export const background3DRotation: Writable<number> = writable(0);
 export const iconGlow: Writable<boolean> = writable(false);
