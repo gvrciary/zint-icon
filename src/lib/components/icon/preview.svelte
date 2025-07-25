@@ -14,7 +14,7 @@
 		iconSize,
 		iconOffsetX,
 		iconOffsetY,
-		liquidGlass,
+		iconGlass,
 		background3D,
 		iconGlow
 	} from '$lib/stores/icon';
@@ -159,7 +159,7 @@
 					</filter>
 				{/if}
 
-				{#if $liquidGlass}
+				{#if $iconGlass}
 					<linearGradient
 						id="liquidGlass_stroke"
 						x1="0%"
@@ -334,7 +334,7 @@
 						/>
 					{/if}
 
-					{#if $liquidGlass}
+					{#if $iconGlass}
 						<path
 							d={iconPath}
 							fill="none"
