@@ -2,8 +2,6 @@
 	import { getIconPath } from '$lib/data/icons';
 	import {
 		selectedIcon,
-		backgroundType,
-		backgroundColor,
 		iconColor,
 		noise,
 		borderRadius,
@@ -24,14 +22,7 @@
 	import { initRender } from '$lib/webgl/mesh-render';
 
 	let canvasRef: HTMLCanvasElement;
-	let renderMesh: () => void;
-
-	const noiseId = 'noise-filter';
-
-	const backgroundFill = $derived(() => {
-		if ($backgroundType === 'mesh') return 'transparent';
-		return $backgroundColor;
-	});
+	let render: () => void;
 
 	const iconPath = $derived(getIconPath($selectedIcon));
 
@@ -45,24 +36,25 @@
 		return {
 			stroke: strokeColor,
 			'stroke-width': $borderStroke,
-			fill: backgroundFill
+			fill: 'transparent'
 		};
 	});
 
 	$effect(() => {
-		if ($backgroundType === 'mesh' && canvasRef) {
-			renderMesh = initRender(canvasRef, vertexShader, fragmentShader, {
-				meshGradientColors: $meshGradientColors,
-				noise: $noise
-			});
-			renderMesh();
-		}
+		if (!canvasRef) return;
+
+		render = initRender(canvasRef, vertexShader, fragmentShader, {
+			meshGradientColors: $meshGradientColors,
+			noise: $noise
+		});
+
+		render();
 	});
 
-	$effect(() => {
-		if (renderMesh && $backgroundType === 'mesh') {
-			renderMesh();
-		}
+	$effect(() => {		
+		if (!render) return;
+		
+		render();
 	});
 
 	const rectRadius = $derived($borderRadius);
@@ -78,15 +70,13 @@
 			style="background-image: url('data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMjAiIGhlaWdodD0iMjAiIHZpZXdCb3g9IjAgMCAyMCAyMCIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KPHJlY3Qgd2lkdGg9IjEwIiBoZWlnaHQ9IjEwIiBmaWxsPSIjZmZmZmZmIiBmaWxsLW9wYWNpdHk9IjAuMSIvPgo8cmVjdCB4PSIxMCIgeT0iMTAiIHdpZHRoPSIxMCIgaGVpZ2h0PSIxMCIgZmlsbD0iI2ZmZmZmZiIgZmlsbC1vcGFjaXR5PSIwLjEiLz4KPC9zdmc+'); background-size: 20px 20px;"
 		></div>
 
-		{#if $backgroundType === 'mesh'}
-			<canvas
-				bind:this={canvasRef}
-				width="512"
-				height="512"
-				class="absolute inset-0 z-0"
-				style="border-radius: {$borderRadius}px;"
-			></canvas>
-		{/if}
+		<canvas
+			bind:this={canvasRef}
+			width="512"
+			height="512"
+			class="absolute inset-0 z-0"
+			style="border-radius: {$borderRadius}px;"
+		></canvas>
 
 		<svg
 			width="512"
@@ -97,31 +87,6 @@
 			style="background: transparent;"
 		>
 			<defs>
-				{#if $noise > 0}
-					<filter id={noiseId}>
-						<feTurbulence
-							baseFrequency={2.0 - ($noise / 100) * 1.5}
-							numOctaves="2"
-							seed="2"
-							result="noise"
-							type="fractalNoise"
-						/>
-						<feColorMatrix in="noise" type="saturate" values="0" result="monoNoise" />
-						<feComponentTransfer in="monoNoise" result="contrastNoise">
-							<feFuncA
-								type="discrete"
-								tableValues={`${0.7 - ($noise / 100) * 0.4} ${0.3 + ($noise / 100) * 0.4}`}
-							/>
-						</feComponentTransfer>
-						<feBlend
-							in="SourceGraphic"
-							in2="contrastNoise"
-							mode="multiply"
-							opacity={((100 - $noise) / 100) * 0.8}
-						/>
-					</filter>
-				{/if}
-
 				{#if $background3D}
 					<linearGradient
 						id="edge3D"
@@ -215,53 +180,28 @@
 				{/if}
 			</defs>
 
-			{#if $backgroundType !== 'mesh'}
+			{#if $background3D}
 				<rect
 					width="512"
 					height="512"
 					rx={rectRadius}
 					ry={rectRadius}
-					fill={backgroundFill()}
-					stroke={$borderStroke > 0 ? borderStrokeStyle().stroke : 'none'}
-					stroke-width={$borderStroke}
-					filter={$noise > 0 ? `url(#${noiseId})` : undefined}
+					fill="none"
+					stroke="url(#edge3D)"
+					stroke-width="20"
+					filter="url(#edge3DBlur)"
 				/>
-				{#if $background3D}
-					<rect
-						width="512"
-						height="512"
-						rx={rectRadius}
-						ry={rectRadius}
-						fill="none"
-						stroke="url(#edge3D)"
-						stroke-width="20"
-						filter="url(#edge3DBlur)"
-					/>
-				{/if}
-			{:else}
-				{#if $background3D}
-					<rect
-						width="512"
-						height="512"
-						rx={rectRadius}
-						ry={rectRadius}
-						fill="none"
-						stroke="url(#edge3D)"
-						stroke-width="20"
-						filter="url(#edge3DBlur)"
-					/>
-				{/if}
-				{#if $borderStroke > 0}
-					<rect
-						width="512"
-						height="512"
-						rx={rectRadius}
-						ry={rectRadius}
-						fill="none"
-						stroke={borderStrokeStyle().stroke}
-						stroke-width={$borderStroke}
-					/>
-				{/if}
+			{/if}
+			{#if $borderStroke > 0}
+				<rect
+					width="512"
+					height="512"
+					rx={rectRadius}
+					ry={rectRadius}
+					fill="none"
+					stroke={borderStrokeStyle().stroke}
+					stroke-width={$borderStroke}
+				/>
 			{/if}
 
 			<g transform="translate({256 + $iconOffsetX}, {256 + $iconOffsetY})">

@@ -4,7 +4,6 @@
 	import Button from '$lib/components/ui/button.svelte';
 	import {
 		selectedIcon,
-		backgroundColor,
 		iconColor
 	} from '$lib/stores/icon';
 	let isMobileMenuOpen = $state(false);
@@ -17,7 +16,7 @@
 		const iconPath = getIconPath($selectedIcon);
 
 		let gradientDef = '';
-		let fillValue = $backgroundColor;
+		let fillValue = 'none';
 
 		return `<svg width="512" height="512" viewBox="0 0 512 512" xmlns="http://www.w3.org/2000/svg">
 			${gradientDef}
