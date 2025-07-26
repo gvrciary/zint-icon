@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { getProcessedSvg } from '$lib/data/icons';
+	import { getProcessedSvg } from '$lib/parser/svg';
 	import {
 		selectedIcon,
 		iconColor,
@@ -21,8 +21,8 @@
 		brightness,
 		customSvg
 	} from '$lib/stores/icon';
-	import vertexShader from '$lib/shaders/shaders.vert?raw';
-	import fragmentShader from '$lib/shaders/shaders.frag?raw';
+	import vertexShader from '$lib/utils/shaders/shaders.vert?raw';
+	import fragmentShader from '$lib/utils/shaders/shaders.frag?raw';
 	import { initRender } from '$lib/webgl/mesh-render';
 
 	let canvasRef: HTMLCanvasElement;

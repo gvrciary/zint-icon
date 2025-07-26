@@ -8,7 +8,7 @@
 
 <Header />
 
-<main class="min-h-screen overflow-hidden pt-20 md:pt-24">
+<main class="min-h-screen overflow-hidden pt-20 md:pt-24 select-none">
 	<div class="h-full px-4 md:px-6">
 		<div
 			class="grid h-[calc(100vh-5rem)] grid-cols-1 gap-6 md:h-[calc(100vh-6rem)] lg:grid-cols-12"
