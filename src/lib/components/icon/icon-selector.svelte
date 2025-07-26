@@ -1,9 +1,10 @@
 <script lang="ts">
 	import { cn } from '$lib/utils';
 	import { RotateCcwIcon, Search } from 'lucide-svelte';
-	import { ICON_NAMES, AVAILABLE_ICONS } from '$lib/data/icons';
+	import { AVAILABLE_ICONS, getIconSvg, ICON_NAMES } from '$lib/data/icons';
 	import Button from '$lib/components/ui/button.svelte';
-	import { selectedIcon } from '$lib/stores/icon';
+	import { selectedIcon, customSvg } from '$lib/stores/icon';
+	import { Upload } from 'lucide-svelte';
 
 	function selectRandomIcon() {
 		const randomIndex = Math.floor(Math.random() * ICON_NAMES.length);
@@ -11,24 +12,73 @@
 		selectedIcon.set(randomIcon);
 	}
 
+	const availableIcons = $derived(() => {
+		const names = [...ICON_NAMES];
+		if ($customSvg.trim()) {
+			names.unshift('Custom');
+		}
+		return names;
+	});
+
+	function handleFileUpload(event: Event) {
+		const target = event.target as HTMLInputElement;
+		const file = target.files?.[0];
+
+		if (file && file.type === 'image/svg+xml') {
+			const reader = new FileReader();
+			reader.onload = (e) => {
+				const svgContent = e.target?.result as string;
+				customSvg.set(svgContent);
+				selectedIcon.set('Custom');
+			};
+			reader.readAsText(file);
+		}
+		target.value = '';
+	}
+
+	let fileInput: HTMLInputElement;
+
 	let searchQuery = $state('');
 
 	const filteredIcons = $derived(() => {
-		if (!searchQuery.trim()) return ICON_NAMES;
-		return ICON_NAMES.filter((name) => name.toLowerCase().includes(searchQuery.toLowerCase()));
+		if (!searchQuery.trim()) return availableIcons();
+		return availableIcons().filter((name) =>
+			name.toLowerCase().includes(searchQuery.toLowerCase())
+		);
 	});
 </script>
 
 <div class="flex h-full flex-1 flex-col overflow-hidden">
 	<div class="flex-shrink-0 border-b border-white/5 p-4">
-		<Button
-			variant="secondary"
-			size="sm"
-			onclick={selectRandomIcon}
-			class="mb-4 !text-zinc-300 hover:!border-[#8564FA] hover:!bg-[#8564FA]/10 hover:!text-[#8564FA]"
-		>
-			<RotateCcwIcon class="mr-2 h-4 w-4" />
-		</Button>
+		<div class="mb-4 flex gap-2">
+			<Button
+				variant="secondary"
+				size="sm"
+				onclick={selectRandomIcon}
+				class="!text-zinc-300 hover:!border-[#8564FA] hover:!bg-[#8564FA]/10 hover:!text-[#8564FA]"
+			>
+				<RotateCcwIcon class="mr-2 h-4 w-4" />
+				Random
+			</Button>
+
+			<Button
+				variant="secondary"
+				size="sm"
+				onclick={() => fileInput.click()}
+				class="!text-zinc-300 hover:!border-[#8564FA] hover:!bg-[#8564FA]/10 hover:!text-[#8564FA]"
+			>
+				<Upload class="mr-2 h-4 w-4" />
+				Upload SVG
+			</Button>
+
+			<input
+				bind:this={fileInput}
+				type="file"
+				accept=".svg,image/svg+xml"
+				onchange={handleFileUpload}
+				class="hidden"
+			/>
+		</div>
 
 		<div class="relative">
 			<Search class="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 transform text-zinc-500" />
@@ -65,7 +115,9 @@
 						)}
 					>
 						<!-- eslint-disable-next-line svelte/no-at-html-tags -->
-						{@html AVAILABLE_ICONS[iconName]}
+						{@html iconName === 'Custom'
+							? getIconSvg(iconName, $customSvg)
+							: AVAILABLE_ICONS[iconName]}
 					</div>
 
 					<span

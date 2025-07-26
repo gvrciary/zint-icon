@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { getSvgAttributes, AVAILABLE_ICONS, getProcessedSvg } from '$lib/data/icons';
+	import { getSvgAttributesForIcon, getProcessedSvg } from '$lib/data/icons';
 	import {
 		selectedIcon,
 		iconColor,
@@ -18,7 +18,8 @@
 		iconGlow,
 		contrast,
 		saturation,
-		brightness
+		brightness,
+		customSvg
 	} from '$lib/stores/icon';
 	import vertexShader from '$lib/shaders/shaders.vert?raw';
 	import fragmentShader from '$lib/shaders/shaders.frag?raw';
@@ -28,19 +29,21 @@
 	let render: () => void;
 	let processedSvg = $state('');
 
-	const svgAttributes = $derived(
-		getSvgAttributes(AVAILABLE_ICONS[$selectedIcon] || AVAILABLE_ICONS.Heart)
-	);
+	const svgAttributes = $derived(getSvgAttributesForIcon($selectedIcon, $customSvg));
 
 	const iconWidth = $derived(svgAttributes.width || '24');
 	const iconHeight = $derived(svgAttributes.height || '24');
 
 	$effect(() => {
-		getProcessedSvg($selectedIcon, {
-			iconGlow: $iconGlow,
-			iconGlass: $iconGlass,
-			iconColor: $iconColor
-		}).then((svg) => {
+		getProcessedSvg(
+			$selectedIcon,
+			{
+				iconGlow: $iconGlow,
+				iconGlass: $iconGlass,
+				iconColor: $iconColor
+			},
+			$customSvg
+		).then((svg) => {
 			processedSvg = svg;
 		});
 	});

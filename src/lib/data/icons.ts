@@ -33,8 +33,15 @@ export function extractSvgElements(svgString: string): string[] {
 }
 
 export function getIconElements(iconName: string): string[] {
-	const svg = AVAILABLE_ICONS[iconName] || AVAILABLE_ICONS.Heart;
+	const svg = getIconSvg(iconName);
 	return extractSvgElements(svg);
+}
+
+export function getIconSvg(iconName: string, customSvgContent?: string): string {
+	if (iconName === 'Custom' && customSvgContent) {
+		return customSvgContent;
+	}
+	return AVAILABLE_ICONS[iconName] || AVAILABLE_ICONS.Heart;
 }
 
 export function getSvgAttributes(svgString: string): {
@@ -63,6 +70,19 @@ export function getSvgAttributes(svgString: string): {
 	if (xmlnsMatch) attributes.xmlns = xmlnsMatch[1];
 
 	return attributes;
+}
+
+export function getSvgAttributesForIcon(
+	iconName: string,
+	customSvgContent?: string
+): {
+	width?: string;
+	height?: string;
+	viewBox?: string;
+	xmlns?: string;
+} {
+	const svg = getIconSvg(iconName, customSvgContent);
+	return getSvgAttributes(svg);
 }
 
 export function isValidIcon(iconName: string): boolean {
@@ -358,13 +378,13 @@ function createNormalLayer(drawingElements: INode[], iconColor: string): INode {
 
 export async function getProcessedSvg(
 	iconName: string,
-	options: ProcessedSvgOptions
+	options: ProcessedSvgOptions,
+	customSvgContent?: string
 ): Promise<string> {
-	const svg = AVAILABLE_ICONS[iconName] || AVAILABLE_ICONS.Heart;
+	const svg = getIconSvg(iconName, customSvgContent);
 
 	try {
 		const svgAst = await parse(svg);
-		svgAst.attributes["stroke_width"] = '1.5'
 
 		const drawingElements = collectDrawingElements(svgAst);
 

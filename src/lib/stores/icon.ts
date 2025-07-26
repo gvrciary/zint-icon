@@ -25,3 +25,4 @@ export const iconGlow: Writable<boolean> = writable(false);
 export const contrast: Writable<number> = writable(100);
 export const saturation: Writable<number> = writable(100);
 export const brightness: Writable<number> = writable(100);
+export const customSvg: Writable<string> = writable('');
