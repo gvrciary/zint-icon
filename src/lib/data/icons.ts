@@ -72,19 +72,6 @@ export function getSvgAttributes(svgString: string): {
 	return attributes;
 }
 
-export function getSvgAttributesForIcon(
-	iconName: string,
-	customSvgContent?: string
-): {
-	width?: string;
-	height?: string;
-	viewBox?: string;
-	xmlns?: string;
-} {
-	const svg = getIconSvg(iconName, customSvgContent);
-	return getSvgAttributes(svg);
-}
-
 export function isValidIcon(iconName: string): boolean {
 	return iconName in AVAILABLE_ICONS;
 }
@@ -95,6 +82,9 @@ export interface ProcessedSvgOptions {
 	iconGlow: boolean;
 	iconGlass: boolean;
 	iconColor: string;
+	iconSize: number;
+	iconOffsetX: number;
+	iconOffsetY: number;
 }
 
 function cloneNode(node: INode): INode {
@@ -376,6 +366,34 @@ function createNormalLayer(drawingElements: INode[], iconColor: string): INode {
 	} as INode;
 }
 
+function createTransformGroup(
+	iconSize: number,
+	iconWidth: number,
+	iconHeight: number,
+	iconOffsetX: number,
+	iconOffsetY: number
+): INode {
+	return {
+		name: 'g',
+		type: 'element',
+		value: '',
+		attributes: {
+			transform: `translate(${256 + iconOffsetX}, ${256 + iconOffsetY})`
+		},
+		children: [
+			{
+				name: 'g',
+				type: 'element',
+				value: '',
+				attributes: {
+					transform: `scale(${iconSize / Math.max(iconWidth, iconHeight)}) translate(${-iconWidth / 2}, ${-iconHeight / 2})`
+				},
+				children: []
+			} as INode
+		]
+	} as INode;
+}
+
 export async function getProcessedSvg(
 	iconName: string,
 	options: ProcessedSvgOptions,
@@ -386,9 +404,25 @@ export async function getProcessedSvg(
 	try {
 		const svgAst = await parse(svg);
 
+		const svgAttributes = getSvgAttributes(svg);
+		let iconWidth, iconHeight;
+
+		if (svgAttributes.viewBox) {
+			const viewBoxParts = svgAttributes.viewBox.split(' ');
+			iconWidth = parseInt(viewBoxParts[2]) || 24;
+			iconHeight = parseInt(viewBoxParts[3]) || 24;
+		} else {
+			iconWidth = parseInt(svgAttributes.width || '24');
+			iconHeight = parseInt(svgAttributes.height || '24');
+		}
+
 		const drawingElements = collectDrawingElements(svgAst);
 
 		const cleanedAst = removeDrawingElements(svgAst);
+
+		cleanedAst.attributes.width = '512';
+		cleanedAst.attributes.height = '512';
+		cleanedAst.attributes.viewBox = '0 0 512 512';
 
 		let defs = cleanedAst.children.find((child) => child.name === 'defs');
 		if (!defs) {
@@ -410,15 +444,26 @@ export async function getProcessedSvg(
 			defs.children.push(...createGlassGradientAndFilter(options.iconColor));
 		}
 
+		const transformGroup = createTransformGroup(
+			options.iconSize,
+			iconWidth,
+			iconHeight,
+			options.iconOffsetX,
+			options.iconOffsetY
+		);
+		const innerGroup = transformGroup.children[0];
+
 		if (options.iconGlow) {
-			cleanedAst.children.push(...createGlowLayers(drawingElements, options.iconColor));
+			innerGroup.children.push(...createGlowLayers(drawingElements, options.iconColor));
 		}
 
 		if (options.iconGlass) {
-			cleanedAst.children.push(...createGlassLayers(drawingElements, options.iconColor));
+			innerGroup.children.push(...createGlassLayers(drawingElements, options.iconColor));
 		} else {
-			cleanedAst.children.push(createNormalLayer(drawingElements, options.iconColor));
+			innerGroup.children.push(createNormalLayer(drawingElements, options.iconColor));
 		}
+
+		cleanedAst.children.push(transformGroup);
 
 		return stringify(cleanedAst);
 	} catch (error) {

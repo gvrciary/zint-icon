@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { getSvgAttributesForIcon, getProcessedSvg } from '$lib/data/icons';
+	import { getProcessedSvg } from '$lib/data/icons';
 	import {
 		selectedIcon,
 		iconColor,
@@ -29,18 +29,16 @@
 	let render: () => void;
 	let processedSvg = $state('');
 
-	const svgAttributes = $derived(getSvgAttributesForIcon($selectedIcon, $customSvg));
-
-	const iconWidth = $derived(svgAttributes.width || '24');
-	const iconHeight = $derived(svgAttributes.height || '24');
-
 	$effect(() => {
 		getProcessedSvg(
 			$selectedIcon,
 			{
 				iconGlow: $iconGlow,
 				iconGlass: $iconGlass,
-				iconColor: $iconColor
+				iconColor: $iconColor,
+				iconSize: $iconSize,
+				iconOffsetX: $iconOffsetX,
+				iconOffsetY: $iconOffsetY
 			},
 			$customSvg
 		).then((svg) => {
@@ -156,16 +154,8 @@
 				/>
 			{/if}
 
-			<g transform="translate({256 + $iconOffsetX}, {256 + $iconOffsetY})">
-				<g
-					transform="scale({$iconSize /
-						Math.max(parseInt(iconWidth), parseInt(iconHeight))}) translate({-parseInt(iconWidth) /
-						2}, {-parseInt(iconHeight) / 2})"
-				>
-					<!-- eslint-disable-next-line svelte/no-at-html-tags -->
-					{@html processedSvg}
-				</g>
-			</g>
+			<!-- eslint-disable-next-line svelte/no-at-html-tags -->
+			{@html processedSvg}
 		</svg>
 	</div>
 </div>
