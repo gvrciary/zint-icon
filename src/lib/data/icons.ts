@@ -8,8 +8,7 @@ export interface IconData {
 export const AVAILABLE_ICONS: Record<string, string> = {
 	Notebook:
 		'<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-notebook-icon lucide-notebook"><path d="M2 6h4"/><path d="M2 10h4"/><path d="M2 14h4"/><path d="M2 18h4"/><rect width="16" height="20" x="4" y="2" rx="2"/><path d="M16 2v20"/></svg>',
-	Heart: `<svg xmlns="http://www.w3.org/2000/svg" width="512" height="512" viewBox="0 0 1024 1024"><path fill="#e0245e" stroke="#b71c48" stroke-linecap="round" stroke-linejoin="round" stroke-width="24" d="M923.7 199.1c-53.6-57.9-128.8-90-207.2-90-66.2 0-129 25.6-177.5 72.2-48.1-46.6-111-72.2-177.2-72.2-78.4 0-153.6 32.1-207.2 90-109.2 72.1-119.9 202.6-38.9 290.3l354.1 370.3c11.5 12 30.1 12 41.6 0l354.1-370.3c81-87.7 70.3-218.2-41.8-290.3z"/><circle cx="310" cy="300" r="30" fill="#fff" opacity=".2"/><circle cx="360" cy="260" r="20" fill="#fff" opacity=".1"/></svg>
-`,
+	Award: `<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-award-icon lucide-award"><path d="m15.477 12.89 1.515 8.526a.5.5 0 0 1-.81.47l-3.58-2.687a1 1 0 0 0-1.197 0l-3.586 2.686a.5.5 0 0 1-.81-.469l1.514-8.526"/><circle cx="12" cy="8" r="6"/></svg>`,
 	Apple:
 		'<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-apple-icon lucide-apple"><path d="M12 20.94c1.5 0 2.75 1.06 4 1.06 3 0 6-8 6-12.22A4.91 4.91 0 0 0 17 5c-2.22 0-4 1.44-5 2-1-.56-2.78-2-5-2a4.9 4.9 0 0 0-5 4.78C2 14 5 22 8 22c1.25 0 2.5-1.06 4-1.06Z"/><path d="M10 2c1 .5 2 2 2 5"/></svg>'
 };
@@ -41,7 +40,7 @@ export function getIconSvg(iconName: string, customSvgContent?: string): string 
 	if (iconName === 'Custom' && customSvgContent) {
 		return customSvgContent;
 	}
-	return AVAILABLE_ICONS[iconName] || AVAILABLE_ICONS.Heart;
+	return AVAILABLE_ICONS[iconName] || AVAILABLE_ICONS.Award;
 }
 
 export function getSvgAttributes(svgString: string): {
@@ -76,7 +75,7 @@ export function isValidIcon(iconName: string): boolean {
 	return iconName in AVAILABLE_ICONS;
 }
 
-export const DEFAULT_ICON = 'Heart';
+export const DEFAULT_ICON = 'Award';
 
 export interface ProcessedSvgOptions {
 	iconGlow: boolean;
