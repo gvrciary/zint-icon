@@ -47,17 +47,11 @@
 	});
 
 	const borderStrokeStyle = $derived(() => {
-		if ($borderStroke === 0) return {};
 		const opacity = $borderOpacity / 100;
 		const r = parseInt($borderColor.slice(1, 3), 16);
 		const g = parseInt($borderColor.slice(3, 5), 16);
 		const b = parseInt($borderColor.slice(5, 7), 16);
-		const strokeColor = `rgba(${r}, ${g}, ${b}, ${opacity})`;
-		return {
-			stroke: strokeColor,
-			'stroke-width': $borderStroke,
-			fill: 'transparent'
-		};
+		return `rgba(${r}, ${g}, ${b}, ${opacity})`;
 	});
 
 	$effect(() => {
@@ -149,7 +143,7 @@
 					rx={rectRadius}
 					ry={rectRadius}
 					fill="none"
-					stroke={borderStrokeStyle().stroke}
+					stroke={borderStrokeStyle()}
 					stroke-width={$borderStroke}
 				/>
 			{/if}
