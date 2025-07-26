@@ -86,6 +86,10 @@ export interface ProcessedSvgOptions {
 	iconOffsetY: number;
 }
 
+function hasFilledElements(elements: INode[]): boolean {
+	return elements.some((element) => element.attributes.fill && element.attributes.fill !== 'none');
+}
+
 function cloneNode(node: INode): INode {
 	return {
 		name: node.name,
@@ -258,6 +262,7 @@ function createGlowLayers(drawingElements: INode[], iconColor: string): INode[] 
 	const r = parseInt(iconColor.slice(1, 3), 16);
 	const g = parseInt(iconColor.slice(3, 5), 16);
 	const b = parseInt(iconColor.slice(5, 7), 16);
+	const isFilled = hasFilledElements(drawingElements);
 
 	const layers = [
 		{
@@ -298,15 +303,22 @@ function createGlowLayers(drawingElements: INode[], iconColor: string): INode[] 
 				name: 'g',
 				type: 'element',
 				value: '',
-				attributes: {
-					fill: 'none',
-					stroke: layer.color,
-					'stroke-width': layer.width,
-					'stroke-linecap': 'round',
-					'stroke-linejoin': 'round',
-					filter: layer.filter,
-					opacity: layer.opacity
-				},
+				attributes: isFilled
+					? {
+							fill: layer.color,
+							stroke: 'none',
+							filter: layer.filter,
+							opacity: layer.opacity
+						}
+					: {
+							fill: 'none',
+							stroke: layer.color,
+							'stroke-width': layer.width,
+							'stroke-linecap': 'round',
+							'stroke-linejoin': 'round',
+							filter: layer.filter,
+							opacity: layer.opacity
+						},
 				children: drawingElements.map((el) => cloneNode(el))
 			}) as INode
 	);
@@ -316,18 +328,24 @@ function createGlassLayers(drawingElements: INode[], iconColor: string): INode[]
 	const r = parseInt(iconColor.slice(1, 3), 16);
 	const g = parseInt(iconColor.slice(3, 5), 16);
 	const b = parseInt(iconColor.slice(5, 7), 16);
+	const isFilled = hasFilledElements(drawingElements);
 
 	const mainLayer = {
 		name: 'g',
 		type: 'element',
 		value: '',
-		attributes: {
-			fill: 'none',
-			stroke: 'url(#liquidGlass_stroke)',
-			'stroke-width': '1.75',
-			'stroke-linecap': 'round',
-			'stroke-linejoin': 'round'
-		},
+		attributes: isFilled
+			? {
+					fill: 'url(#liquidGlass_stroke)',
+					stroke: 'none'
+				}
+			: {
+					fill: 'none',
+					stroke: 'url(#liquidGlass_stroke)',
+					'stroke-width': '1.75',
+					'stroke-linecap': 'round',
+					'stroke-linejoin': 'round'
+				},
 		children: drawingElements.map((el) => cloneNode(el))
 	} as INode;
 
@@ -335,14 +353,20 @@ function createGlassLayers(drawingElements: INode[], iconColor: string): INode[]
 		name: 'g',
 		type: 'element',
 		value: '',
-		attributes: {
-			fill: 'none',
-			stroke: `rgba(${Math.min(255, r + 20)}, ${Math.min(255, g + 20)}, ${Math.min(255, b + 20)}, 0.6)`,
-			'stroke-width': '1.5',
-			'stroke-linecap': 'round',
-			'stroke-linejoin': 'round',
-			opacity: '0.9'
-		},
+		attributes: isFilled
+			? {
+					fill: `rgba(${Math.min(255, r + 20)}, ${Math.min(255, g + 20)}, ${Math.min(255, b + 20)}, 0.6)`,
+					stroke: 'none',
+					opacity: '0.9'
+				}
+			: {
+					fill: 'none',
+					stroke: `rgba(${Math.min(255, r + 20)}, ${Math.min(255, g + 20)}, ${Math.min(255, b + 20)}, 0.6)`,
+					'stroke-width': '1.5',
+					'stroke-linecap': 'round',
+					'stroke-linejoin': 'round',
+					opacity: '0.9'
+				},
 		children: drawingElements.map((el) => cloneNode(el))
 	} as INode;
 
@@ -350,17 +374,24 @@ function createGlassLayers(drawingElements: INode[], iconColor: string): INode[]
 }
 
 function createNormalLayer(drawingElements: INode[], iconColor: string): INode {
+	const isFilled = hasFilledElements(drawingElements);
+
 	return {
 		name: 'g',
 		type: 'element',
 		value: '',
-		attributes: {
-			fill: 'none',
-			stroke: iconColor,
-			'stroke-width': '1.5',
-			'stroke-linecap': 'round',
-			'stroke-linejoin': 'round'
-		},
+		attributes: isFilled
+			? {
+					fill: iconColor,
+					stroke: 'none'
+				}
+			: {
+					fill: 'none',
+					stroke: iconColor,
+					'stroke-width': '1.5',
+					'stroke-linecap': 'round',
+					'stroke-linejoin': 'round'
+				},
 		children: drawingElements.map((el) => cloneNode(el))
 	} as INode;
 }
