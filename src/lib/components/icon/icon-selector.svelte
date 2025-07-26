@@ -1,7 +1,7 @@
 <script lang="ts">
 	import { cn } from '$lib/utils';
 	import { RotateCcwIcon, Search } from 'lucide-svelte';
-	import { ICON_NAMES, getIconElements } from '$lib/data/icons';
+	import { ICON_NAMES, getIconElements, getSvgAttributes, AVAILABLE_ICONS } from '$lib/data/icons';
 	import Button from '$lib/components/ui/button.svelte';
 	import { selectedIcon } from '$lib/stores/icon';
 
@@ -56,10 +56,11 @@
 							: '!border-zinc-800 hover:!border-zinc-700'
 					)}
 				>
+					{@const svgAttrs = getSvgAttributes(AVAILABLE_ICONS[iconName])}
 					<svg
 						width="20"
 						height="20"
-						viewBox="0 0 24 24"
+						viewBox={svgAttrs.viewBox || '0 0 24 24'}
 						class={cn(
 							'transition-colors',
 							$selectedIcon === iconName

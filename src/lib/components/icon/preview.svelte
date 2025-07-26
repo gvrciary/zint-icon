@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { getIconElements } from '$lib/data/icons';
+	import { getIconElements, getSvgAttributes, AVAILABLE_ICONS } from '$lib/data/icons';
 	import {
 		selectedIcon,
 		iconColor,
@@ -28,6 +28,12 @@
 	let render: () => void;
 
 	const iconElements = $derived(getIconElements($selectedIcon));
+	const svgAttributes = $derived(
+		getSvgAttributes(AVAILABLE_ICONS[$selectedIcon] || AVAILABLE_ICONS.Heart)
+	);
+	const iconViewBox = $derived(svgAttributes.viewBox || '0 0 24 24');
+	const iconWidth = $derived(svgAttributes.width || '24');
+	const iconHeight = $derived(svgAttributes.height || '24');
 
 	const borderStrokeStyle = $derived(() => {
 		if ($borderStroke === 0) return {};
@@ -211,143 +217,149 @@
 			{/if}
 
 			<g transform="translate({256 + $iconOffsetX}, {256 + $iconOffsetY})">
-				<g transform="scale({$iconSize / 24}) translate(-12, -12)">
-					{#if $iconGlow}
-						<g
-							fill="none"
-							stroke="rgba({parseInt($iconColor.slice(1, 3), 16)}, {parseInt(
-								$iconColor.slice(3, 5),
-								16
-							)}, {parseInt($iconColor.slice(5, 7), 16)}, 0.08)"
-							stroke-width="24"
-							stroke-linecap="round"
-							stroke-linejoin="round"
-							filter="url(#glassBlur5)"
-							opacity="0.15"
-						>
-							{#each iconElements as element, index (index)}
-								<!-- eslint-disable-next-line svelte/no-at-html-tags -->
-								{@html element}
-							{/each}
-						</g>
+				<g
+					transform="scale({$iconSize /
+						Math.max(parseInt(iconWidth), parseInt(iconHeight))}) translate({-parseInt(iconWidth) /
+						2}, {-parseInt(iconHeight) / 2})"
+				>
+					<svg viewBox={iconViewBox} width={iconWidth} height={iconHeight}>
+						{#if $iconGlow}
+							<g
+								fill="none"
+								stroke="rgba({parseInt($iconColor.slice(1, 3), 16)}, {parseInt(
+									$iconColor.slice(3, 5),
+									16
+								)}, {parseInt($iconColor.slice(5, 7), 16)}, 0.08)"
+								stroke-width="24"
+								stroke-linecap="round"
+								stroke-linejoin="round"
+								filter="url(#glassBlur5)"
+								opacity="0.15"
+							>
+								{#each iconElements as element, index (index)}
+									<!-- eslint-disable-next-line svelte/no-at-html-tags -->
+									{@html element}
+								{/each}
+							</g>
 
-						<g
-							fill="none"
-							stroke="rgba({parseInt($iconColor.slice(1, 3), 16)}, {parseInt(
-								$iconColor.slice(3, 5),
-								16
-							)}, {parseInt($iconColor.slice(5, 7), 16)}, 0.12)"
-							stroke-width="16"
-							stroke-linecap="round"
-							stroke-linejoin="round"
-							filter="url(#glassBlur4)"
-							opacity="0.2"
-						>
-							{#each iconElements as element, index (index)}
-								<!-- eslint-disable-next-line svelte/no-at-html-tags -->
-								{@html element}
-							{/each}
-						</g>
+							<g
+								fill="none"
+								stroke="rgba({parseInt($iconColor.slice(1, 3), 16)}, {parseInt(
+									$iconColor.slice(3, 5),
+									16
+								)}, {parseInt($iconColor.slice(5, 7), 16)}, 0.12)"
+								stroke-width="16"
+								stroke-linecap="round"
+								stroke-linejoin="round"
+								filter="url(#glassBlur4)"
+								opacity="0.2"
+							>
+								{#each iconElements as element, index (index)}
+									<!-- eslint-disable-next-line svelte/no-at-html-tags -->
+									{@html element}
+								{/each}
+							</g>
 
-						<g
-							fill="none"
-							stroke="rgba({parseInt($iconColor.slice(1, 3), 16)}, {parseInt(
-								$iconColor.slice(3, 5),
-								16
-							)}, {parseInt($iconColor.slice(5, 7), 16)}, 0.15)"
-							stroke-width="10"
-							stroke-linecap="round"
-							stroke-linejoin="round"
-							filter="url(#glassBlur3)"
-							opacity="0.25"
-						>
-							{#each iconElements as element, index (index)}
-								<!-- eslint-disable-next-line svelte/no-at-html-tags -->
-								{@html element}
-							{/each}
-						</g>
+							<g
+								fill="none"
+								stroke="rgba({parseInt($iconColor.slice(1, 3), 16)}, {parseInt(
+									$iconColor.slice(3, 5),
+									16
+								)}, {parseInt($iconColor.slice(5, 7), 16)}, 0.15)"
+								stroke-width="10"
+								stroke-linecap="round"
+								stroke-linejoin="round"
+								filter="url(#glassBlur3)"
+								opacity="0.25"
+							>
+								{#each iconElements as element, index (index)}
+									<!-- eslint-disable-next-line svelte/no-at-html-tags -->
+									{@html element}
+								{/each}
+							</g>
 
-						<g
-							fill="none"
-							stroke="rgba({parseInt($iconColor.slice(1, 3), 16)}, {parseInt(
-								$iconColor.slice(3, 5),
-								16
-							)}, {parseInt($iconColor.slice(5, 7), 16)}, 0.25)"
-							stroke-width="6"
-							stroke-linecap="round"
-							stroke-linejoin="round"
-							filter="url(#glassBlur2)"
-							opacity="0.4"
-						>
-							{#each iconElements as element, index (index)}
-								<!-- eslint-disable-next-line svelte/no-at-html-tags -->
-								{@html element}
-							{/each}
-						</g>
+							<g
+								fill="none"
+								stroke="rgba({parseInt($iconColor.slice(1, 3), 16)}, {parseInt(
+									$iconColor.slice(3, 5),
+									16
+								)}, {parseInt($iconColor.slice(5, 7), 16)}, 0.25)"
+								stroke-width="6"
+								stroke-linecap="round"
+								stroke-linejoin="round"
+								filter="url(#glassBlur2)"
+								opacity="0.4"
+							>
+								{#each iconElements as element, index (index)}
+									<!-- eslint-disable-next-line svelte/no-at-html-tags -->
+									{@html element}
+								{/each}
+							</g>
 
-						<g
-							fill="none"
-							stroke="rgba({parseInt($iconColor.slice(1, 3), 16)}, {parseInt(
-								$iconColor.slice(3, 5),
-								16
-							)}, {parseInt($iconColor.slice(5, 7), 16)}, 0.15)"
-							stroke-width="4"
-							stroke-linecap="round"
-							stroke-linejoin="round"
-							filter="url(#glassBlur1)"
-							opacity="0.25"
-						>
-							{#each iconElements as element, index (index)}
-								<!-- eslint-disable-next-line svelte/no-at-html-tags -->
-								{@html element}
-							{/each}
-						</g>
-					{/if}
+							<g
+								fill="none"
+								stroke="rgba({parseInt($iconColor.slice(1, 3), 16)}, {parseInt(
+									$iconColor.slice(3, 5),
+									16
+								)}, {parseInt($iconColor.slice(5, 7), 16)}, 0.15)"
+								stroke-width="4"
+								stroke-linecap="round"
+								stroke-linejoin="round"
+								filter="url(#glassBlur1)"
+								opacity="0.25"
+							>
+								{#each iconElements as element, index (index)}
+									<!-- eslint-disable-next-line svelte/no-at-html-tags -->
+									{@html element}
+								{/each}
+							</g>
+						{/if}
 
-					{#if $iconGlass}
-						<g
-							fill="none"
-							stroke="url(#liquidGlass_stroke)"
-							stroke-width="1.75"
-							stroke-linecap="round"
-							stroke-linejoin="round"
-						>
-							{#each iconElements as element, index (index)}
-								<!-- eslint-disable-next-line svelte/no-at-html-tags -->
-								{@html element}
-							{/each}
-						</g>
+						{#if $iconGlass}
+							<g
+								fill="none"
+								stroke="url(#liquidGlass_stroke)"
+								stroke-width="1.75"
+								stroke-linecap="round"
+								stroke-linejoin="round"
+							>
+								{#each iconElements as element, index (index)}
+									<!-- eslint-disable-next-line svelte/no-at-html-tags -->
+									{@html element}
+								{/each}
+							</g>
 
-						<g
-							fill="none"
-							stroke="rgba({Math.min(255, parseInt($iconColor.slice(1, 3), 16) + 20)}, {Math.min(
-								255,
-								parseInt($iconColor.slice(3, 5), 16) + 20
-							)}, {Math.min(255, parseInt($iconColor.slice(5, 7), 16) + 20)}, 0.6)"
-							stroke-width="1.5"
-							stroke-linecap="round"
-							stroke-linejoin="round"
-							opacity="0.9"
-						>
-							{#each iconElements as element, index (index)}
-								<!-- eslint-disable-next-line svelte/no-at-html-tags -->
-								{@html element}
-							{/each}
-						</g>
-					{:else}
-						<g
-							fill="none"
-							stroke={$iconColor}
-							stroke-width="1.5"
-							stroke-linecap="round"
-							stroke-linejoin="round"
-						>
-							{#each iconElements as element, index (index)}
-								<!-- eslint-disable-next-line svelte/no-at-html-tags -->
-								{@html element}
-							{/each}
-						</g>
-					{/if}
+							<g
+								fill="none"
+								stroke="rgba({Math.min(255, parseInt($iconColor.slice(1, 3), 16) + 20)}, {Math.min(
+									255,
+									parseInt($iconColor.slice(3, 5), 16) + 20
+								)}, {Math.min(255, parseInt($iconColor.slice(5, 7), 16) + 20)}, 0.6)"
+								stroke-width="1.5"
+								stroke-linecap="round"
+								stroke-linejoin="round"
+								opacity="0.9"
+							>
+								{#each iconElements as element, index (index)}
+									<!-- eslint-disable-next-line svelte/no-at-html-tags -->
+									{@html element}
+								{/each}
+							</g>
+						{:else}
+							<g
+								fill="none"
+								stroke={$iconColor}
+								stroke-width="1.5"
+								stroke-linecap="round"
+								stroke-linejoin="round"
+							>
+								{#each iconElements as element, index (index)}
+									<!-- eslint-disable-next-line svelte/no-at-html-tags -->
+									{@html element}
+								{/each}
+							</g>
+						{/if}
+					</svg>
 				</g>
 			</g>
 		</svg>
