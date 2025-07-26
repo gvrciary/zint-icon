@@ -245,7 +245,55 @@ function createGlassGradientAndFilter(iconColor: string): INode[] {
 		]
 	} as INode;
 
-	const filter = {
+	const connectivityFilter = {
+		name: 'filter',
+		type: 'element',
+		value: '',
+		attributes: {
+			id: 'liquidGlass_connectivity',
+			x: '-20%',
+			y: '-20%',
+			width: '140%',
+			height: '140%'
+		},
+		children: [
+			{
+				name: 'feMorphology',
+				type: 'element',
+				value: '',
+				attributes: {
+					operator: 'dilate',
+					radius: '0.5',
+					result: 'expanded'
+				},
+				children: []
+			} as INode,
+			{
+				name: 'feGaussianBlur',
+				type: 'element',
+				value: '',
+				attributes: {
+					stdDeviation: '0.8',
+					result: 'blurred'
+				},
+				children: []
+			} as INode,
+			{
+				name: 'feComposite',
+				type: 'element',
+				value: '',
+				attributes: {
+					in: 'SourceGraphic',
+					in2: 'blurred',
+					operator: 'over',
+					result: 'connected'
+				},
+				children: []
+			} as INode
+		]
+	} as INode;
+
+	const mainFilter = {
 		name: 'filter',
 		type: 'element',
 		value: '',
@@ -261,13 +309,13 @@ function createGlassGradientAndFilter(iconColor: string): INode[] {
 				name: 'feGaussianBlur',
 				type: 'element',
 				value: '',
-				attributes: { stdDeviation: '1.5', result: 'blurred' },
+				attributes: { stdDeviation: '1.2', result: 'blurred' },
 				children: []
 			} as INode
 		]
 	} as INode;
 
-	return [gradient, filter];
+	return [gradient, connectivityFilter, mainFilter];
 }
 
 function createGlowLayers(drawingElements: INode[], iconColor: string): INode[] {
