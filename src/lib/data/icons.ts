@@ -102,7 +102,19 @@ function cloneNode(node: INode): INode {
 
 function collectDrawingElements(node: INode): INode[] {
 	const drawingTags = ['path', 'rect', 'circle', 'line', 'ellipse', 'polygon', 'polyline'];
+	const importantAttributes = ['filter', 'mask', 'clip-path', 'clipPath'];
 	const elements: INode[] = [];
+
+	if (node.name === 'g' && node.attributes) {
+		const hasImportantAttribute = importantAttributes.some(
+			(attr) => node.attributes[attr] !== undefined
+		);
+
+		if (hasImportantAttribute) {
+			elements.push(cloneNode(node));
+			return elements;
+		}
+	}
 
 	if (drawingTags.includes(node.name)) {
 		elements.push(cloneNode(node));
@@ -448,6 +460,8 @@ export async function getProcessedSvg(
 
 		const drawingElements = collectDrawingElements(svgAst);
 
+		const originalDefs = svgAst.children.find((child) => child.name === 'defs');
+
 		const cleanedAst = removeDrawingElements(svgAst);
 
 		cleanedAst.attributes.width = '512';
@@ -464,6 +478,10 @@ export async function getProcessedSvg(
 				children: []
 			} as INode;
 			cleanedAst.children.unshift(defs);
+		}
+
+		if (originalDefs && originalDefs.children) {
+			defs.children.push(...originalDefs.children);
 		}
 
 		if (options.iconGlow) {
