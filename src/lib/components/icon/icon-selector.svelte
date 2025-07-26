@@ -1,7 +1,7 @@
 <script lang="ts">
 	import { cn } from '$lib/utils';
 	import { RotateCcwIcon, Search } from 'lucide-svelte';
-	import { ICON_NAMES, getIconElements, getSvgAttributes, AVAILABLE_ICONS } from '$lib/data/icons';
+	import { ICON_NAMES, AVAILABLE_ICONS } from '$lib/data/icons';
 	import Button from '$lib/components/ui/button.svelte';
 	import { selectedIcon } from '$lib/stores/icon';
 
@@ -56,28 +56,17 @@
 							: '!border-zinc-800 hover:!border-zinc-700'
 					)}
 				>
-					{@const svgAttrs = getSvgAttributes(AVAILABLE_ICONS[iconName])}
-					<svg
-						width="20"
-						height="20"
-						viewBox={svgAttrs.viewBox || '0 0 24 24'}
+					<div
 						class={cn(
-							'transition-colors',
+							'h-5 w-5 transition-colors [&>svg]:h-full [&>svg]:w-full',
 							$selectedIcon === iconName
-								? 'text-[#8564FA]'
-								: 'text-zinc-400 group-hover:text-zinc-300'
+								? 'text-[#8564FA] [&>svg]:stroke-[#8564FA]'
+								: 'text-zinc-400 group-hover:text-zinc-300 [&>svg]:stroke-zinc-400 group-hover:[&>svg]:stroke-zinc-300'
 						)}
-						fill="none"
-						stroke="currentColor"
-						stroke-width="1.5"
-						stroke-linecap="round"
-						stroke-linejoin="round"
 					>
-						{#each getIconElements(iconName) as element, index (index)}
-							<!-- eslint-disable-next-line svelte/no-at-html-tags -->
-							{@html element}
-						{/each}
-					</svg>
+						<!-- eslint-disable-next-line svelte/no-at-html-tags -->
+						{@html AVAILABLE_ICONS[iconName]}
+					</div>
 
 					<span
 						class={cn(
