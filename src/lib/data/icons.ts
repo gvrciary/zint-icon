@@ -129,26 +129,6 @@ function collectDrawingElements(node: INode): INode[] {
 	return elements;
 }
 
-function removeDrawingElements(node: INode): INode {
-	const drawingTags = ['path', 'rect', 'circle', 'line', 'ellipse', 'polygon', 'polyline'];
-
-	const newNode = {
-		name: node.name,
-		type: node.type,
-		value: node.value,
-		attributes: { ...node.attributes },
-		children: []
-	} as INode;
-
-	if (!drawingTags.includes(node.name) && node.children) {
-		newNode.children = node.children
-			.filter((child) => !drawingTags.includes(child.name))
-			.map((child) => removeDrawingElements(child));
-	}
-
-	return newNode;
-}
-
 function createGlowFilters(): INode[] {
 	const filters = [
 		{ id: 'glassBlur1', size: '400%', offset: '-100%', blur: '2', result: 'blur1' },
@@ -456,34 +436,6 @@ function createNormalLayer(drawingElements: INode[], iconColor: string): INode {
 	} as INode;
 }
 
-function createTransformGroup(
-	iconSize: number,
-	iconWidth: number,
-	iconHeight: number,
-	iconOffsetX: number,
-	iconOffsetY: number
-): INode {
-	return {
-		name: 'g',
-		type: 'element',
-		value: '',
-		attributes: {
-			transform: `translate(${256 + iconOffsetX}, ${256 + iconOffsetY})`
-		},
-		children: [
-			{
-				name: 'g',
-				type: 'element',
-				value: '',
-				attributes: {
-					transform: `scale(${iconSize / Math.max(iconWidth, iconHeight)}) translate(${-iconWidth / 2}, ${-iconHeight / 2})`
-				},
-				children: []
-			} as INode
-		]
-	} as INode;
-}
-
 export async function getProcessedSvg(
 	iconName: string,
 	options: ProcessedSvgOptions,
@@ -493,10 +445,9 @@ export async function getProcessedSvg(
 
 	try {
 		const svgAst = await parse(svg);
-
 		const svgAttributes = getSvgAttributes(svg);
-		let iconWidth, iconHeight;
 
+		let iconWidth, iconHeight;
 		if (svgAttributes.viewBox) {
 			const viewBoxParts = svgAttributes.viewBox.split(' ');
 			iconWidth = parseInt(viewBoxParts[2]) || 24;
@@ -506,31 +457,63 @@ export async function getProcessedSvg(
 			iconHeight = parseInt(svgAttributes.height || '24');
 		}
 
-		const drawingElements = collectDrawingElements(svgAst);
+		if (!options.iconGlow && !options.iconGlass) {
+			const scale = options.iconSize / Math.max(iconWidth, iconHeight);
+			const scaledWidth = iconWidth * scale;
+			const scaledHeight = iconHeight * scale;
+			const x = 256 - scaledWidth / 2 + options.iconOffsetX;
+			const y = 256 - scaledHeight / 2 + options.iconOffsetY;
 
-		const originalDefs = svgAst.children.find((child) => child.name === 'defs');
+			const modifiedSvg = cloneNode(svgAst);
+			modifiedSvg.attributes.width = Math.round(scaledWidth).toString();
+			modifiedSvg.attributes.height = Math.round(scaledHeight).toString();
+			modifiedSvg.attributes.x = Math.round(x).toString();
+			modifiedSvg.attributes.y = Math.round(y).toString();
+			modifiedSvg.attributes.style = `color: ${options.iconColor};`;
+			modifiedSvg.attributes['alignment-baseline'] = 'middle';
 
-		const cleanedAst = removeDrawingElements(svgAst);
-
-		cleanedAst.attributes.width = '512';
-		cleanedAst.attributes.height = '512';
-		cleanedAst.attributes.viewBox = '0 0 512 512';
-
-		let defs = cleanedAst.children.find((child) => child.name === 'defs');
-		if (!defs) {
-			defs = {
-				name: 'defs',
+			const containerSvg: INode = {
+				name: 'svg',
 				type: 'element',
 				value: '',
-				attributes: {},
-				children: []
-			} as INode;
-			cleanedAst.children.unshift(defs);
+				attributes: {
+					width: '512',
+					height: '512',
+					viewBox: '0 0 512 512',
+					fill: 'none',
+					xmlns: 'http://www.w3.org/2000/svg',
+					'xmlns:xlink': 'http://www.w3.org/1999/xlink',
+					class: ''
+				},
+				children: [modifiedSvg]
+			};
+
+			return stringify(containerSvg);
 		}
 
-		if (originalDefs && originalDefs.children) {
-			defs.children.push(...originalDefs.children);
-		}
+		const containerSvg: INode = {
+			name: 'svg',
+			type: 'element',
+			value: '',
+			attributes: {
+				width: '512',
+				height: '512',
+				viewBox: '0 0 512 512',
+				fill: 'none',
+				xmlns: 'http://www.w3.org/2000/svg',
+				'xmlns:xlink': 'http://www.w3.org/1999/xlink',
+				class: ''
+			},
+			children: []
+		};
+
+		const defs = {
+			name: 'defs',
+			type: 'element',
+			value: '',
+			attributes: {},
+			children: []
+		} as INode;
 
 		if (options.iconGlow) {
 			defs.children.push(...createGlowFilters());
@@ -540,28 +523,77 @@ export async function getProcessedSvg(
 			defs.children.push(...createGlassGradientAndFilter(options.iconColor));
 		}
 
-		const transformGroup = createTransformGroup(
-			options.iconSize,
-			iconWidth,
-			iconHeight,
-			options.iconOffsetX,
-			options.iconOffsetY
-		);
-		const innerGroup = transformGroup.children[0];
+		containerSvg.children.push(defs);
+
+		const drawingElements = collectDrawingElements(svgAst);
 
 		if (options.iconGlow) {
-			innerGroup.children.push(...createGlowLayers(drawingElements, options.iconColor));
-		}
+			const transformGroup: INode = {
+				name: 'g',
+				type: 'element',
+				value: '',
+				attributes: {
+					transform: `translate(${256 + options.iconOffsetX}, ${256 + options.iconOffsetY})`
+				},
+				children: [
+					{
+						name: 'g',
+						type: 'element',
+						value: '',
+						attributes: {
+							transform: `scale(${options.iconSize / Math.max(iconWidth, iconHeight)}) translate(${-iconWidth / 2}, ${-iconHeight / 2})`
+						},
+						children: [...createGlowLayers(drawingElements, options.iconColor)]
+					} as INode
+				]
+			} as INode;
 
-		if (options.iconGlass) {
-			innerGroup.children.push(...createGlassLayers(drawingElements, options.iconColor));
+			if (options.iconGlass) {
+				transformGroup.children[0].children.push(
+					...createGlassLayers(drawingElements, options.iconColor)
+				);
+			} else {
+				transformGroup.children[0].children.push(
+					createNormalLayer(drawingElements, options.iconColor)
+				);
+			}
+
+			containerSvg.children.push(transformGroup);
 		} else {
-			innerGroup.children.push(createNormalLayer(drawingElements, options.iconColor));
+			const scale = options.iconSize / Math.max(iconWidth, iconHeight);
+			const scaledWidth = iconWidth * scale;
+			const scaledHeight = iconHeight * scale;
+			const x = 256 - scaledWidth / 2 + options.iconOffsetX;
+			const y = 256 - scaledHeight / 2 + options.iconOffsetY;
+
+			const nestedSvg: INode = {
+				name: 'svg',
+				type: 'element',
+				value: '',
+				attributes: {
+					xmlns: 'http://www.w3.org/2000/svg',
+					fill: 'none',
+					viewBox: svgAttributes.viewBox || `0 0 ${iconWidth} ${iconHeight}`,
+					width: Math.round(scaledWidth).toString(),
+					height: Math.round(scaledHeight).toString(),
+					x: Math.round(x).toString(),
+					y: Math.round(y).toString(),
+					style: `color: ${options.iconColor};`,
+					'alignment-baseline': 'middle'
+				},
+				children: []
+			};
+
+			if (options.iconGlass) {
+				nestedSvg.children.push(...createGlassLayers(drawingElements, options.iconColor));
+			} else {
+				nestedSvg.children.push(createNormalLayer(drawingElements, options.iconColor));
+			}
+
+			containerSvg.children.push(nestedSvg);
 		}
 
-		cleanedAst.children.push(transformGroup);
-
-		return stringify(cleanedAst);
+		return stringify(containerSvg);
 	} catch (error) {
 		console.error('Error processing SVG:', error);
 		return svg;
