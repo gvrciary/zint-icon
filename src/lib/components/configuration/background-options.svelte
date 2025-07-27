@@ -89,11 +89,9 @@
 				<div class="flex gap-2">
 					<Button variant="secondary" size="sm" onclick={refreshMeshPositions}>
 						<RefreshCw class="h-3 w-3" />
-						Refresh
 					</Button>
 					<Button variant="secondary" size="sm" onclick={addMeshGradientColor}>
 						<Plus class="h-3 w-3" />
-						Add
 					</Button>
 				</div>
 			</div>

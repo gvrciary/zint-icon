@@ -72,22 +72,4 @@
 			<Check class="h-4 w-4 text-green-400" />
 		</div>
 	</div>
-
-	<div class="relative w-12 text-center">
-		<span
-			class="absolute inset-0 flex items-center justify-center transition-all duration-200 ease-in-out {copied
-				? 'scale-95 opacity-0'
-				: 'scale-100 opacity-100'}"
-		>
-			Copy
-		</span>
-
-		<span
-			class="absolute inset-0 flex items-center justify-center transition-all duration-200 ease-in-out {copied
-				? 'scale-100 text-green-400 opacity-100'
-				: 'scale-95 opacity-0'}"
-		>
-			Copied
-		</span>
-	</div>
 </Button>
