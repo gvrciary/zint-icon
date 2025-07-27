@@ -47,18 +47,30 @@
 	const percentage = $derived(((value - min) / (max - min)) * 100);
 </script>
 
-<div class={cn('flex items-center gap-3', className)} {...restProps}>
-	{#if label}
-		<span class="min-w-fit text-sm text-zinc-300">{label}</span>
-	{/if}
+<div class={cn('space-y-3', className)} {...restProps}>
+	<div class="flex items-center justify-between">
+		{#if label}
+			<span class="text-sm font-medium text-gray-300">{label}</span>
+		{/if}
+		{#if showValue}
+			<span class="text-sm font-medium text-gray-400">{Math.round(value)}</span>
+		{/if}
+	</div>
 
-	<div class="relative flex-1">
-		<div class="relative h-3 overflow-hidden rounded-full bg-zinc-800">
+	<div class="relative">
+		<div
+			class="relative h-3 overflow-hidden rounded-full border border-[#333] bg-[#1f1f1f57] backdrop-blur-sm"
+		>
 			<div
-				class="absolute left-0 top-0 h-full rounded-full bg-[#8564FA] transition-all duration-200"
+				class="absolute left-0 top-0 h-full rounded-full bg-gradient-to-r from-white/80 via-white/90 to-white/70 transition-all duration-200 ease-out"
 				style="width: {percentage}%"
-			></div>
+			>
+				<div
+					class="absolute inset-0 rounded-full bg-gradient-to-r from-white/20 via-white/10 to-transparent"
+				></div>
+			</div>
 		</div>
+
 		<input
 			bind:this={sliderRef}
 			type="range"
@@ -72,54 +84,68 @@
 			style="will-change: transform;"
 		/>
 	</div>
-
-	{#if showValue}
-		<span class="min-w-[2rem] text-right font-mono text-sm text-zinc-400">
-			{Math.round(value)}
-		</span>
-	{/if}
 </div>
 
 <style>
 	input[type='range'] {
 		-webkit-appearance: none;
 		appearance: none;
+		background: transparent;
 	}
 
 	input[type='range']::-webkit-slider-thumb {
 		-webkit-appearance: none;
 		appearance: none;
-		width: 16px;
-		height: 16px;
+		width: 18px;
+		height: 18px;
 		border-radius: 50%;
-		background: #8564fa;
+		background: linear-gradient(135deg, #ffffff, #e5e7eb);
 		cursor: pointer;
-		border: 2px solid #fff;
-		box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.2);
+		border: 2px solid rgba(255, 255, 255, 0.8);
+		box-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
 		position: relative;
 		z-index: 10;
 	}
 
 	input[type='range']::-moz-range-thumb {
-		width: 16px;
-		height: 16px;
+		width: 18px;
+		height: 18px;
 		border-radius: 50%;
-		background: #8564fa;
+		background: linear-gradient(135deg, #ffffff, #e5e7eb);
 		cursor: pointer;
-		border: 2px solid #fff;
-		box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.2);
+		border: 2px solid rgba(255, 255, 255, 0.8);
+		box-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
 		box-sizing: border-box;
-		border: none;
 	}
 
 	input[type='range']::-moz-range-track {
 		background: transparent;
 		border: none;
+		height: 12px;
+	}
+
+	input[type='range']::-webkit-slider-track {
+		background: transparent;
+		border: none;
+		height: 12px;
+	}
+
+	input[type='range']:disabled {
+		opacity: 0.5;
 	}
 
 	input[type='range']:disabled::-webkit-slider-thumb,
 	input[type='range']:disabled::-moz-range-thumb {
 		background: rgb(113 113 122);
 		cursor: not-allowed;
+	}
+
+	input[type='range']:focus {
+		outline: none;
+	}
+
+	input[type='range']:focus-visible {
+		outline: 2px solid rgba(255, 255, 255, 0.3);
+		outline-offset: 2px;
 	}
 </style>

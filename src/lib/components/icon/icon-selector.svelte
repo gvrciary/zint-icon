@@ -3,8 +3,8 @@
 	import { Search, ShuffleIcon } from 'lucide-svelte';
 	import { AVAILABLE_ICONS, getIconSvg, ICON_NAMES, getRandomIcon } from '$lib/data/icons';
 	import Button from '$lib/components/ui/button.svelte';
-	import { selectedIcon, customSvg, customPng, customContentType } from '$lib/stores/icon';
 	import { Upload } from 'lucide-svelte';
+	import { selectedIcon, customSvg, customPng, customContentType } from '$lib/stores/icon';
 
 	function selectRandomIcon() {
 		const randomIcon = getRandomIcon();
@@ -61,96 +61,97 @@
 	});
 </script>
 
-<div class="flex h-full flex-1 flex-col overflow-hidden">
-	<div class="flex-shrink-0 border-b border-white/5 p-4">
-		<div class="mb-4 flex items-center justify-between">
-			<span class="text-sm font-medium text-white/80">Icons</span>
-
-			<div class="flex gap-2">
-				<Button
-					variant="secondary"
-					size="sm"
-					onclick={selectRandomIcon}
-					class="!text-zinc-300 hover:!border-[#8564FA] hover:!bg-[#8564FA]/10 hover:!text-[#8564FA]"
-				>
-					<ShuffleIcon class="h-4 w-4" />
-				</Button>
-
-				<Button
-					variant="secondary"
-					size="sm"
-					onclick={() => fileInput.click()}
-					class="!text-zinc-300 hover:!border-[#8564FA] hover:!bg-[#8564FA]/10 hover:!text-[#8564FA]"
-				>
-					<Upload class="h-4 w-4" />
-				</Button>
-
+<div class="flex h-full flex-1 flex-col space-y-6 overflow-hidden p-4">
+	<div class="rounded-2xl border border-[#333] bg-[#1f1f1f57] p-4 backdrop-blur-sm">
+		<div class="relative flex items-center gap-2">
+			<div class="relative flex-1">
+				<Search class="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 transform text-gray-500" />
 				<input
-					bind:this={fileInput}
-					type="file"
-					accept=".svg,.png,.jpg,.jpeg,.webp,image/svg+xml,image/png,image/jpeg,image/webp"
-					onchange={handleFileUpload}
-					class="hidden"
+					type="text"
+					bind:value={searchQuery}
+					placeholder="Search icons..."
+					class="w-full rounded-full border border-[#333] bg-[rgba(31,31,31,0.62)] py-2.5 pl-10 pr-4 text-sm text-gray-300 backdrop-blur-sm transition-all duration-200 placeholder:text-gray-500 focus:border-white/30 focus:outline-none focus:ring-0"
 				/>
 			</div>
-		</div>
 
-		<div class="relative">
-			<Search class="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 transform text-zinc-500" />
+			<Button
+				variant="glass-icon"
+				size="sm"
+				onclick={selectRandomIcon}
+				title="Random Icon"
+				class="h-10 w-10"
+			>
+				<ShuffleIcon class="h-4 w-4" />
+			</Button>
+
+			<Button
+				variant="glass-icon"
+				size="sm"
+				onclick={() => fileInput.click()}
+				title="Upload Icon"
+				class="h-10 w-10"
+			>
+				<Upload class="h-4 w-4" />
+			</Button>
+
 			<input
-				type="text"
-				bind:value={searchQuery}
-				placeholder="Search icons..."
-				class="w-full rounded-lg border border-zinc-800 bg-black/20 py-2.5 pl-10 pr-4 text-sm text-white transition-colors placeholder:text-zinc-500 focus:border-transparent focus:outline-none focus:ring-2 focus:ring-[#8564FA]/50"
+				bind:this={fileInput}
+				type="file"
+				accept=".svg,.png,.jpg,.jpeg,.webp,image/svg+xml,image/png,image/jpeg,image/webp"
+				onchange={handleFileUpload}
+				class="hidden"
 			/>
 		</div>
 	</div>
 
-	<div class="min-h-0 flex-1 overflow-y-auto p-4">
-		<div class="grid grid-cols-4 gap-2">
-			{#each filteredIcons() as iconName (iconName)}
-				<Button
-					variant="secondary"
-					size="sm"
-					onclick={() => selectedIcon.set(iconName)}
-					title={iconName}
-					class={cn(
-						'group !flex-col !p-3 hover:!bg-zinc-800/30',
-						$selectedIcon === iconName
-							? '!border-[#8564FA] !bg-[#8564FA]/10'
-							: '!border-zinc-800 hover:!border-zinc-700'
-					)}
-				>
-					<div
+	<div class="rounded-2xl border border-[#333] bg-[#1f1f1f57] p-4 backdrop-blur-sm">
+		<div class="mb-4">
+			<span class="text-sm font-medium text-gray-300">Icons</span>
+		</div>
+		<div class="max-h-48 overflow-y-auto">
+			<div class="grid grid-cols-4 gap-3">
+				{#each filteredIcons() as iconName (iconName)}
+					<Button
+						variant="glass-nav"
+						size="sm"
+						onclick={() => selectedIcon.set(iconName)}
+						title={iconName}
 						class={cn(
-							'h-10 w-5 transition-colors [&>svg]:h-full [&>svg]:w-full',
-							$selectedIcon === iconName
-								? 'text-[#8564FA] [&>svg]:stroke-[#8564FA]'
-								: 'text-zinc-400 group-hover:text-zinc-300 [&>svg]:stroke-zinc-400 group-hover:[&>svg]:stroke-zinc-300'
+							'group flex flex-col items-center justify-center p-3',
+							$selectedIcon === iconName ? '!border-white/30 !bg-white/10 shadow-lg' : ''
 						)}
 					>
-						{#if iconName === 'Custom'}
-							{#if $customContentType === 'png'}
-								<img src={$customPng} alt="Custom" class="h-full w-full object-contain" />
+						<div
+							class={cn(
+								'h-8 w-8 transition-colors [&>svg]:h-full [&>svg]:w-full',
+								$selectedIcon === iconName
+									? 'text-white [&>svg]:stroke-white'
+									: 'text-gray-400 group-hover:text-gray-300 [&>svg]:stroke-gray-400 group-hover:[&>svg]:stroke-gray-300'
+							)}
+						>
+							{#if iconName === 'Custom'}
+								{#if $customContentType === 'png'}
+									<img src={$customPng} alt="Custom" class="h-full w-full object-contain" />
+								{:else}
+									<!-- eslint-disable-next-line svelte/no-at-html-tags -->
+									{@html getIconSvg(iconName, $customSvg, $customPng, $customContentType)}
+								{/if}
 							{:else}
 								<!-- eslint-disable-next-line svelte/no-at-html-tags -->
-								{@html getIconSvg(iconName, $customSvg, $customPng, $customContentType)}
+								{@html AVAILABLE_ICONS[iconName]}
 							{/if}
-						{:else}
-							<!-- eslint-disable-next-line svelte/no-at-html-tags -->
-							{@html AVAILABLE_ICONS[iconName]}
-						{/if}
-					</div>
-				</Button>
-			{/each}
-		</div>
-
-		{#if filteredIcons().length === 0}
-			<div class="flex flex-col items-center justify-center py-12 text-center">
-				<Search class="mb-4 h-12 w-12 text-zinc-600" />
-				<p class="text-sm text-zinc-400">No icons found</p>
-				<p class="mt-1 text-xs text-zinc-600">Try a different search term</p>
+						</div>
+					</Button>
+				{/each}
 			</div>
-		{/if}
+
+			{#if filteredIcons().length === 0}
+				<div class="flex flex-col items-center justify-center py-12 text-center">
+					<Search class="mb-4 h-12 w-12 text-gray-600" />
+					<p class="text-sm text-gray-400">No icons found</p>
+					<p class="mt-1 text-xs text-gray-600">Try a different search term</p>
+				</div>
+			{/if}
+		</div>
 	</div>
 </div>

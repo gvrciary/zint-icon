@@ -275,20 +275,26 @@
 </script>
 
 <header class="fixed left-0 right-0 top-0 z-50 transition-all duration-300">
-	<div class="px-4 py-4 md:px-6 md:py-6">
+	<div class="px-4 py-3 md:px-6 md:py-4">
 		<nav class="flex items-center justify-between">
 			<a href="/" class="group flex items-center space-x-3">
 				<div class="relative h-8 w-8 overflow-hidden">
 					<img src="/logo.svg" alt="Zin Icon Logo" class="h-full w-full object-cover" />
 				</div>
-				<span class="font-mono text-xl text-white">ZintIcon</span>
+				<div class="flex items-center gap-2">
+					<span class="text-xl text-white">ZintIcon</span>
+					<span
+						class="rounded-full border border-[#333] bg-[#1f1f1f57] px-2 py-0.5 text-xs font-medium text-gray-300 backdrop-blur-sm"
+						>beta</span
+					>
+				</div>
 			</a>
 
 			<div class="hidden items-center gap-2 md:flex">
 				<CopyButton text={svgContent} />
 
 				<div class="relative" bind:this={dropdownRef}>
-					<Button variant="primary" size="md" onclick={toggleDownloadDropdown} title="Download">
+					<Button variant="glass" size="md" onclick={toggleDownloadDropdown} title="Download">
 						<Download class="h-4 w-4" />
 						Download
 						<ChevronDown class="ml-1 h-3 w-3" />
@@ -296,11 +302,13 @@
 
 					{#if isDownloadDropdownOpen}
 						<div
-							class="absolute right-0 top-full z-50 mt-1 w-48 rounded-md border border-gray-700 bg-gray-800 shadow-lg"
+							class="absolute right-0 top-full z-50 mt-2 w-56 rounded-2xl border border-[#333] bg-[#1f1f1f57] shadow-2xl backdrop-blur-md"
 						>
-							<div class="flex items-center gap-2 px-3 py-2 hover:bg-gray-700">
+							<div
+								class="flex items-center justify-between gap-3 px-4 py-3 transition-colors hover:bg-white/5"
+							>
 								<button
-									class="text-left text-sm text-white"
+									class="text-left text-sm text-gray-300 hover:text-white"
 									onclick={() => {
 										exportPNG();
 										isDownloadDropdownOpen = false;
@@ -312,11 +320,11 @@
 									type="number"
 									bind:value={$downloadResolution}
 									placeholder="512"
-									class="h-6 w-16 text-xs"
+									class="h-7 w-20 text-xs"
 								/>
 							</div>
 							<button
-								class="w-full rounded-t-md px-3 py-2 text-left text-sm text-white hover:bg-gray-700"
+								class="w-full px-4 py-3 text-left text-sm text-gray-300 transition-colors hover:bg-white/5 hover:text-white"
 								onclick={() => {
 									exportSVG();
 									isDownloadDropdownOpen = false;
@@ -325,7 +333,7 @@
 								SVG
 							</button>
 							<button
-								class="w-full rounded-b-md px-3 py-2 text-left text-sm text-white hover:bg-gray-700"
+								class="w-full px-4 py-3 text-left text-sm text-gray-300 transition-colors hover:bg-white/5 hover:text-white"
 								onclick={() => {
 									exportICO();
 									isDownloadDropdownOpen = false;
@@ -345,13 +353,13 @@
 	</div>
 
 	{#if isMobileMenuOpen}
-		<div class="border-t border-white/5 bg-black/90 backdrop-blur-sm md:hidden">
-			<div class="px-4 py-4 md:px-6">
+		<div class="border-t border-[#333] bg-[#1f1f1f57] backdrop-blur-md md:hidden">
+			<div class="px-4 py-3 md:px-6">
 				<div class="flex gap-2">
 					<CopyButton text={svgContent} class="flex-1" />
 
 					<div class="relative flex-1">
-						<Button variant="primary" size="md" onclick={toggleDownloadDropdown} class="w-full">
+						<Button variant="glass" size="md" onclick={toggleDownloadDropdown} class="w-full">
 							<Download class="h-4 w-4" />
 							Download
 							<ChevronDown class="ml-1 h-3 w-3" />
@@ -359,10 +367,10 @@
 
 						{#if isDownloadDropdownOpen}
 							<div
-								class="absolute right-0 top-full z-50 mt-1 w-full rounded-md border border-gray-700 bg-gray-800 shadow-lg"
+								class="absolute right-0 top-full z-50 mt-2 w-full rounded-2xl border border-[#333] bg-[#1f1f1f57] shadow-2xl backdrop-blur-md"
 							>
 								<button
-									class="w-full rounded-t-md px-3 py-2 text-left text-sm text-white hover:bg-gray-700"
+									class="w-full px-4 py-3 text-left text-sm text-gray-300 transition-colors hover:bg-white/5 hover:text-white"
 									onclick={() => {
 										exportSVG();
 										isDownloadDropdownOpen = false;
@@ -370,9 +378,11 @@
 								>
 									SVG
 								</button>
-								<div class="flex items-center gap-2 px-3 py-2 hover:bg-gray-700">
+								<div
+									class="flex items-center justify-between gap-3 px-4 py-3 transition-colors hover:bg-white/5"
+								>
 									<button
-										class="flex-1 text-left text-sm text-white"
+										class="text-left text-sm text-gray-300 hover:text-white"
 										onclick={() => {
 											exportPNG();
 											isDownloadDropdownOpen = false;
@@ -381,14 +391,14 @@
 										PNG
 									</button>
 									<Input
-										type="text"
+										type="number"
 										bind:value={$downloadResolution}
 										placeholder="512"
-										class="h-6 w-16 text-xs"
+										class="h-7 w-20 text-xs"
 									/>
 								</div>
 								<button
-									class="w-full rounded-b-md px-3 py-2 text-left text-sm text-white hover:bg-gray-700"
+									class="w-full px-4 py-3 text-left text-sm text-gray-300 transition-colors hover:bg-white/5 hover:text-white"
 									onclick={() => {
 										exportICO();
 										isDownloadDropdownOpen = false;

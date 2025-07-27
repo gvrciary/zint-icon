@@ -9,12 +9,7 @@
 		disabled?: boolean;
 	}
 
-	let {
-		text,
-		size = 'md',
-		class: className = '',
-		disabled = false
-	}: Props = $props();
+	let { text, size = 'md', class: className = '', disabled = false }: Props = $props();
 
 	let copied = $state(false);
 	let timeoutId: number;
@@ -48,14 +43,14 @@
 </script>
 
 <Button
-	variant="download"
+	variant="glass"
 	{size}
 	{disabled}
-	title={copied ? 'Copied!' : "Copy"}
+	title={copied ? 'Copied!' : 'Copy'}
 	class={className}
 	onclick={handleCopy}
 >
-	<div class="relative flex items-center">
+	<div class="relative flex items-center justify-center">
 		<div
 			class="transition-all duration-200 ease-in-out {copied
 				? 'rotate-45 scale-0 opacity-0'
