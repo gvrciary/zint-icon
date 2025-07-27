@@ -1,6 +1,6 @@
 <script lang="ts">
 	import { cn } from '$lib/utils';
-	import { RotateCcwIcon, Search } from 'lucide-svelte';
+	import { Search, ShuffleIcon } from 'lucide-svelte';
 	import { AVAILABLE_ICONS, getIconSvg, ICON_NAMES } from '$lib/data/icons';
 	import Button from '$lib/components/ui/button.svelte';
 	import { selectedIcon, customSvg } from '$lib/stores/icon';
@@ -57,8 +57,7 @@
 				onclick={selectRandomIcon}
 				class="!text-zinc-300 hover:!border-[#8564FA] hover:!bg-[#8564FA]/10 hover:!text-[#8564FA]"
 			>
-				<RotateCcwIcon class="mr-2 h-4 w-4" />
-				Random
+				<ShuffleIcon class="h-4 w-4" />
 			</Button>
 
 			<Button
@@ -67,8 +66,7 @@
 				onclick={() => fileInput.click()}
 				class="!text-zinc-300 hover:!border-[#8564FA] hover:!bg-[#8564FA]/10 hover:!text-[#8564FA]"
 			>
-				<Upload class="mr-2 h-4 w-4" />
-				Upload SVG
+				<Upload class="h-4 w-4" />
 			</Button>
 
 			<input
@@ -108,7 +106,7 @@
 				>
 					<div
 						class={cn(
-							'h-5 w-5 transition-colors [&>svg]:h-full [&>svg]:w-full',
+							'h-10 w-5 transition-colors [&>svg]:h-full [&>svg]:w-full',
 							$selectedIcon === iconName
 								? 'text-[#8564FA] [&>svg]:stroke-[#8564FA]'
 								: 'text-zinc-400 group-hover:text-zinc-300 [&>svg]:stroke-zinc-400 group-hover:[&>svg]:stroke-zinc-300'
@@ -119,17 +117,6 @@
 							? getIconSvg(iconName, $customSvg)
 							: AVAILABLE_ICONS[iconName]}
 					</div>
-
-					<span
-						class={cn(
-							'mt-1.5 w-full truncate text-center text-xs transition-colors',
-							$selectedIcon === iconName
-								? 'text-[#8564FA]'
-								: 'text-zinc-500 group-hover:text-zinc-400'
-						)}
-					>
-						{iconName}
-					</span>
 				</Button>
 			{/each}
 		</div>
