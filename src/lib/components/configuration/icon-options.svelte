@@ -11,6 +11,23 @@
 	} from '$lib/stores/icon';
 	import Input from '$lib/components/ui/input.svelte';
 	import Slider from '$lib/components/ui/slider.svelte';
+
+	let isMobile = $state(false);
+
+	$effect(() => {
+		if (typeof window !== 'undefined') {
+			const updateMobile = () => {
+				isMobile = window.innerWidth < 1024;
+			};
+
+			updateMobile();
+			window.addEventListener('resize', updateMobile);
+
+			return () => {
+				window.removeEventListener('resize', updateMobile);
+			};
+		}
+	});
 </script>
 
 <div class="space-y-6 overflow-hidden">
@@ -60,7 +77,7 @@
 		/>
 	</div>
 
-	{#if !($selectedIcon === 'Custom' && $customContentType === 'png')}
+	{#if !($selectedIcon === 'Custom' && $customContentType === 'png') && !isMobile}
 		<div class="rounded-2xl border border-[#333] bg-[#1f1f1f57] p-4 backdrop-blur-sm">
 			<Input type="checkbox" bind:value={$iconGlass} label="Glass Effect" />
 		</div>

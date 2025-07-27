@@ -7,7 +7,7 @@
 	import Button from '$lib/components/ui/button.svelte';
 	import { FlameIcon, ImageIcon } from 'lucide-svelte';
 
-	let activeAside: 'icons' | 'options' = 'icons';
+	let activeAside: 'icon' | 'background' = 'icon';
 </script>
 
 <Header />
@@ -57,7 +57,7 @@
 			<aside
 				class="flex flex-1 flex-col overflow-hidden rounded-t-2xl border border-[#333] bg-[#1f1f1f57] backdrop-blur-sm"
 			>
-				<div class="{activeAside === 'icons' ? 'flex' : 'hidden'} h-full flex-col overflow-hidden">
+				<div class="{activeAside === 'icon' ? 'flex' : 'hidden'} h-full flex-col overflow-hidden">
 					<div class="flex-1 space-y-6 overflow-y-auto p-6">
 						<div class="space-y-4">
 							<IconSelector />
@@ -70,7 +70,7 @@
 				</div>
 
 				<div
-					class="{activeAside === 'options' ? 'flex' : 'hidden'} h-full flex-col overflow-hidden"
+					class="{activeAside === 'background' ? 'flex' : 'hidden'} h-full flex-col overflow-hidden"
 				>
 					<div class="flex-1 space-y-6 overflow-y-auto p-6">
 						<div class="space-y-4">
@@ -87,10 +87,10 @@
 				<Button
 					variant="glass"
 					size="sm"
-					class="flex-1 flex-col gap-1 py-4 {activeAside === 'icons'
+					class="flex-1 flex-col gap-1 py-4 {activeAside === 'icon'
 						? '!border-white/20 !bg-white/10 !text-white'
 						: ''}"
-					onclick={() => (activeAside = 'icons')}
+					onclick={() => (activeAside = 'icon')}
 				>
 					<FlameIcon class="h-5 w-5" />
 					<span class="text-xs font-medium">Icon</span>
@@ -98,10 +98,10 @@
 				<Button
 					variant="glass"
 					size="sm"
-					class="flex-1 flex-col gap-1 py-4 {activeAside === 'options'
+					class="flex-1 flex-col gap-1 py-4 {activeAside === 'background'
 						? '!border-white/20 !bg-white/10 !text-white'
 						: ''}"
-					onclick={() => (activeAside = 'options')}
+					onclick={() => (activeAside = 'background')}
 				>
 					<ImageIcon class="h-5 w-5" />
 					<span class="text-xs font-medium">Background</span>
