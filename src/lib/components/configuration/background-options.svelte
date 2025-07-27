@@ -16,6 +16,7 @@
 		saturation,
 		brightness
 	} from '$lib/stores/icon';
+	import { generateRandomPosition } from '$lib/utils';
 
 	function updateNoise(value: number) {
 		noise.set(value);
@@ -41,13 +42,6 @@
 		meshGradientColors.set(
 			$meshGradientColors.map((item, i) => (i === index ? { ...item, color } : item))
 		);
-	}
-
-	function generateRandomPosition() {
-		return {
-			x: Math.random() * 120 - 10,
-			y: Math.random() * 120 - 10
-		};
 	}
 
 	function addMeshGradientColor() {

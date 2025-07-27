@@ -1,14 +1,13 @@
 <script lang="ts">
 	import { cn } from '$lib/utils';
 	import { Search, ShuffleIcon } from 'lucide-svelte';
-	import { AVAILABLE_ICONS, getIconSvg, ICON_NAMES } from '$lib/data/icons';
+	import { AVAILABLE_ICONS, getIconSvg, ICON_NAMES, getRandomIcon } from '$lib/data/icons';
 	import Button from '$lib/components/ui/button.svelte';
 	import { selectedIcon, customSvg, customPng, customContentType } from '$lib/stores/icon';
 	import { Upload } from 'lucide-svelte';
 
 	function selectRandomIcon() {
-		const randomIndex = Math.floor(Math.random() * ICON_NAMES.length);
-		const randomIcon = ICON_NAMES[randomIndex];
+		const randomIcon = getRandomIcon();
 		selectedIcon.set(randomIcon);
 	}
 

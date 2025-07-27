@@ -20,6 +20,11 @@ export const AVAILABLE_ICONS: Record<string, string> = Object.entries(iconModule
 export const ICON_NAMES = Object.keys(AVAILABLE_ICONS);
 export const DEFAULT_ICON = 'AcademicCap';
 
+export const getRandomIcon = (): string => {
+	const randomIndex = Math.floor(Math.random() * ICON_NAMES.length);
+	return ICON_NAMES[randomIndex];
+};
+
 export function getIconSvg(
 	iconName: string,
 	customSvgContent?: string,
