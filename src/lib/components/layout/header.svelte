@@ -2,6 +2,7 @@
 	import { Menu, Palette, Download, ChevronDown } from 'lucide-svelte';
 	import Button from '$lib/components/ui/button.svelte';
 	import CopyButton from '$lib/components/ui/copy-button.svelte';
+	import Input from '$lib/components/ui/input.svelte';
 	import {
 		selectedIcon,
 		iconColor,
@@ -23,7 +24,8 @@
 		noise,
 		contrast,
 		saturation,
-		brightness
+		brightness,
+		downloadResolution
 	} from '$lib/stores/icon';
 	import { getProcessedSvg } from '$lib/parser/svg';
 	import { initRender } from '$lib/webgl/mesh-render';
@@ -204,12 +206,13 @@
 			const ctx = canvas.getContext('2d');
 			const img = new Image();
 
-			canvas.width = 512;
-			canvas.height = 512;
+			const resolution = parseInt($downloadResolution) || 512;
+			canvas.width = resolution;
+			canvas.height = resolution;
 
 			img.onload = function () {
 				if (ctx) {
-					ctx.drawImage(img, 0, 0);
+					ctx.drawImage(img, 0, 0, resolution, resolution);
 					const link = document.createElement('a');
 					link.download = `${$selectedIcon}-icon.png`;
 					link.href = canvas.toDataURL();
@@ -299,8 +302,25 @@
 
 					{#if isDownloadDropdownOpen}
 						<div
-							class="absolute right-0 top-full z-50 mt-1 w-32 rounded-md border border-gray-700 bg-gray-800 shadow-lg"
+							class="absolute right-0 top-full z-50 mt-1 w-48 rounded-md border border-gray-700 bg-gray-800 shadow-lg"
 						>
+							<div class="flex items-center gap-2 px-3 py-2 hover:bg-gray-700">
+								<button
+									class="text-left text-sm text-white"
+									onclick={() => {
+										exportPNG();
+										isDownloadDropdownOpen = false;
+									}}
+								>
+									PNG
+								</button>
+								<Input
+									type="text"
+									bind:value={$downloadResolution}
+									placeholder="512"
+									class="h-6 w-16 text-xs"
+								/>
+							</div>
 							<button
 								class="w-full rounded-t-md px-3 py-2 text-left text-sm text-white hover:bg-gray-700"
 								onclick={() => {
@@ -309,15 +329,6 @@
 								}}
 							>
 								SVG
-							</button>
-							<button
-								class="w-full px-3 py-2 text-left text-sm text-white hover:bg-gray-700"
-								onclick={() => {
-									exportPNG();
-									isDownloadDropdownOpen = false;
-								}}
-							>
-								PNG
 							</button>
 							<button
 								class="w-full rounded-b-md px-3 py-2 text-left text-sm text-white hover:bg-gray-700"
@@ -365,15 +376,23 @@
 								>
 									SVG
 								</button>
-								<button
-									class="w-full px-3 py-2 text-left text-sm text-white hover:bg-gray-700"
-									onclick={() => {
-										exportPNG();
-										isDownloadDropdownOpen = false;
-									}}
-								>
-									PNG
-								</button>
+								<div class="flex items-center gap-2 px-3 py-2 hover:bg-gray-700">
+									<button
+										class="flex-1 text-left text-sm text-white"
+										onclick={() => {
+											exportPNG();
+											isDownloadDropdownOpen = false;
+										}}
+									>
+										PNG
+									</button>
+									<Input
+										type="text"
+										bind:value={$downloadResolution}
+										placeholder="512"
+										class="h-6 w-16 text-xs"
+									/>
+								</div>
 								<button
 									class="w-full rounded-b-md px-3 py-2 text-left text-sm text-white hover:bg-gray-700"
 									onclick={() => {

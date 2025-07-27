@@ -63,32 +63,36 @@
 
 <div class="flex h-full flex-1 flex-col overflow-hidden">
 	<div class="flex-shrink-0 border-b border-white/5 p-4">
-		<div class="mb-4 flex gap-2">
-			<Button
-				variant="secondary"
-				size="sm"
-				onclick={selectRandomIcon}
-				class="!text-zinc-300 hover:!border-[#8564FA] hover:!bg-[#8564FA]/10 hover:!text-[#8564FA]"
-			>
-				<ShuffleIcon class="h-4 w-4" />
-			</Button>
+		<div class="mb-4 flex items-center justify-between">
+			<span class="text-sm font-medium text-white/80">Icons</span>
 
-			<Button
-				variant="secondary"
-				size="sm"
-				onclick={() => fileInput.click()}
-				class="!text-zinc-300 hover:!border-[#8564FA] hover:!bg-[#8564FA]/10 hover:!text-[#8564FA]"
-			>
-				<Upload class="h-4 w-4" />
-			</Button>
+			<div class="flex gap-2">
+				<Button
+					variant="secondary"
+					size="sm"
+					onclick={selectRandomIcon}
+					class="!text-zinc-300 hover:!border-[#8564FA] hover:!bg-[#8564FA]/10 hover:!text-[#8564FA]"
+				>
+					<ShuffleIcon class="h-4 w-4" />
+				</Button>
 
-			<input
-				bind:this={fileInput}
-				type="file"
-				accept=".svg,.png,.jpg,.jpeg,.webp,image/svg+xml,image/png,image/jpeg,image/webp"
-				onchange={handleFileUpload}
-				class="hidden"
-			/>
+				<Button
+					variant="secondary"
+					size="sm"
+					onclick={() => fileInput.click()}
+					class="!text-zinc-300 hover:!border-[#8564FA] hover:!bg-[#8564FA]/10 hover:!text-[#8564FA]"
+				>
+					<Upload class="h-4 w-4" />
+				</Button>
+
+				<input
+					bind:this={fileInput}
+					type="file"
+					accept=".svg,.png,.jpg,.jpeg,.webp,image/svg+xml,image/png,image/jpeg,image/webp"
+					onchange={handleFileUpload}
+					class="hidden"
+				/>
+			</div>
 		</div>
 
 		<div class="relative">
