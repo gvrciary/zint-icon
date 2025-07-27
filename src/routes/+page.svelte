@@ -13,7 +13,6 @@
 
 <main class="min-h-screen select-none overflow-hidden pt-20 md:pt-24">
 	<div class="h-full px-4 md:px-6">
-		<!-- Desktop Layout -->
 		<div class="hidden h-[calc(100vh-6rem)] grid-cols-12 gap-6 lg:grid">
 			<aside
 				class="col-span-3 flex h-full flex-col overflow-hidden rounded-xl border border-white/5 bg-black/20 backdrop-blur-sm"

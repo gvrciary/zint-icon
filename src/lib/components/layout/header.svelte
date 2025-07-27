@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { Menu, Palette, Download, ChevronDown } from 'lucide-svelte';
+	import { Menu, Download, ChevronDown } from 'lucide-svelte';
 	import Button from '$lib/components/ui/button.svelte';
 	import CopyButton from '$lib/components/ui/copy-button.svelte';
 	import Input from '$lib/components/ui/input.svelte';
@@ -279,13 +279,7 @@
 		<nav class="flex items-center justify-between">
 			<a href="/" class="group flex items-center space-x-3">
 				<div class="relative h-8 w-8 overflow-hidden">
-					<div class="flex h-8 w-8 items-center justify-center rounded-lg bg-[#8564FA]">
-						<Palette class="h-5 w-5 text-white" />
-					</div>
-					<div
-						class="absolute inset-0 bg-gradient-to-r from-transparent via-white/10 to-transparent opacity-0 transition-opacity duration-300 group-hover:opacity-100"
-						style="transform: translateX(-100%);"
-					></div>
+					<img src="/logo.svg" alt="Zin Icon Logo" class="h-full w-full object-cover" />
 				</div>
 				<span class="font-mono text-xl text-white">ZintIcon</span>
 			</a>
