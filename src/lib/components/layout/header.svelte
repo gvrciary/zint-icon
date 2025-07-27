@@ -189,7 +189,7 @@
 			const url = URL.createObjectURL(svgBlob);
 
 			const link = document.createElement('a');
-			link.download = `${$selectedIcon}-icon.svg`;
+			link.download = `zin-icon.svg`;
 			link.href = url;
 			link.click();
 
@@ -214,7 +214,7 @@
 				if (ctx) {
 					ctx.drawImage(img, 0, 0, resolution, resolution);
 					const link = document.createElement('a');
-					link.download = `${$selectedIcon}-icon.png`;
+					link.download = `zin-icon.png`;
 					link.href = canvas.toDataURL();
 					link.click();
 				}
@@ -263,7 +263,7 @@
 			const url = URL.createObjectURL(blob);
 
 			const link = document.createElement('a');
-			link.download = `${$selectedIcon}-icon.ico`;
+			link.download = `zin-icon.ico`;
 			link.href = url;
 			link.click();
 
