@@ -138,28 +138,6 @@
 
 	<div class="space-y-3 overflow-hidden">
 		<div class="rounded-lg border border-zinc-800 bg-black/10 p-3">
-			<Input type="checkbox" bind:value={$background3D} label="Background 3D" />
-		</div>
-
-		{#if $background3D}
-			<div class="space-y-3 overflow-hidden">
-				<div class="rounded-lg border border-zinc-800 bg-black/10 p-3">
-					<Slider
-						value={$background3DRotation}
-						min={-120}
-						max={120}
-						step={1}
-						label="3D Rotation"
-						showValue={true}
-						onChange={updateBackground3DRotation}
-					/>
-				</div>
-			</div>
-		{/if}
-	</div>
-
-	<div class="space-y-3 overflow-hidden">
-		<div class="rounded-lg border border-zinc-800 bg-black/10 p-3">
 			<Slider
 				value={$noise}
 				min={0}
@@ -267,6 +245,28 @@
 						label="Border Opacity"
 						showValue={true}
 						onChange={updateBorderOpacity}
+					/>
+				</div>
+			</div>
+		{/if}
+	</div>
+	
+	<div class="space-y-3 overflow-hidden">
+		<div class="rounded-lg border border-zinc-800 bg-black/10 p-3">
+			<Input type="checkbox" bind:value={$background3D} label="3D" />
+		</div>
+
+		{#if $background3D}
+			<div class="space-y-3 overflow-hidden">
+				<div class="rounded-lg border border-zinc-800 bg-black/10 p-3">
+					<Slider
+						value={$background3DRotation}
+						min={-120}
+						max={120}
+						step={1}
+						label="3D Rotation"
+						showValue={true}
+						onChange={updateBackground3DRotation}
 					/>
 				</div>
 			</div>

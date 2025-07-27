@@ -3,7 +3,7 @@
 	import { Search, ShuffleIcon } from 'lucide-svelte';
 	import { AVAILABLE_ICONS, getIconSvg, ICON_NAMES } from '$lib/data/icons';
 	import Button from '$lib/components/ui/button.svelte';
-	import { selectedIcon, customSvg } from '$lib/stores/icon';
+	import { selectedIcon, customSvg, customPng, customContentType } from '$lib/stores/icon';
 	import { Upload } from 'lucide-svelte';
 
 	function selectRandomIcon() {
@@ -14,7 +14,7 @@
 
 	const availableIcons = $derived(() => {
 		const names = [...ICON_NAMES];
-		if ($customSvg.trim()) {
+		if ($customSvg.trim() || $customPng.trim()) {
 			names.unshift('Custom');
 		}
 		return names;
@@ -24,14 +24,28 @@
 		const target = event.target as HTMLInputElement;
 		const file = target.files?.[0];
 
-		if (file && file.type === 'image/svg+xml') {
-			const reader = new FileReader();
-			reader.onload = (e) => {
-				const svgContent = e.target?.result as string;
-				customSvg.set(svgContent);
-				selectedIcon.set('Custom');
-			};
-			reader.readAsText(file);
+		if (file) {
+			if (file.type === 'image/svg+xml') {
+				const reader = new FileReader();
+				reader.onload = (e) => {
+					const svgContent = e.target?.result as string;
+					customSvg.set(svgContent);
+					customPng.set('');
+					customContentType.set('svg');
+					selectedIcon.set('Custom');
+				};
+				reader.readAsText(file);
+			} else if (file.type.startsWith('image/')) {
+				const reader = new FileReader();
+				reader.onload = (e) => {
+					const pngContent = e.target?.result as string;
+					customPng.set(pngContent);
+					customSvg.set('');
+					customContentType.set('png');
+					selectedIcon.set('Custom');
+				};
+				reader.readAsDataURL(file);
+			}
 		}
 		target.value = '';
 	}
@@ -72,7 +86,7 @@
 			<input
 				bind:this={fileInput}
 				type="file"
-				accept=".svg,image/svg+xml"
+				accept=".svg,.png,.jpg,.jpeg,.webp,image/svg+xml,image/png,image/jpeg,image/webp"
 				onchange={handleFileUpload}
 				class="hidden"
 			/>
@@ -112,10 +126,17 @@
 								: 'text-zinc-400 group-hover:text-zinc-300 [&>svg]:stroke-zinc-400 group-hover:[&>svg]:stroke-zinc-300'
 						)}
 					>
-						<!-- eslint-disable-next-line svelte/no-at-html-tags -->
-						{@html iconName === 'Custom'
-							? getIconSvg(iconName, $customSvg)
-							: AVAILABLE_ICONS[iconName]}
+						{#if iconName === 'Custom'}
+							{#if $customContentType === 'png'}
+								<img src={$customPng} alt="Custom" class="h-full w-full object-contain" />
+							{:else}
+								<!-- eslint-disable-next-line svelte/no-at-html-tags -->
+								{@html getIconSvg(iconName, $customSvg, $customPng, $customContentType)}
+							{/if}
+						{:else}
+							<!-- eslint-disable-next-line svelte/no-at-html-tags -->
+							{@html AVAILABLE_ICONS[iconName]}
+						{/if}
 					</div>
 				</Button>
 			{/each}

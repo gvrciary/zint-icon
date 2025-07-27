@@ -19,7 +19,9 @@
 		contrast,
 		saturation,
 		brightness,
-		customSvg
+		customSvg,
+		customPng,
+		customContentType
 	} from '$lib/stores/icon';
 	import vertexShader from '$lib/utils/shaders/shaders.vert?raw';
 	import fragmentShader from '$lib/utils/shaders/shaders.frag?raw';
@@ -40,7 +42,9 @@
 				iconOffsetX: $iconOffsetX,
 				iconOffsetY: $iconOffsetY
 			},
-			$customSvg
+			$customSvg,
+			$customPng,
+			$customContentType
 		).then((svg) => {
 			processedSvg = svg;
 		});

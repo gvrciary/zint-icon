@@ -26,3 +26,5 @@ export const contrast: Writable<number> = writable(100);
 export const saturation: Writable<number> = writable(100);
 export const brightness: Writable<number> = writable(100);
 export const customSvg: Writable<string> = writable('');
+export const customPng: Writable<string> = writable('');
+export const customContentType: Writable<'svg' | 'png' | null> = writable(null);

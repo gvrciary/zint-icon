@@ -1,18 +1,35 @@
 import { parse, stringify, type INode } from 'svgson';
 import type { ProcessedSvgOptions } from '$lib/types';
 import { getIconSvg } from '$lib/data/icons';
-import { getSvgAttributes, createGlassLayers, createNormalLayer, createGlowLayers, cloneNode, createGlassGradientAndFilter, collectDrawingElements, createGlowFilters  } from '$lib/utils/svg';
+import {
+	getSvgAttributes,
+	createGlassLayers,
+	createNormalLayer,
+	createGlowLayers,
+	cloneNode,
+	createGlassGradientAndFilter,
+	collectDrawingElements,
+	createGlowFilters
+} from '$lib/utils/svg';
+import { iconGlass, iconGlow } from '$lib/stores/icon';
 
 export async function getProcessedSvg(
 	iconName: string,
 	options: ProcessedSvgOptions,
-	customSvgContent?: string
+	customSvgContent?: string,
+	customPngContent?: string,
+	contentType?: 'svg' | 'png' | null
 ): Promise<string> {
-	const svg = getIconSvg(iconName, customSvgContent);
+	const svg = getIconSvg(iconName, customSvgContent, customPngContent, contentType);
 
 	try {
 		const svgAst = await parse(svg);
 		const svgAttributes = getSvgAttributes(svg);
+
+		if (iconName === 'Custom' && contentType && contentType === 'png') {
+			iconGlow.set(false);
+			iconGlass.set(false);
+		}
 
 		let iconWidth, iconHeight;
 		if (svgAttributes.viewBox) {

@@ -20,9 +20,20 @@ export const AVAILABLE_ICONS: Record<string, string> = Object.entries(iconModule
 export const ICON_NAMES = Object.keys(AVAILABLE_ICONS);
 export const DEFAULT_ICON = 'AcademicCap';
 
-export function getIconSvg(iconName: string, customSvgContent?: string): string {
-	if (iconName === 'Custom' && customSvgContent) {
-		return customSvgContent;
+export function getIconSvg(
+	iconName: string,
+	customSvgContent?: string,
+	customPngContent?: string,
+	contentType?: 'svg' | 'png' | null
+): string {
+	if (iconName === 'Custom') {
+		if (contentType === 'png' && customPngContent) {
+			return `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24">
+				<image href="${customPngContent}" width="24" height="24" />
+			</svg>`;
+		} else if (customSvgContent) {
+			return customSvgContent;
+		}
 	}
 
 	return AVAILABLE_ICONS[iconName] || AVAILABLE_ICONS[DEFAULT_ICON];
