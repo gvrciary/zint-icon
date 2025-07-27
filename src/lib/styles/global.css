@@ -1,4 +1,5 @@
 @import 'tailwindcss';
+@import '@fontsource-variable/geist-mono';
 
 :root {
 	--background: rgb(20, 20, 21);
@@ -8,4 +9,8 @@
 
 html {
 	color-scheme: dark;
+}
+
+body {
+  font-family: 'Geist Mono Variable', monospace;
 }
