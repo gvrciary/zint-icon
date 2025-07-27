@@ -63,7 +63,7 @@
 
 <div class="flex h-full flex-1 flex-col space-y-6 overflow-hidden">
 	<div class="rounded-2xl border border-[#333] bg-[#1f1f1f57] p-4 backdrop-blur-sm">
-		<div class="relative flex items-center gap-2">
+		<div class="relative flex items-center gap-2 mb-5">
 			<div class="relative flex-1">
 				<Search class="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 transform text-gray-500" />
 				<input
@@ -102,10 +102,8 @@
 				class="hidden"
 			/>
 		</div>
-	</div>
-
-	<div class="rounded-2xl border border-[#333] bg-[#1f1f1f57] p-4 backdrop-blur-sm">
-		<div class="max-h-48 overflow-y-auto">
+		
+		<div class="max-h-80 overflow-y-auto">
 			<div class="grid grid-cols-4 gap-3">
 				{#each filteredIcons() as iconName (iconName)}
 					<Button

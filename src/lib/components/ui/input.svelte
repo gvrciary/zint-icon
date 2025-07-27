@@ -33,6 +33,9 @@
 		onblur
 	}: Props = $props();
 
+	const effectiveMin = $derived(type === 'number' ? (min ?? 1) : min);
+	const effectiveMax = $derived(type === 'number' ? (max ?? 2048) : max);
+
 	const isChecked = $derived(type === 'checkbox' ? Boolean(value) : false);
 
 	function handleInput(event: Event & { currentTarget: HTMLInputElement }) {
@@ -81,11 +84,11 @@
 				numValue = 0;
 			}
 
-			if (min !== undefined && numValue < min) {
-				numValue = min;
+			if (effectiveMin !== undefined && numValue < effectiveMin) {
+				numValue = effectiveMin;
 			}
-			if (max !== undefined && numValue > max) {
-				numValue = max;
+			if (effectiveMax !== undefined && numValue > effectiveMax) {
+				numValue = effectiveMax;
 			}
 
 			target.value = numValue.toString();
@@ -160,8 +163,8 @@
 					{type}
 					bind:value
 					{placeholder}
-					{min}
-					{max}
+					min={effectiveMin}
+					max={effectiveMax}
 					{step}
 					{disabled}
 					oninput={handleInput}

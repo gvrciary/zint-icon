@@ -16,9 +16,6 @@
 <div class="space-y-6 overflow-hidden">
 	{#if !($selectedIcon === 'Custom' && $customContentType === 'png')}
 		<div class="rounded-2xl border border-[#333] bg-[#1f1f1f57] p-4 backdrop-blur-sm">
-			<div class="mb-3">
-				<span class="text-sm font-medium text-gray-300">Icon Color</span>
-			</div>
 			<div class="flex items-center gap-3">
 				<input
 					type="color"

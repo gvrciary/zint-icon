@@ -5,7 +5,7 @@
 	import BackgroundOptions from '$lib/components/configuration/background-options.svelte';
 	import IconOptions from '$lib/components/configuration/icon-options.svelte';
 	import Button from '$lib/components/ui/button.svelte';
-	import { ImageIcon, Settings2 } from 'lucide-svelte';
+	import { FlameIcon, ImageIcon } from 'lucide-svelte';
 
 	let activeAside: 'icons' | 'options' = 'icons';
 </script>
@@ -19,13 +19,13 @@
 				class="col-span-3 flex h-full flex-col overflow-hidden rounded-2xl border border-[#333] bg-[#1f1f1f57] backdrop-blur-sm"
 			>
 				<div class="flex-1 space-y-6 overflow-y-auto p-6">
+					<span class="block text-sm font-medium text-gray-300"> Icons </span>
+					
 					<div class="space-y-4">
-						<label for="" class="block text-sm font-medium text-gray-300">Design</label>
 						<IconSelector />
 					</div>
 
 					<div class="space-y-4">
-						<label for="" class="block text-sm font-medium text-gray-300">Effects</label>
 						<IconOptions />
 					</div>
 				</div>
@@ -40,7 +40,7 @@
 			>
 				<div class="flex-1 space-y-6 overflow-y-auto p-6">
 					<div class="space-y-4">
-						<label for="" class="block text-sm font-medium text-gray-300"> Background </label>
+						<span class="block text-sm font-medium text-gray-300"> Background </span>
 						<BackgroundOptions />
 					</div>
 				</div>
@@ -64,7 +64,6 @@
 						</div>
 
 						<div class="space-y-4">
-							<label for="" class="block text-sm font-medium text-gray-300">Effects</label>
 							<IconOptions />
 						</div>
 					</div>
@@ -93,8 +92,8 @@
 						: ''}"
 					onclick={() => (activeAside = 'icons')}
 				>
-					<ImageIcon class="h-5 w-5" />
-					<span class="text-xs font-medium">Icons</span>
+					<FlameIcon class="h-5 w-5" />
+					<span class="text-xs font-medium">Icon</span>
 				</Button>
 				<Button
 					variant="glass"
@@ -104,7 +103,7 @@
 						: ''}"
 					onclick={() => (activeAside = 'options')}
 				>
-					<Settings2 class="h-5 w-5" />
+					<ImageIcon class="h-5 w-5" />
 					<span class="text-xs font-medium">Background</span>
 				</Button>
 			</nav>

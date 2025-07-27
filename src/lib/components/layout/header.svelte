@@ -210,19 +210,33 @@
 			canvas.width = resolution;
 			canvas.height = resolution;
 
-			img.onload = function () {
-				if (ctx) {
-					ctx.drawImage(img, 0, 0, resolution, resolution);
-					const link = document.createElement('a');
-					link.download = `zin-icon.png`;
-					link.href = canvas.toDataURL();
-					link.click();
-				}
-			};
+			return new Promise<void>((resolve, reject) => {
+				img.onload = function () {
+					try {
+						if (ctx) {
+							ctx.drawImage(img, 0, 0, resolution, resolution);
+							const link = document.createElement('a');
+							link.download = `zin-icon.png`;
+							link.href = canvas.toDataURL('image/png');
+							link.click();
+							URL.revokeObjectURL(url);
+							resolve();
+						}
+					} catch (error) {
+						URL.revokeObjectURL(url);
+						reject(error);
+					}
+				};
 
-			const svgBlob = new Blob([svgData], { type: 'image/svg+xml;charset=utf-8' });
-			const url = URL.createObjectURL(svgBlob);
-			img.src = url;
+				img.onerror = function () {
+					URL.revokeObjectURL(url);
+					reject(new Error('Failed to load SVG image'));
+				};
+
+				const svgBlob = new Blob([svgData], { type: 'image/svg+xml;charset=utf-8' });
+				const url = URL.createObjectURL(svgBlob);
+				img.src = url;
+			});
 		} catch (err) {
 			console.error('Failed to export PNG:', err);
 		}
@@ -308,9 +322,9 @@
 								class="flex items-center justify-between gap-3 px-4 py-3 transition-colors hover:bg-white/5"
 							>
 								<button
-									class="text-left text-sm text-gray-300 hover:text-white"
-									onclick={() => {
-										exportPNG();
+									class="cursor-pointer text-left text-sm text-gray-300 hover:text-white"
+									onclick={async () => {
+										await exportPNG();
 										isDownloadDropdownOpen = false;
 									}}
 								>
@@ -324,7 +338,7 @@
 								/>
 							</div>
 							<button
-								class="w-full px-4 py-3 text-left text-sm text-gray-300 transition-colors hover:bg-white/5 hover:text-white"
+								class="w-full cursor-pointer px-4 py-3 text-left text-sm text-gray-300 transition-colors hover:bg-white/5 hover:text-white"
 								onclick={() => {
 									exportSVG();
 									isDownloadDropdownOpen = false;
@@ -333,7 +347,7 @@
 								SVG
 							</button>
 							<button
-								class="w-full px-4 py-3 text-left text-sm text-gray-300 transition-colors hover:bg-white/5 hover:text-white"
+								class="w-full cursor-pointer px-4 py-3 text-left text-sm text-gray-300 transition-colors hover:bg-white/5 hover:text-white"
 								onclick={() => {
 									exportICO();
 									isDownloadDropdownOpen = false;
@@ -370,7 +384,7 @@
 								class="absolute right-0 top-full z-50 mt-2 w-full rounded-2xl border border-[#333] bg-[#1f1f1f57] shadow-2xl backdrop-blur-md"
 							>
 								<button
-									class="w-full px-4 py-3 text-left text-sm text-gray-300 transition-colors hover:bg-white/5 hover:text-white"
+									class="w-full cursor-pointer px-4 py-3 text-left text-sm text-gray-300 transition-colors hover:bg-white/5 hover:text-white"
 									onclick={() => {
 										exportSVG();
 										isDownloadDropdownOpen = false;
@@ -382,9 +396,9 @@
 									class="flex items-center justify-between gap-3 px-4 py-3 transition-colors hover:bg-white/5"
 								>
 									<button
-										class="text-left text-sm text-gray-300 hover:text-white"
-										onclick={() => {
-											exportPNG();
+										class="cursor-pointer text-left text-sm text-gray-300 hover:text-white"
+										onclick={async () => {
+											await exportPNG();
 											isDownloadDropdownOpen = false;
 										}}
 									>
@@ -398,7 +412,7 @@
 									/>
 								</div>
 								<button
-									class="w-full px-4 py-3 text-left text-sm text-gray-300 transition-colors hover:bg-white/5 hover:text-white"
+									class="w-full cursor-pointer px-4 py-3 text-left text-sm text-gray-300 transition-colors hover:bg-white/5 hover:text-white"
 									onclick={() => {
 										exportICO();
 										isDownloadDropdownOpen = false;

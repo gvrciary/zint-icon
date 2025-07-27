@@ -84,18 +84,20 @@
 <div class="space-y-6 overflow-hidden">
 	<div class="rounded-2xl border border-[#333] bg-[#1f1f1f57] p-4 backdrop-blur-sm">
 		<div class="mb-4 flex items-center justify-between">
-			<span class="text-sm font-medium text-gray-300">Gradient Colors</span>
+			<span class="text-sm font-medium text-gray-300">Palette</span>
 			<div class="flex gap-2">
 				<Button variant="glass" size="sm" onclick={refreshMeshPositions}>
 					<RefreshCw class="h-3 w-3" />
 				</Button>
-				<Button variant="glass" size="sm" onclick={addMeshGradientColor}>
-					<Plus class="h-3 w-3" />
-				</Button>
+				{#if $meshGradientColors.length < 6}
+					<Button variant="glass" size="sm" onclick={addMeshGradientColor}>
+						<Plus class="h-3 w-3" />
+					</Button>
+				{/if}
 			</div>
 		</div>
 
-		<div class="max-h-48 space-y-3 overflow-y-auto">
+		<div class="max-h-80 space-y-3 overflow-y-auto">
 			{#each $meshGradientColors as meshColor, index (index)}
 				<div
 					class="flex items-center gap-3 rounded-xl border border-[#333] bg-black/20 p-3 backdrop-blur-sm"
