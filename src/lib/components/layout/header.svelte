@@ -206,7 +206,7 @@
 			const ctx = canvas.getContext('2d');
 			const img = new Image();
 
-			const resolution = parseInt($downloadResolution) || 512;
+			const resolution = $downloadResolution || 512;
 			canvas.width = resolution;
 			canvas.height = resolution;
 
@@ -315,7 +315,7 @@
 									PNG
 								</button>
 								<Input
-									type="text"
+									type="number"
 									bind:value={$downloadResolution}
 									placeholder="512"
 									class="h-6 w-16 text-xs"

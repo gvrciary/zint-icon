@@ -25,4 +25,4 @@ export const brightness: Writable<number> = writable(100);
 export const customSvg: Writable<string> = writable('');
 export const customPng: Writable<string> = writable('');
 export const customContentType: Writable<'svg' | 'png' | null> = writable(null);
-export const downloadResolution: Writable<string> = writable('512');
+export const downloadResolution: Writable<number> = writable(512);
