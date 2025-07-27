@@ -1,68 +1,219 @@
 <script lang="ts">
-	import { Menu, Palette, Download } from 'lucide-svelte';
+	import { Menu, Palette, Download, Copy, ChevronDown } from 'lucide-svelte';
 	import Button from '$lib/components/ui/button.svelte';
 	import {
 		selectedIcon,
-		iconColor
+		iconColor,
+		iconSize,
+		iconOffsetX,
+		iconOffsetY,
+		iconGlass,
+		iconGlow,
+		customSvg,
+		borderRadius,
+		borderStroke,
+		borderColor,
+		borderOpacity,
+		background3D,
+		background3DRotation,
+		meshGradientColors,
+		noise,
+		contrast,
+		saturation,
+		brightness
 	} from '$lib/stores/icon';
+	import { getProcessedSvg } from '$lib/parser/svg';
+	import { initRender } from '$lib/webgl/mesh-render';
+	import vertexShader from '$lib/utils/shaders/shaders.vert?raw';
+	import fragmentShader from '$lib/utils/shaders/shaders.frag?raw';
+	import { onMount } from 'svelte';
+
 	let isMobileMenuOpen = $state(false);
+	let isDownloadDropdownOpen = $state(false);
+	let dropdownRef: HTMLDivElement;
+
+	onMount(() => {
+		function handleClickOutside(event: Event) {
+			if (dropdownRef && !dropdownRef.contains(event.target as Node)) {
+				isDownloadDropdownOpen = false;
+			}
+		}
+
+		document.addEventListener('click', handleClickOutside);
+		return () => {
+			document.removeEventListener('click', handleClickOutside);
+		};
+	});
 
 	function toggleMobileMenu() {
 		isMobileMenuOpen = !isMobileMenuOpen;
 	}
 
-	function createSVG() {
-		const iconPath = "";
+	function toggleDownloadDropdown() {
+		isDownloadDropdownOpen = !isDownloadDropdownOpen;
+	}
 
-		let gradientDef = '';
-		let fillValue = 'none';
+	async function getCompleteSVG(): Promise<string> {
+		const tempCanvas = document.createElement('canvas');
+		tempCanvas.width = 512;
+		tempCanvas.height = 512;
 
-		return `<svg width="512" height="512" viewBox="0 0 512 512" xmlns="http://www.w3.org/2000/svg">
-			${gradientDef}
-			<rect width="512" height="512" rx="24" ry="24" fill="${fillValue}"/>
-			<g transform="translate(256, 256)">
-				<g transform="scale(8) translate(-12, -12)">
-					<path d="${iconPath}" fill="none" stroke="${$iconColor}" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
-				</g>
-			</g>
+		const render = initRender(tempCanvas, vertexShader, fragmentShader, {
+			meshGradientColors: $meshGradientColors,
+			noise: $noise,
+			contrast: $contrast,
+			saturation: $saturation,
+			brightness: $brightness
+		});
+
+		render();
+
+		const backgroundImageData = tempCanvas.toDataURL('image/png');
+
+		const iconSvg = await getProcessedSvg(
+			$selectedIcon,
+			{
+				iconGlow: $iconGlow,
+				iconGlass: $iconGlass,
+				iconColor: $iconColor,
+				iconSize: $iconSize,
+				iconOffsetX: $iconOffsetX,
+				iconOffsetY: $iconOffsetY
+			},
+			$customSvg
+		);
+
+		const borderStrokeStyle = (() => {
+			const opacity = $borderOpacity / 100;
+			const r = parseInt($borderColor.slice(1, 3), 16);
+			const g = parseInt($borderColor.slice(3, 5), 16);
+			const b = parseInt($borderColor.slice(5, 7), 16);
+			return `rgba(${r}, ${g}, ${b}, ${opacity})`;
+		})();
+
+		let defs = '';
+		let backgroundElements = '';
+		let borderElement = '';
+
+		defs += `
+			<clipPath id="borderClip">
+				<rect width="512" height="512" rx="${$borderRadius}" ry="${$borderRadius}" />
+			</clipPath>
+		`;
+
+		backgroundElements = `<image href="${backgroundImageData}" width="512" height="512" clip-path="url(#borderClip)" />`;
+
+		if ($background3D) {
+			defs += `
+				<linearGradient
+					id="edge3D"
+					x1="0%"
+					y1="0%"
+					x2="100%"
+					y2="100%"
+					gradientTransform="rotate(${$background3DRotation})"
+				>
+					<stop offset="0%" style="stop-color:rgba(255,255,255,0.5);stop-opacity:1" />
+					<stop offset="30%" style="stop-color:rgba(255,255,255,0.0);stop-opacity:1" />
+					<stop offset="70%" style="stop-color:rgba(255,255,255,0.0);stop-opacity:1" />
+					<stop offset="100%" style="stop-color:rgba(0,0,0,0.5);stop-opacity:1" />
+				</linearGradient>
+				<filter id="edge3DBlur" x="-10%" y="-10%" width="120%" height="120%">
+					<feGaussianBlur stdDeviation="2" result="blurred" />
+				</filter>
+			`;
+
+			backgroundElements += `
+				<rect
+					width="512"
+					height="512"
+					rx="${$borderRadius}"
+					ry="${$borderRadius}"
+					fill="none"
+					stroke="url(#edge3D)"
+					stroke-width="20"
+					filter="url(#edge3DBlur)"
+					clip-path="url(#borderClip)"
+				/>
+			`;
+		}
+
+		if ($borderStroke > 0) {
+			borderElement = `
+				<rect
+					width="512"
+					height="512"
+					rx="${$borderRadius}"
+					ry="${$borderRadius}"
+					fill="none"
+					stroke="${borderStrokeStyle}"
+					stroke-width="${$borderStroke}"
+				/>
+			`;
+		}
+
+		const iconContent = iconSvg.replace(/<svg[^>]*>/, '').replace(/<\/svg>$/, '');
+
+		return `<svg width="512" height="512" viewBox="0 0 512 512" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+			${defs ? `<defs>${defs}</defs>` : ''}
+			${backgroundElements}
+			${borderElement}
+			${iconContent}
 		</svg>`;
 	}
 
-	function downloadSVG() {
-		const svgData = createSVG();
-		const svgBlob = new Blob([svgData], { type: 'image/svg+xml;charset=utf-8' });
-		const url = URL.createObjectURL(svgBlob);
-
-		const link = document.createElement('a');
-		link.download = `${$selectedIcon}-icon.svg`;
-		link.href = url;
-		link.click();
-
-		URL.revokeObjectURL(url);
+	async function copySVG() {
+		try {
+			const svgData = await getCompleteSVG();
+			await navigator.clipboard.writeText(svgData);
+		} catch (err) {
+			console.error('Failed to copy SVG:', err);
+		}
 	}
 
-	function exportPNG() {
-		const svgData = createSVG();
-		const canvas = document.createElement('canvas');
-		const ctx = canvas.getContext('2d');
-		const img = new Image();
+	async function downloadSVG() {
+		try {
+			const svgData = await getCompleteSVG();
+			const svgBlob = new Blob([svgData], { type: 'image/svg+xml;charset=utf-8' });
+			const url = URL.createObjectURL(svgBlob);
 
-		canvas.width = 512;
-		canvas.height = 512;
+			const link = document.createElement('a');
+			link.download = `${$selectedIcon}-icon.svg`;
+			link.href = url;
+			link.click();
 
-		img.onload = function () {
-			if (ctx) {
-				ctx.drawImage(img, 0, 0);
-				const link = document.createElement('a');
-				link.download = `${$selectedIcon}-icon.png`;
-				link.href = canvas.toDataURL();
-				link.click();
-			}
-		};
+			URL.revokeObjectURL(url);
+		} catch (err) {
+			console.error('Failed to download SVG:', err);
+		}
+	}
 
-		const svgBlob = new Blob([svgData], { type: 'image/svg+xml;charset=utf-8' });
-		const url = URL.createObjectURL(svgBlob);
-		img.src = url;
+	async function exportPNG() {
+		try {
+			const svgData = await getCompleteSVG();
+			const canvas = document.createElement('canvas');
+			const ctx = canvas.getContext('2d');
+			const img = new Image();
+
+			canvas.width = 512;
+			canvas.height = 512;
+
+			img.onload = function () {
+				if (ctx) {
+					ctx.drawImage(img, 0, 0);
+					const link = document.createElement('a');
+					link.download = `${$selectedIcon}-icon.png`;
+					link.href = canvas.toDataURL();
+					link.click();
+				}
+			};
+
+			const svgBlob = new Blob([svgData], { type: 'image/svg+xml;charset=utf-8' });
+			const url = URL.createObjectURL(svgBlob);
+			img.src = url;
+		} catch (err) {
+			console.error('Failed to export PNG:', err);
+		}
 	}
 </script>
 
@@ -83,15 +234,43 @@
 			</a>
 
 			<div class="hidden items-center gap-2 md:flex">
-				<Button variant="download" size="md" onclick={downloadSVG} title="Download SVG">
-					<Download class="h-4 w-4" />
-					SVG
+				<Button variant="download" size="md" onclick={copySVG} title="Copy SVG">
+					<Copy class="h-4 w-4" />
+					Copy
 				</Button>
 
-				<Button variant="primary" size="md" onclick={exportPNG} title="Export PNG">
-					<Download class="h-4 w-4" />
-					PNG
-				</Button>
+				<div class="relative" bind:this={dropdownRef}>
+					<Button variant="primary" size="md" onclick={toggleDownloadDropdown} title="Download">
+						<Download class="h-4 w-4" />
+						Download
+						<ChevronDown class="ml-1 h-3 w-3" />
+					</Button>
+
+					{#if isDownloadDropdownOpen}
+						<div
+							class="absolute right-0 top-full z-50 mt-1 w-32 rounded-md border border-gray-700 bg-gray-800 shadow-lg"
+						>
+							<button
+								class="w-full rounded-t-md px-3 py-2 text-left text-sm text-white hover:bg-gray-700"
+								onclick={() => {
+									downloadSVG();
+									isDownloadDropdownOpen = false;
+								}}
+							>
+								SVG
+							</button>
+							<button
+								class="w-full rounded-b-md px-3 py-2 text-left text-sm text-white hover:bg-gray-700"
+								onclick={() => {
+									exportPNG();
+									isDownloadDropdownOpen = false;
+								}}
+							>
+								PNG
+							</button>
+						</div>
+					{/if}
+				</div>
 			</div>
 
 			<button class="text-white md:hidden" onclick={toggleMobileMenu} tabindex="0">
@@ -104,15 +283,43 @@
 		<div class="border-t border-white/5 bg-black/90 backdrop-blur-sm md:hidden">
 			<div class="px-4 py-4 md:px-6">
 				<div class="flex gap-2">
-					<Button variant="download" size="md" onclick={downloadSVG} class="flex-1">
-						<Download class="h-4 w-4" />
-						SVG
+					<Button variant="download" size="md" onclick={copySVG} class="flex-1">
+						<Copy class="h-4 w-4" />
+						Copy
 					</Button>
 
-					<Button variant="primary" size="md" onclick={exportPNG} class="flex-1">
-						<Download class="h-4 w-4" />
-						PNG
-					</Button>
+					<div class="relative flex-1">
+						<Button variant="primary" size="md" onclick={toggleDownloadDropdown} class="w-full">
+							<Download class="h-4 w-4" />
+							Download
+							<ChevronDown class="ml-1 h-3 w-3" />
+						</Button>
+
+						{#if isDownloadDropdownOpen}
+							<div
+								class="absolute right-0 top-full z-50 mt-1 w-full rounded-md border border-gray-700 bg-gray-800 shadow-lg"
+							>
+								<button
+									class="w-full rounded-t-md px-3 py-2 text-left text-sm text-white hover:bg-gray-700"
+									onclick={() => {
+										downloadSVG();
+										isDownloadDropdownOpen = false;
+									}}
+								>
+									SVG
+								</button>
+								<button
+									class="w-full rounded-b-md px-3 py-2 text-left text-sm text-white hover:bg-gray-700"
+									onclick={() => {
+										exportPNG();
+										isDownloadDropdownOpen = false;
+									}}
+								>
+									PNG
+								</button>
+							</div>
+						{/if}
+					</div>
 				</div>
 			</div>
 		</div>
