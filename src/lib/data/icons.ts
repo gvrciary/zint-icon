@@ -1,6 +1,7 @@
 const iconModules = import.meta.glob('$lib/assets/*.svg', {
 	eager: true,
-	as: 'raw'
+	query: '?raw',
+	import: 'default'
 }) as Record<string, string>;
 
 export const AVAILABLE_ICONS: Record<string, string> = Object.entries(iconModules).reduce(
