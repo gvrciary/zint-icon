@@ -1,6 +1,7 @@
 <script lang="ts">
-	import { Menu, Palette, Download, Copy, ChevronDown } from 'lucide-svelte';
+	import { Menu, Palette, Download, ChevronDown } from 'lucide-svelte';
 	import Button from '$lib/components/ui/button.svelte';
+	import CopyButton from '$lib/components/ui/copy-button.svelte';
 	import {
 		selectedIcon,
 		iconColor,
@@ -162,14 +163,17 @@
 		</svg>`;
 	}
 
-	async function copySVG() {
-		try {
-			const svgData = await getCompleteSVG();
-			await navigator.clipboard.writeText(svgData);
-		} catch (err) {
-			console.error('Failed to copy SVG:', err);
-		}
-	}
+	let svgContent = $state('');
+
+	$effect(() => {
+		(async () => {
+			try {
+				svgContent = await getCompleteSVG();
+			} catch (err) {
+				console.error('Error generating SVG:', err);
+			}
+		})();
+	});
 
 	async function downloadSVG() {
 		try {
@@ -234,10 +238,7 @@
 			</a>
 
 			<div class="hidden items-center gap-2 md:flex">
-				<Button variant="download" size="md" onclick={copySVG} title="Copy SVG">
-					<Copy class="h-4 w-4" />
-					Copy
-				</Button>
+				<CopyButton text={svgContent} />
 
 				<div class="relative" bind:this={dropdownRef}>
 					<Button variant="primary" size="md" onclick={toggleDownloadDropdown} title="Download">
@@ -283,10 +284,7 @@
 		<div class="border-t border-white/5 bg-black/90 backdrop-blur-sm md:hidden">
 			<div class="px-4 py-4 md:px-6">
 				<div class="flex gap-2">
-					<Button variant="download" size="md" onclick={copySVG} class="flex-1">
-						<Copy class="h-4 w-4" />
-						Copy
-					</Button>
+					<CopyButton text={svgContent} class="flex-1" />
 
 					<div class="relative flex-1">
 						<Button variant="primary" size="md" onclick={toggleDownloadDropdown} class="w-full">
