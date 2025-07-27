@@ -61,7 +61,7 @@
 	});
 </script>
 
-<div class="flex h-full flex-1 flex-col space-y-6 overflow-hidden p-4">
+<div class="flex h-full flex-1 flex-col space-y-6 overflow-hidden">
 	<div class="rounded-2xl border border-[#333] bg-[#1f1f1f57] p-4 backdrop-blur-sm">
 		<div class="relative flex items-center gap-2">
 			<div class="relative flex-1">
@@ -105,9 +105,6 @@
 	</div>
 
 	<div class="rounded-2xl border border-[#333] bg-[#1f1f1f57] p-4 backdrop-blur-sm">
-		<div class="mb-4">
-			<span class="text-sm font-medium text-gray-300">Icons</span>
-		</div>
 		<div class="max-h-48 overflow-y-auto">
 			<div class="grid grid-cols-4 gap-3">
 				{#each filteredIcons() as iconName (iconName)}

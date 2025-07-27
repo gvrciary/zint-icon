@@ -20,6 +20,7 @@
 			>
 				<div class="flex-1 space-y-6 overflow-y-auto p-6">
 					<div class="space-y-4">
+						<label for="" class="block text-sm font-medium text-gray-300">Design</label>
 						<IconSelector />
 					</div>
 
