@@ -17,6 +17,7 @@
 		brightness
 	} from '$lib/stores/icon';
 	import { generateRandomPosition } from '$lib/utils';
+	import { debounce } from '$lib/utils/debounce';
 
 	function updateNoise(value: number) {
 		noise.set(value);
@@ -34,6 +35,8 @@
 		borderColor.set(color);
 	}
 
+	const debouncedUpdateBorderColor = debounce(updateBorderColor, 150);
+
 	function updateBorderOpacity(value: number) {
 		borderOpacity.set(value);
 	}
@@ -43,6 +46,8 @@
 			$meshGradientColors.map((item, i) => (i === index ? { ...item, color } : item))
 		);
 	}
+	
+	const debouncedUpdateMeshGradientColor = debounce(updateMeshGradientColor, 150);
 
 	function addMeshGradientColor() {
 		const { x, y } = generateRandomPosition();
@@ -107,13 +112,13 @@
 					<input
 						type="color"
 						bind:value={meshColor.color}
-						oninput={(e) => updateMeshGradientColor(index, e.currentTarget.value)}
+						oninput={(e) => debouncedUpdateMeshGradientColor(index, e.currentTarget.value)}
 						class="h-8 w-10 flex-shrink-0 cursor-pointer rounded-lg border border-black/10 bg-transparent transition-colors hover:border-black/20 dark:border-[#333] dark:hover:border-white/30"
 					/>
 					<Input
 						type="text"
 						bind:value={meshColor.color}
-						oninput={(e) => updateMeshGradientColor(index, e.currentTarget.value)}
+						oninput={(e) => debouncedUpdateMeshGradientColor(index, e.currentTarget.value)}
 						class="min-w-0 flex-1"
 						placeholder="#000000"
 					/>
@@ -214,13 +219,13 @@
 				<input
 					type="color"
 					bind:value={$borderColor}
-					oninput={(e) => updateBorderColor(e.currentTarget.value)}
+					oninput={(e) => debouncedUpdateBorderColor(e.currentTarget.value)}
 					class="h-10 w-14 flex-shrink-0 cursor-pointer rounded-xl border border-black/10 bg-transparent transition-colors hover:border-black/20 dark:border-[#333] dark:hover:border-white/30"
 				/>
 				<Input
 					type="text"
 					bind:value={$borderColor}
-					oninput={(e) => updateBorderColor(e.currentTarget.value)}
+					oninput={(e) => debouncedUpdateBorderColor(e.currentTarget.value)}
 					class="min-w-0 flex-1"
 					placeholder="#ffffff"
 				/>

@@ -38,7 +38,7 @@
 	let isMobileMenuOpen = $state(false);
 	let isDownloadDropdownOpen = $state(false);
 	let dropdownRef: HTMLDivElement;
-
+	
 	onMount(() => {
 		function handleClickOutside(event: Event) {
 			if (dropdownRef && !dropdownRef.contains(event.target as Node)) {
@@ -65,7 +65,7 @@
 		tempCanvas.width = 512;
 		tempCanvas.height = 512;
 
-		const render = initRender(tempCanvas, vertexShader, fragmentShader, {
+		const renderContext = initRender(tempCanvas, vertexShader, fragmentShader, {
 			meshGradientColors: $meshGradientColors,
 			noise: $noise,
 			contrast: $contrast,
@@ -73,9 +73,11 @@
 			brightness: $brightness
 		});
 
-		render();
+		renderContext.render();
 
 		const backgroundImageData = tempCanvas.toDataURL('image/png');
+
+		renderContext.cleanup();
 
 		const iconSvg = await getProcessedSvg(
 			$selectedIcon,
@@ -173,16 +175,6 @@
 
 	let svgContent = $state('');
 
-	$effect(() => {
-		(async () => {
-			try {
-				svgContent = await getCompleteSVG();
-			} catch (err) {
-				console.error('Error generating SVG:', err);
-			}
-		})();
-	});
-
 	async function exportSVG() {
 		try {
 			const svgData = await getCompleteSVG();
@@ -217,7 +209,7 @@
 						if (ctx) {
 							ctx.drawImage(img, 0, 0, resolution, resolution);
 							const link = document.createElement('a');
-							link.download = `zin-icon.png`;
+							link.download = `zin-icon-${resolution}x${resolution}.png`;
 							link.href = canvas.toDataURL('image/png');
 							link.click();
 							URL.revokeObjectURL(url);

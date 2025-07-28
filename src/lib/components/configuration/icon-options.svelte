@@ -11,8 +11,15 @@
 	} from '$lib/stores/icon';
 	import Input from '$lib/components/ui/input.svelte';
 	import Slider from '$lib/components/ui/slider.svelte';
+	import { debounce } from '$lib/utils/debounce';
 
 	let isMobile = $state(false);
+
+	function updateIconColor(color: string) {
+		iconColor.set(color);
+	}
+	
+	const debouncedUpdateIconColor = debounce(updateIconColor, 150);
 
 	$effect(() => {
 		if (typeof window !== 'undefined') {
@@ -39,9 +46,16 @@
 				<input
 					type="color"
 					bind:value={$iconColor}
+					oninput={(e) => debouncedUpdateIconColor(e.currentTarget.value)}
 					class="h-10 w-14 flex-shrink-0 cursor-pointer rounded-xl border border-black/10 bg-transparent transition-colors hover:border-black/20 dark:border-[#333] dark:hover:border-white/30"
 				/>
-				<Input type="text" bind:value={$iconColor} placeholder="#ffffff" class="min-w-0 flex-1" />
+				<Input
+					type="text"
+					bind:value={$iconColor}
+					oninput={(e) => debouncedUpdateIconColor(e.currentTarget.value)}
+					placeholder="#ffffff"
+					class="min-w-0 flex-1"
+				/>
 			</div>
 		</div>
 	{/if}

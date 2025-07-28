@@ -28,7 +28,7 @@
 	import { initRender } from '$lib/webgl/mesh-render';
 
 	let canvasRef: HTMLCanvasElement;
-	let render: () => void;
+	let renderContext: { render: () => void; cleanup: () => void } | null = null;
 	let processedSvg = $state('');
 
 	$effect(() => {
@@ -59,9 +59,9 @@
 	});
 
 	$effect(() => {
-		if (!canvasRef) return;
+		if (!canvasRef && renderContext) return;
 
-		render = initRender(canvasRef, vertexShader, fragmentShader, {
+		renderContext = initRender(canvasRef, vertexShader, fragmentShader, {
 			meshGradientColors: $meshGradientColors,
 			noise: $noise,
 			contrast: $contrast,
@@ -69,13 +69,7 @@
 			brightness: $brightness
 		});
 
-		render();
-	});
-
-	$effect(() => {
-		if (!render) return;
-
-		render();
+		renderContext.render();
 	});
 
 	const rectRadius = $derived($borderRadius);

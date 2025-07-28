@@ -12,11 +12,11 @@ export function initRender(
 		saturation: number;
 		brightness: number;
 	}
-): () => void {
+): { render: () => void; cleanup: () => void } {
 	const gl = canvas.getContext('webgl');
 	if (!gl) {
 		console.error('WebGL not supported');
-		return () => {};
+		return { render: () => {}, cleanup: () => {} };
 	}
 
 	const program = createShaderProgram(gl, vertexSrc, fragmentSrc);
@@ -73,5 +73,29 @@ export function initRender(
 		gl.drawArrays(gl.TRIANGLE_STRIP, 0, 4);
 	}
 
-	return render;
+	function cleanup() {
+		if (!gl) return;
+
+		if (vertexBuffer) {
+			gl.deleteBuffer(vertexBuffer);
+		}
+
+		if (program) {
+			const shaders = gl.getAttachedShaders(program);
+			if (shaders) {
+				shaders.forEach((shader) => {
+					gl.detachShader(program, shader);
+					gl.deleteShader(shader);
+				});
+			}
+			gl.deleteProgram(program);
+		}
+
+		const loseContext = gl.getExtension('WEBGL_lose_context');
+		if (loseContext) {
+			loseContext.loseContext();
+		}
+	}
+
+	return { render, cleanup };
 }
