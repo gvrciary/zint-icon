@@ -103,7 +103,7 @@
 			/>
 		</div>
 		
-		<div class="max-h-80 overflow-y-auto">
+		<div class="max-h-64 overflow-y-auto">
 			<div class="grid grid-cols-4 gap-3">
 				{#each filteredIcons() as iconName (iconName)}
 					<Button

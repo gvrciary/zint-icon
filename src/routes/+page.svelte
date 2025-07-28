@@ -18,9 +18,7 @@
 			<aside
 				class="col-span-3 flex h-full flex-col overflow-hidden rounded-2xl border border-[#333] bg-[#1f1f1f57] backdrop-blur-sm"
 			>
-				<div class="flex-1 space-y-6 overflow-y-auto p-6">
-					<span class="block text-sm font-medium text-gray-300"> Icons </span>
-					
+				<div class="flex-1 space-y-6 overflow-y-auto p-3">					
 					<div class="space-y-4">
 						<IconSelector />
 					</div>
@@ -38,9 +36,8 @@
 			<aside
 				class="col-span-3 flex h-full flex-col overflow-hidden rounded-2xl border border-[#333] bg-[#1f1f1f57] backdrop-blur-sm"
 			>
-				<div class="flex-1 space-y-6 overflow-y-auto p-6">
+				<div class="flex-1 space-y-6 overflow-y-auto p-3">
 					<div class="space-y-4">
-						<span class="block text-sm font-medium text-gray-300"> Background </span>
 						<BackgroundOptions />
 					</div>
 				</div>
