@@ -32,17 +32,17 @@
 
 	const variantClasses = {
 		glass:
-			'rounded-2xl border border-[#333] bg-[#1f1f1f57] backdrop-blur-sm transition-all duration-200 hover:border-white/30 hover:bg-white/10',
+			'rounded-2xl border border-black/10 dark:border-[#333] bg-black/5 dark:bg-[#1f1f1f57] backdrop-blur-sm transition-all duration-200 hover:border-black/20 dark:hover:border-white/30 hover:bg-black/10 dark:hover:bg-white/10',
 		'glass-icon':
-			'rounded-full border border-[#333] bg-[rgba(31,31,31,0.62)] transition-all duration-200 hover:border-white/30 hover:bg-white/10',
+			'rounded-full border border-black/10 dark:border-[#333] bg-black/5 dark:bg-[rgba(31,31,31,0.62)] transition-all duration-200 hover:border-black/20 dark:hover:border-white/30 hover:bg-black/10 dark:hover:bg-white/10',
 		'glass-nav':
-			'rounded-xl border border-[#333] bg-[rgba(31,31,31,0.62)] backdrop-blur-sm transition-all duration-200 hover:border-white/20 hover:bg-white/5'
+			'rounded-xl border border-black/10 dark:border-[#333] bg-black/5 dark:bg-[rgba(31,31,31,0.62)] backdrop-blur-sm transition-all duration-200 hover:border-black/20 dark:hover:border-white/20 hover:bg-black/10 dark:hover:bg-white/5'
 	};
 
 	const innerClasses = {
-		glass: 'text-gray-300 hover:text-white',
-		'glass-icon': 'text-gray-300 hover:text-white',
-		'glass-nav': 'text-gray-300 hover:text-white'
+		glass: 'text-gray-800 dark:text-gray-300 hover:text-black dark:hover:text-white',
+		'glass-icon': 'text-gray-800 dark:text-gray-300 hover:text-black dark:hover:text-white',
+		'glass-nav': 'text-gray-800 dark:text-gray-300 hover:text-black dark:hover:text-white'
 	};
 
 	const sizeClasses = {

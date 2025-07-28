@@ -32,19 +32,23 @@
 
 <div class="space-y-6 overflow-hidden">
 	{#if !($selectedIcon === 'Custom' && $customContentType === 'png')}
-		<div class="rounded-2xl border border-[#333] bg-[#1f1f1f57] p-4 backdrop-blur-sm">
+		<div
+			class="rounded-2xl border border-black/10 bg-black/5 p-4 backdrop-blur-sm dark:border-[#333] dark:bg-[#1f1f1f57]"
+		>
 			<div class="flex items-center gap-3">
 				<input
 					type="color"
 					bind:value={$iconColor}
-					class="h-10 w-14 flex-shrink-0 cursor-pointer rounded-xl border border-[#333] bg-transparent transition-colors hover:border-white/30"
+					class="h-10 w-14 flex-shrink-0 cursor-pointer rounded-xl border border-black/10 bg-transparent transition-colors hover:border-black/20 dark:border-[#333] dark:hover:border-white/30"
 				/>
 				<Input type="text" bind:value={$iconColor} placeholder="#ffffff" class="min-w-0 flex-1" />
 			</div>
 		</div>
 	{/if}
 
-	<div class="rounded-2xl border border-[#333] bg-[#1f1f1f57] p-4 backdrop-blur-sm">
+	<div
+		class="rounded-2xl border border-black/10 bg-black/5 p-4 backdrop-blur-sm dark:border-[#333] dark:bg-[#1f1f1f57]"
+	>
 		<Slider
 			value={$iconSize}
 			min={20}
@@ -55,7 +59,9 @@
 		/>
 	</div>
 
-	<div class="rounded-2xl border border-[#333] bg-[#1f1f1f57] p-4 backdrop-blur-sm">
+	<div
+		class="rounded-2xl border border-black/10 bg-black/5 p-4 backdrop-blur-sm dark:border-[#333] dark:bg-[#1f1f1f57]"
+	>
 		<Slider
 			value={$iconOffsetX}
 			min={-256}
@@ -66,7 +72,9 @@
 		/>
 	</div>
 
-	<div class="rounded-2xl border border-[#333] bg-[#1f1f1f57] p-4 backdrop-blur-sm">
+	<div
+		class="rounded-2xl border border-black/10 bg-black/5 p-4 backdrop-blur-sm dark:border-[#333] dark:bg-[#1f1f1f57]"
+	>
 		<Slider
 			value={$iconOffsetY}
 			min={-256}
@@ -78,11 +86,15 @@
 	</div>
 
 	{#if !($selectedIcon === 'Custom' && $customContentType === 'png') && !isMobile}
-		<div class="rounded-2xl border border-[#333] bg-[#1f1f1f57] p-4 backdrop-blur-sm">
+		<div
+			class="rounded-2xl border border-black/10 bg-black/5 p-4 backdrop-blur-sm dark:border-[#333] dark:bg-[#1f1f1f57]"
+		>
 			<Input type="checkbox" bind:value={$iconGlass} label="Glass Effect" />
 		</div>
 
-		<div class="rounded-2xl border border-[#333] bg-[#1f1f1f57] p-4 backdrop-blur-sm">
+		<div
+			class="rounded-2xl border border-black/10 bg-black/5 p-4 backdrop-blur-sm dark:border-[#333] dark:bg-[#1f1f1f57]"
+		>
 			<Input type="checkbox" bind:value={$iconGlow} label="Glow Effect" />
 		</div>
 	{/if}

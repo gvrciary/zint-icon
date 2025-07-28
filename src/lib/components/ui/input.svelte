@@ -123,7 +123,7 @@
 
 {#if type === 'checkbox'}
 	<div class={cn('flex items-center justify-between', className)}>
-		<span class="text-sm font-medium text-gray-300">{label}</span>
+		<span class="text-sm font-medium text-gray-700 dark:text-gray-300">{label}</span>
 		<label class="relative inline-flex cursor-pointer items-center">
 			<input
 				type="checkbox"
@@ -137,11 +137,11 @@
 			/>
 
 			<div
-				class="relative h-6 w-11 rounded-full border border-[#333] bg-[#1f1f1f57] backdrop-blur-sm transition-all duration-200 peer-checked:border-white/30 peer-checked:bg-white/10 peer-focus-visible:ring-1 peer-focus-visible:ring-white/20 peer-focus-visible:ring-offset-1 peer-focus-visible:ring-offset-zinc-900"
+				class="relative h-6 w-11 rounded-full border border-black/10 bg-black/5 backdrop-blur-sm transition-all duration-200 peer-checked:border-black/20 peer-checked:bg-black/10 peer-focus-visible:ring-1 peer-focus-visible:ring-black/20 peer-focus-visible:ring-offset-1 peer-focus-visible:ring-offset-white dark:border-[#333] dark:bg-[#1f1f1f57] dark:peer-checked:border-white/30 dark:peer-checked:bg-white/10 dark:peer-focus-visible:ring-white/20 dark:peer-focus-visible:ring-offset-zinc-900"
 			></div>
 
 			<div
-				class="absolute left-[2px] top-[2px] h-5 w-5 rounded-full bg-gradient-to-br from-zinc-200 via-zinc-300 to-zinc-400 shadow-sm transition-all duration-200 ease-out peer-checked:translate-x-5 peer-checked:from-white peer-checked:via-gray-100 peer-checked:to-gray-200"
+				class="absolute left-[2px] top-[2px] h-5 w-5 rounded-full bg-gradient-to-br from-gray-400 via-gray-500 to-gray-600 shadow-sm transition-all duration-200 ease-out peer-checked:translate-x-5 peer-checked:from-gray-700 peer-checked:via-gray-800 peer-checked:to-gray-900 dark:from-zinc-200 dark:via-zinc-300 dark:to-zinc-400 dark:peer-checked:from-white dark:peer-checked:via-gray-100 dark:peer-checked:to-gray-200"
 			>
 				<div
 					class="absolute inset-[1px] rounded-full bg-gradient-to-br from-white/40 to-transparent"
@@ -152,11 +152,11 @@
 {:else}
 	<div class="group relative">
 		<div
-			class="relative overflow-hidden rounded-2xl border border-[#333] bg-[#1f1f1f57] p-[1px] backdrop-blur-sm transition-all duration-200 group-focus-within:border-white/30 group-focus-within:bg-white/5"
+			class="relative overflow-hidden rounded-2xl border border-black/10 bg-black/5 p-[1px] backdrop-blur-sm transition-all duration-200 group-focus-within:border-black/20 group-focus-within:bg-black/10 dark:border-[#333] dark:bg-[#1f1f1f57] dark:group-focus-within:border-white/30 dark:group-focus-within:bg-white/5"
 		>
 			<div class="relative overflow-hidden rounded-[15px] bg-transparent">
 				<div
-					class="group-focus-within:via-white/3 absolute inset-0 rounded-[15px] bg-gradient-to-br from-zinc-600/10 via-zinc-700/5 to-zinc-800/10 group-focus-within:from-white/5 group-focus-within:to-white/5"
+					class="group-focus-within:via-black/3 dark:group-focus-within:via-white/3 absolute inset-0 rounded-[15px] bg-gradient-to-br from-gray-200/10 via-gray-300/5 to-gray-400/10 group-focus-within:from-black/5 group-focus-within:to-black/5 dark:from-zinc-600/10 dark:via-zinc-700/5 dark:to-zinc-800/10 dark:group-focus-within:from-white/5 dark:group-focus-within:to-white/5"
 				></div>
 
 				<input
@@ -173,10 +173,10 @@
 					{onfocus}
 					{onblur}
 					class={cn(
-						'relative z-10 w-full bg-transparent px-4 py-3 text-sm font-medium text-gray-200 transition-all duration-200 placeholder:text-gray-500',
+						'relative z-10 w-full bg-transparent px-4 py-3 text-sm font-medium text-gray-800 transition-all duration-200 placeholder:text-gray-400 dark:text-gray-200 dark:placeholder:text-gray-500',
 						'focus:outline-none focus:ring-0',
 						'disabled:cursor-not-allowed disabled:opacity-50',
-						'autofill:bg-transparent autofill:text-gray-200',
+						'autofill:bg-transparent autofill:text-gray-800 dark:autofill:text-gray-200',
 						className
 					)}
 				/>
@@ -188,7 +188,7 @@
 		</div>
 
 		<div
-			class="pointer-events-none absolute inset-0 rounded-2xl opacity-0 ring-1 ring-white/30 ring-offset-1 ring-offset-transparent transition-opacity duration-200 group-focus-within:opacity-100"
+			class="pointer-events-none absolute inset-0 rounded-2xl opacity-0 ring-1 ring-black/30 ring-offset-1 ring-offset-transparent transition-opacity duration-200 group-focus-within:opacity-100 dark:ring-white/30"
 		></div>
 	</div>
 {/if}
@@ -198,9 +198,17 @@
 	input:-webkit-autofill:hover,
 	input:-webkit-autofill:focus,
 	input:-webkit-autofill:active {
+		-webkit-box-shadow: 0 0 0 30px rgba(0, 0, 0, 0.05) inset !important;
+		-webkit-text-fill-color: rgb(31 41 55) !important;
+		transition: background-color 5000s ease-in-out 0s;
+	}
+
+	.dark input:-webkit-autofill,
+	.dark input:-webkit-autofill:hover,
+	.dark input:-webkit-autofill:focus,
+	.dark input:-webkit-autofill:active {
 		-webkit-box-shadow: 0 0 0 30px rgba(31, 31, 31, 0.34) inset !important;
 		-webkit-text-fill-color: rgb(229 231 235) !important;
-		transition: background-color 5000s ease-in-out 0s;
 	}
 
 	input:focus {

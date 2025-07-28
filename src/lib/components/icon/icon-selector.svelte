@@ -62,15 +62,17 @@
 </script>
 
 <div class="flex h-full flex-1 flex-col space-y-6 overflow-hidden">
-	<div class="rounded-2xl border border-[#333] bg-[#1f1f1f57] p-4 backdrop-blur-sm">
-		<div class="relative flex items-center gap-2 mb-5">
+	<div
+		class="rounded-2xl border border-black/10 bg-black/5 p-4 backdrop-blur-sm dark:border-[#333] dark:bg-[#1f1f1f57]"
+	>
+		<div class="relative mb-5 flex items-center gap-2">
 			<div class="relative flex-1">
 				<Search class="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 transform text-gray-500" />
 				<input
 					type="text"
 					bind:value={searchQuery}
 					placeholder="Search icons..."
-					class="w-full rounded-full border border-[#333] bg-[rgba(31,31,31,0.62)] py-2.5 pl-10 pr-4 text-sm text-gray-300 backdrop-blur-sm transition-all duration-200 placeholder:text-gray-500 focus:border-white/30 focus:outline-none focus:ring-0"
+					class="w-full rounded-full border border-black/10 bg-black/5 py-2.5 pl-10 pr-4 text-sm text-gray-700 backdrop-blur-sm transition-all duration-200 placeholder:text-gray-400 focus:border-black/20 focus:outline-none focus:ring-0 dark:border-[#333] dark:bg-[rgba(31,31,31,0.62)] dark:text-gray-300 dark:placeholder:text-gray-500 dark:focus:border-white/30"
 				/>
 			</div>
 
@@ -102,7 +104,7 @@
 				class="hidden"
 			/>
 		</div>
-		
+
 		<div class="max-h-64 overflow-y-auto">
 			<div class="grid grid-cols-4 gap-3">
 				{#each filteredIcons() as iconName (iconName)}
@@ -120,8 +122,8 @@
 							class={cn(
 								'h-8 w-8 transition-colors [&>svg]:h-full [&>svg]:w-full',
 								$selectedIcon === iconName
-									? 'text-white [&>svg]:stroke-white'
-									: 'text-gray-400 group-hover:text-gray-300 [&>svg]:stroke-gray-400 group-hover:[&>svg]:stroke-gray-300'
+									? ' dark:text-white [&>svg]:stroke-black dark:[&>svg]:stroke-white'
+									: ' dark:text-gray-400 dark:group-hover:text-gray-300 [&>svg]:stroke-gray-700 dark:[&>svg]:stroke-gray-400 dark:group-hover:[&>svg]:stroke-gray-300'
 							)}
 						>
 							{#if iconName === 'Custom'}
@@ -142,9 +144,9 @@
 
 			{#if filteredIcons().length === 0}
 				<div class="flex flex-col items-center justify-center py-12 text-center">
-					<Search class="mb-4 h-12 w-12 text-gray-600" />
-					<p class="text-sm text-gray-400">No icons found</p>
-					<p class="mt-1 text-xs text-gray-600">Try a different search term</p>
+					<Search class="mb-4 h-12 w-12 text-gray-400 dark:text-gray-600" />
+					<p class="text-sm text-gray-600 dark:text-gray-400">No icons found</p>
+					<p class="mt-1 text-xs text-gray-500 dark:text-gray-600">Try a different search term</p>
 				</div>
 			{/if}
 		</div>

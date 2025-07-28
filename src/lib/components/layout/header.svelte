@@ -3,6 +3,7 @@
 	import Button from '$lib/components/ui/button.svelte';
 	import CopyButton from '$lib/components/ui/copy-button.svelte';
 	import Input from '$lib/components/ui/input.svelte';
+	import ThemeToggle from '$lib/components/ui/theme-toggle.svelte';
 	import {
 		selectedIcon,
 		iconColor,
@@ -296,15 +297,17 @@
 					<img src="/logo.svg" alt="Zin Icon Logo" class="h-full w-full object-cover" />
 				</div>
 				<div class="flex items-center gap-2">
-					<span class="text-xl text-white">ZintIcon</span>
+					<span class="text-xl text-black dark:text-white">ZintIcon</span>
 					<span
-						class="rounded-full border border-[#333] bg-[#1f1f1f57] px-2 py-0.5 text-xs font-medium text-gray-300 backdrop-blur-sm"
+						class="rounded-full border border-black/10 bg-black/5 px-2 py-0.5 text-xs font-medium text-gray-800 backdrop-blur-sm dark:border-[#333] dark:bg-[#1f1f1f57] dark:text-gray-300"
 						>beta</span
 					>
 				</div>
 			</a>
 
 			<div class="hidden items-center gap-2 md:flex">
+				<ThemeToggle />
+
 				<CopyButton text={svgContent} />
 
 				<div class="relative" bind:this={dropdownRef}>
@@ -316,13 +319,13 @@
 
 					{#if isDownloadDropdownOpen}
 						<div
-							class="absolute right-0 top-full z-50 mt-2 w-56 rounded-2xl border border-[#333] bg-[#1f1f1f57] shadow-2xl backdrop-blur-md"
+							class="absolute right-0 top-full z-50 mt-2 w-56 rounded-2xl border border-black/10 bg-black/5 shadow-2xl backdrop-blur-md dark:border-[#333] dark:bg-[#1f1f1f57]"
 						>
 							<div
-								class="flex items-center justify-between gap-3 px-4 py-3 transition-colors hover:bg-white/5"
+								class="flex items-center justify-between gap-3 px-4 py-3 transition-colors hover:bg-black/5 dark:hover:bg-white/5"
 							>
 								<button
-									class="cursor-pointer text-left text-sm text-gray-300 hover:text-white"
+									class="cursor-pointer text-left text-sm text-gray-800 hover:text-black dark:text-gray-300 dark:hover:text-white"
 									onclick={async () => {
 										await exportPNG();
 										isDownloadDropdownOpen = false;
@@ -338,7 +341,7 @@
 								/>
 							</div>
 							<button
-								class="w-full cursor-pointer px-4 py-3 text-left text-sm text-gray-300 transition-colors hover:bg-white/5 hover:text-white"
+								class="w-full cursor-pointer px-4 py-3 text-left text-sm text-gray-800 transition-colors hover:bg-black/5 hover:text-black dark:text-gray-300 dark:hover:bg-white/5 dark:hover:text-white"
 								onclick={() => {
 									exportSVG();
 									isDownloadDropdownOpen = false;
@@ -347,7 +350,7 @@
 								SVG
 							</button>
 							<button
-								class="w-full cursor-pointer px-4 py-3 text-left text-sm text-gray-300 transition-colors hover:bg-white/5 hover:text-white"
+								class="w-full cursor-pointer px-4 py-3 text-left text-sm text-gray-800 transition-colors hover:bg-black/5 hover:text-black dark:text-gray-300 dark:hover:bg-white/5 dark:hover:text-white"
 								onclick={() => {
 									exportICO();
 									isDownloadDropdownOpen = false;
@@ -360,16 +363,20 @@
 				</div>
 			</div>
 
-			<button class="text-white md:hidden" onclick={toggleMobileMenu} tabindex="0">
+			<button class="text-black md:hidden dark:text-white" onclick={toggleMobileMenu} tabindex="0">
 				<Menu class="h-6 w-6" />
 			</button>
 		</nav>
 	</div>
 
 	{#if isMobileMenuOpen}
-		<div class="border-t border-[#333] bg-[#1f1f1f57] backdrop-blur-md md:hidden">
+		<div
+			class="border-t border-black/10 bg-black/5 backdrop-blur-md md:hidden dark:border-[#333] dark:bg-[#1f1f1f57]"
+		>
 			<div class="px-4 py-3 md:px-6">
 				<div class="flex gap-2">
+					<ThemeToggle />
+
 					<CopyButton text={svgContent} class="flex-1" />
 
 					<div class="relative flex-1">
@@ -381,10 +388,10 @@
 
 						{#if isDownloadDropdownOpen}
 							<div
-								class="absolute right-0 top-full z-50 mt-2 w-full rounded-2xl border border-[#333] bg-[#1f1f1f57] shadow-2xl backdrop-blur-md"
+								class="absolute right-0 top-full z-50 mt-2 w-full rounded-2xl border border-black/10 bg-black/5 shadow-2xl backdrop-blur-md dark:border-[#333] dark:bg-[#1f1f1f57]"
 							>
 								<button
-									class="w-full cursor-pointer px-4 py-3 text-left text-sm text-gray-300 transition-colors hover:bg-white/5 hover:text-white"
+									class="w-full cursor-pointer px-4 py-3 text-left text-sm text-gray-800 transition-colors hover:bg-black/5 hover:text-black dark:text-gray-300 dark:hover:bg-white/5 dark:hover:text-white"
 									onclick={() => {
 										exportSVG();
 										isDownloadDropdownOpen = false;
@@ -393,10 +400,10 @@
 									SVG
 								</button>
 								<div
-									class="flex items-center justify-between gap-3 px-4 py-3 transition-colors hover:bg-white/5"
+									class="flex items-center justify-between gap-3 px-4 py-3 transition-colors hover:bg-black/5 dark:hover:bg-white/5"
 								>
 									<button
-										class="cursor-pointer text-left text-sm text-gray-300 hover:text-white"
+										class="cursor-pointer text-left text-sm text-gray-800 hover:text-black dark:text-gray-300 dark:hover:text-white"
 										onclick={async () => {
 											await exportPNG();
 											isDownloadDropdownOpen = false;
@@ -412,7 +419,7 @@
 									/>
 								</div>
 								<button
-									class="w-full cursor-pointer px-4 py-3 text-left text-sm text-gray-300 transition-colors hover:bg-white/5 hover:text-white"
+									class="w-full cursor-pointer px-4 py-3 text-left text-sm text-gray-800 transition-colors hover:bg-black/5 hover:text-black dark:text-gray-300 dark:hover:bg-white/5 dark:hover:text-white"
 									onclick={() => {
 										exportICO();
 										isDownloadDropdownOpen = false;

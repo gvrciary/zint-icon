@@ -16,9 +16,9 @@
 	<div class="h-full px-4 md:px-6">
 		<div class="hidden h-[calc(100vh-6rem)] grid-cols-12 gap-6 lg:grid">
 			<aside
-				class="col-span-3 flex h-full flex-col overflow-hidden rounded-2xl border border-[#333] bg-[#1f1f1f57] backdrop-blur-sm"
+				class="col-span-3 flex h-full flex-col overflow-hidden rounded-2xl border border-black/10 bg-black/5 backdrop-blur-sm dark:border-[#333] dark:bg-[#1f1f1f57]"
 			>
-				<div class="flex-1 space-y-6 overflow-y-auto p-3">					
+				<div class="flex-1 space-y-6 overflow-y-auto p-3">
 					<div class="space-y-4">
 						<IconSelector />
 					</div>
@@ -34,7 +34,7 @@
 			</section>
 
 			<aside
-				class="col-span-3 flex h-full flex-col overflow-hidden rounded-2xl border border-[#333] bg-[#1f1f1f57] backdrop-blur-sm"
+				class="col-span-3 flex h-full flex-col overflow-hidden rounded-2xl border border-black/10 bg-black/5 backdrop-blur-sm dark:border-[#333] dark:bg-[#1f1f1f57]"
 			>
 				<div class="flex-1 space-y-6 overflow-y-auto p-3">
 					<div class="space-y-4">
@@ -52,7 +52,7 @@
 			</section>
 
 			<aside
-				class="flex flex-1 flex-col overflow-hidden rounded-t-2xl border border-[#333] bg-[#1f1f1f57] backdrop-blur-sm"
+				class="flex flex-1 flex-col overflow-hidden rounded-t-2xl border border-black/10 bg-black/5 backdrop-blur-sm dark:border-[#333] dark:bg-[#1f1f1f57]"
 			>
 				<div class="{activeAside === 'icon' ? 'flex' : 'hidden'} h-full flex-col overflow-hidden">
 					<div class="flex-1 space-y-6 overflow-y-auto p-6">
@@ -71,7 +71,9 @@
 				>
 					<div class="flex-1 space-y-6 overflow-y-auto p-6">
 						<div class="space-y-4">
-							<label for="" class="block text-sm font-medium text-gray-300"> Background </label>
+							<label for="" class="block text-sm font-medium text-gray-700 dark:text-gray-300">
+								Background
+							</label>
 							<BackgroundOptions />
 						</div>
 					</div>
@@ -79,13 +81,13 @@
 			</aside>
 
 			<nav
-				class="flex gap-2 rounded-t-2xl border-t border-[#333] bg-[#1f1f1f57] p-2 backdrop-blur-sm"
+				class="flex gap-2 rounded-t-2xl border-t border-black/10 bg-black/5 p-2 backdrop-blur-sm dark:border-[#333] dark:bg-[#1f1f1f57]"
 			>
 				<Button
 					variant="glass"
 					size="sm"
 					class="flex-1 flex-col gap-1 py-4 {activeAside === 'icon'
-						? '!border-white/20 !bg-white/10 !text-white'
+						? '!border-black/20 !bg-black/10 !text-black dark:!border-white/20 dark:!bg-white/10 dark:!text-white'
 						: ''}"
 					onclick={() => (activeAside = 'icon')}
 				>
@@ -96,7 +98,7 @@
 					variant="glass"
 					size="sm"
 					class="flex-1 flex-col gap-1 py-4 {activeAside === 'background'
-						? '!border-white/20 !bg-white/10 !text-white'
+						? '!border-black/20 !bg-black/10 !text-black dark:!border-white/20 dark:!bg-white/10 dark:!text-white'
 						: ''}"
 					onclick={() => (activeAside = 'background')}
 				>

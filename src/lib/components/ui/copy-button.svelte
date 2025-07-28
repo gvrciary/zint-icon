@@ -64,7 +64,7 @@
 				? 'rotate-0 scale-100 opacity-100'
 				: '-rotate-45 scale-0 opacity-0'}"
 		>
-			<Check class="h-4 w-4 text-green-400" />
+			<Check class="h-4 w-4 text-green-600 dark:text-green-400" />
 		</div>
 	</div>
 </Button>

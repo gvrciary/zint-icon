@@ -82,9 +82,11 @@
 </script>
 
 <div class="space-y-6 overflow-hidden">
-	<div class="rounded-2xl border border-[#333] bg-[#1f1f1f57] p-4 backdrop-blur-sm">
+	<div
+		class="rounded-2xl border border-black/10 bg-black/5 p-4 backdrop-blur-sm dark:border-[#333] dark:bg-[#1f1f1f57]"
+	>
 		<div class="mb-4 flex items-center justify-between">
-			<span class="text-sm font-medium text-gray-300">Palette</span>
+			<span class="text-sm font-medium text-gray-700 dark:text-gray-300">Palette</span>
 			<div class="flex gap-2">
 				<Button variant="glass" size="sm" onclick={refreshMeshPositions}>
 					<RefreshCw class="h-3 w-3" />
@@ -100,13 +102,13 @@
 		<div class="max-h-80 space-y-3 overflow-y-auto">
 			{#each $meshGradientColors as meshColor, index (index)}
 				<div
-					class="flex items-center gap-3 rounded-xl border border-[#333] bg-black/20 p-3 backdrop-blur-sm"
+					class="flex items-center gap-3 rounded-xl border border-black/20 bg-black/5 p-3 backdrop-blur-sm dark:border-[#333] dark:bg-black/5"
 				>
 					<input
 						type="color"
 						bind:value={meshColor.color}
 						oninput={(e) => updateMeshGradientColor(index, e.currentTarget.value)}
-						class="h-8 w-10 flex-shrink-0 cursor-pointer rounded-lg border border-[#333] bg-transparent transition-colors hover:border-white/30"
+						class="h-8 w-10 flex-shrink-0 cursor-pointer rounded-lg border border-black/10 bg-transparent transition-colors hover:border-black/20 dark:border-[#333] dark:hover:border-white/30"
 					/>
 					<Input
 						type="text"
@@ -130,11 +132,15 @@
 		</div>
 	</div>
 
-	<div class="rounded-2xl border border-[#333] bg-[#1f1f1f57] p-4 backdrop-blur-sm">
+	<div
+		class="rounded-2xl border border-black/10 bg-black/5 p-4 backdrop-blur-sm dark:border-[#333] dark:bg-[#1f1f1f57]"
+	>
 		<Slider value={$noise} min={0} max={100} step={1} label="Noise" onChange={updateNoise} />
 	</div>
 
-	<div class="rounded-2xl border border-[#333] bg-[#1f1f1f57] p-4 backdrop-blur-sm">
+	<div
+		class="rounded-2xl border border-black/10 bg-black/5 p-4 backdrop-blur-sm dark:border-[#333] dark:bg-[#1f1f1f57]"
+	>
 		<Slider
 			value={$contrast}
 			min={0}
@@ -145,7 +151,9 @@
 		/>
 	</div>
 
-	<div class="rounded-2xl border border-[#333] bg-[#1f1f1f57] p-4 backdrop-blur-sm">
+	<div
+		class="rounded-2xl border border-black/10 bg-black/5 p-4 backdrop-blur-sm dark:border-[#333] dark:bg-[#1f1f1f57]"
+	>
 		<Slider
 			value={$saturation}
 			min={0}
@@ -156,7 +164,9 @@
 		/>
 	</div>
 
-	<div class="rounded-2xl border border-[#333] bg-[#1f1f1f57] p-4 backdrop-blur-sm">
+	<div
+		class="rounded-2xl border border-black/10 bg-black/5 p-4 backdrop-blur-sm dark:border-[#333] dark:bg-[#1f1f1f57]"
+	>
 		<Slider
 			value={$brightness}
 			min={0}
@@ -167,7 +177,9 @@
 		/>
 	</div>
 
-	<div class="rounded-2xl border border-[#333] bg-[#1f1f1f57] p-4 backdrop-blur-sm">
+	<div
+		class="rounded-2xl border border-black/10 bg-black/5 p-4 backdrop-blur-sm dark:border-[#333] dark:bg-[#1f1f1f57]"
+	>
 		<Slider
 			value={$borderRadius}
 			min={0}
@@ -178,7 +190,9 @@
 		/>
 	</div>
 
-	<div class="rounded-2xl border border-[#333] bg-[#1f1f1f57] p-4 backdrop-blur-sm">
+	<div
+		class="rounded-2xl border border-black/10 bg-black/5 p-4 backdrop-blur-sm dark:border-[#333] dark:bg-[#1f1f1f57]"
+	>
 		<Slider
 			value={$borderStroke}
 			min={0}
@@ -190,16 +204,18 @@
 	</div>
 
 	{#if $borderStroke > 0}
-		<div class="rounded-2xl border border-[#333] bg-[#1f1f1f57] p-4 backdrop-blur-sm">
+		<div
+			class="rounded-2xl border border-black/10 bg-black/5 p-4 backdrop-blur-sm dark:border-[#333] dark:bg-[#1f1f1f57]"
+		>
 			<div class="mb-3">
-				<span class="text-sm font-medium text-gray-300">Border Color</span>
+				<span class="text-sm font-medium text-gray-700 dark:text-gray-300">Border Color</span>
 			</div>
 			<div class="flex items-center gap-3">
 				<input
 					type="color"
 					bind:value={$borderColor}
 					oninput={(e) => updateBorderColor(e.currentTarget.value)}
-					class="h-10 w-14 flex-shrink-0 cursor-pointer rounded-xl border border-[#333] bg-transparent transition-colors hover:border-white/30"
+					class="h-10 w-14 flex-shrink-0 cursor-pointer rounded-xl border border-black/10 bg-transparent transition-colors hover:border-black/20 dark:border-[#333] dark:hover:border-white/30"
 				/>
 				<Input
 					type="text"
@@ -211,7 +227,9 @@
 			</div>
 		</div>
 
-		<div class="rounded-2xl border border-[#333] bg-[#1f1f1f57] p-4 backdrop-blur-sm">
+		<div
+			class="rounded-2xl border border-black/10 bg-black/5 p-4 backdrop-blur-sm dark:border-[#333] dark:bg-[#1f1f1f57]"
+		>
 			<Slider
 				value={$borderOpacity}
 				min={0}
@@ -223,12 +241,16 @@
 		</div>
 	{/if}
 
-	<div class="rounded-2xl border border-[#333] bg-[#1f1f1f57] p-4 backdrop-blur-sm">
+	<div
+		class="rounded-2xl border border-black/10 bg-black/5 p-4 backdrop-blur-sm dark:border-[#333] dark:bg-[#1f1f1f57]"
+	>
 		<Input type="checkbox" bind:value={$background3D} label="3D Effect" />
 	</div>
 
 	{#if $background3D}
-		<div class="rounded-2xl border border-[#333] bg-[#1f1f1f57] p-4 backdrop-blur-sm">
+		<div
+			class="rounded-2xl border border-black/10 bg-black/5 p-4 backdrop-blur-sm dark:border-[#333] dark:bg-[#1f1f1f57]"
+		>
 			<Slider
 				value={$background3DRotation}
 				min={-120}
