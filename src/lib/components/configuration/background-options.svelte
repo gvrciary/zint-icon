@@ -107,7 +107,7 @@
 		<div class="max-h-80 space-y-3 overflow-y-auto">
 			{#each $meshGradientColors as meshColor, index (index)}
 				<div
-					class="flex items-center gap-3 rounded-xl border border-black/20 bg-black/5 p-3 backdrop-blur-sm dark:border-[#333] dark:bg-black/5"
+					class="flex items-center gap-3 rounded-xl border border-black/20 bg-white/5 p-3 backdrop-blur-sm dark:border-[#333] dark:bg-black/5"
 				>
 					<input
 						type="color"
@@ -127,7 +127,7 @@
 							variant="glass"
 							size="sm"
 							onclick={() => removeMeshGradientColor(index)}
-							class="flex-shrink-0 !p-1 hover:!bg-red-500/20"
+							class="flex-shrink-0 bg-transparent !p-1 hover:!bg-red-500/30 dark:hover:!bg-red-500/20"
 						>
 							<Minus class="h-3 w-3 text-red-400" />
 						</Button>
