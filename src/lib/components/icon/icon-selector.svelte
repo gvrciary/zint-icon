@@ -72,7 +72,7 @@
 					type="text"
 					bind:value={searchQuery}
 					placeholder="Search icons..."
-					class="w-full rounded-full border border-black/10 bg-black/5 py-2.5 pl-10 pr-4 text-sm text-gray-700 backdrop-blur-sm transition-all duration-200 placeholder:text-gray-400 focus:border-black/20 focus:outline-none focus:ring-0 dark:border-[#333] dark:bg-[rgba(31,31,31,0.62)] dark:text-gray-300 dark:placeholder:text-gray-500 dark:focus:border-white/30"
+					class="w-full rounded-full border border-black/10  bg-white/5 py-2.5 pl-10 pr-4 text-sm text-gray-700 backdrop-blur-sm transition-all duration-200 placeholder:text-gray-400 focus:border-black/20 focus:outline-none focus:ring-0 dark:border-[#333] dark:bg-[rgba(31,31,31,0.62)] dark:text-gray-300 dark:placeholder:text-gray-500 dark:focus:border-white/30"
 				/>
 			</div>
 
