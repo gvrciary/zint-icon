@@ -13,88 +13,88 @@ import {
 } from '$lib/utils/svg';
 import { get } from 'svelte/store';
 import {
-		selectedIcon,
-		iconColor,
-		iconSize,
-		iconOffsetX,
-		iconOffsetY,
-		iconGlass,
-		iconGlow,
-		customSvg,
-		customPng,
-		customContentType,
-		borderRadius,
-		borderStroke,
-		borderColor,
-		borderOpacity,
-		background3D,
-		background3DRotation,
-		meshGradientColors,
-		noise,
-		contrast,
-		saturation,
-		brightness
-	} from '$lib/stores/icon';
-	import { initRender } from '$lib/webgl/mesh-render';
-	import vertexShader from '$lib/utils/shaders/shaders.vert?raw';
-	import fragmentShader from '$lib/utils/shaders/shaders.frag?raw';
+	selectedIcon,
+	iconColor,
+	iconSize,
+	iconOffsetX,
+	iconOffsetY,
+	iconGlass,
+	iconGlow,
+	customSvg,
+	customPng,
+	customContentType,
+	borderRadius,
+	borderStroke,
+	borderColor,
+	borderOpacity,
+	background3D,
+	background3DRotation,
+	meshGradientColors,
+	noise,
+	contrast,
+	saturation,
+	brightness
+} from '$lib/stores/icon';
+import { initRender } from '$lib/webgl/mesh-render';
+import vertexShader from '$lib/utils/shaders/shaders.vert?raw';
+import fragmentShader from '$lib/utils/shaders/shaders.frag?raw';
 
 export async function getCompleteSVG(): Promise<string> {
-		const tempCanvas = document.createElement('canvas');
-		tempCanvas.width = 512;
-		tempCanvas.height = 512;
+	const tempCanvas = document.createElement('canvas');
+	tempCanvas.width = 512;
+	tempCanvas.height = 512;
 
-		const renderContext = initRender(tempCanvas, vertexShader, fragmentShader, {
-			meshGradientColors: get(meshGradientColors),
-			noise: get(noise),
-			contrast: get(contrast),
-			saturation: get(saturation),
-			brightness: get(brightness)
-		});
+	const renderContext = initRender(tempCanvas, vertexShader, fragmentShader, {
+		meshGradientColors: get(meshGradientColors),
+		noise: get(noise),
+		contrast: get(contrast),
+		saturation: get(saturation),
+		brightness: get(brightness)
+	});
 
-		renderContext.render();
+	renderContext.render();
 
-		const backgroundImageData = tempCanvas.toDataURL('image/png');
+	const backgroundImageData = tempCanvas.toDataURL('image/png');
 
-		renderContext.cleanup();
+	renderContext.cleanup();
 
-		const iconSvg = await getProcessedSvg(
-			get(selectedIcon),
-			{
-				iconGlow: get(iconGlow),
-				iconGlass: get(iconGlass),
-				iconColor: get(iconColor),
-				iconSize: get(iconSize),
-				iconOffsetX: get(iconOffsetX),
-				iconOffsetY: get(iconOffsetY)
-			},
-			get(customSvg),
-			get(customPng),
-			get(customContentType)
-		);
+	const iconSvg = await getProcessedSvg(
+		get(selectedIcon),
+		{
+			iconGlow: get(iconGlow),
+			iconGlass: get(iconGlass),
+			iconColor: get(iconColor),
+			iconSize: get(iconSize),
+			iconOffsetX: get(iconOffsetX),
+			iconOffsetY: get(iconOffsetY)
+		},
+		get(customSvg),
+		get(customPng),
+		get(customContentType)
+	);
 
-		const borderStrokeStyle = (() => {
-			const opacity = get(borderOpacity) / 100;
-			const r = parseInt(get(borderColor).slice(1, 3), 16);
-			const g = parseInt(get(borderColor).slice(3, 5), 16);
-			const b = parseInt(get(borderColor).slice(5, 7), 16);
-			return `rgba(${r}, ${g}, ${b}, ${opacity})`;
-		})();
+	const borderStrokeStyle = (() => {
+		const opacity = get(borderOpacity) / 100;
+		const r = parseInt(get(borderColor).slice(1, 3), 16);
+		const g = parseInt(get(borderColor).slice(3, 5), 16);
+		const b = parseInt(get(borderColor).slice(5, 7), 16);
+		return `rgba(${r}, ${g}, ${b}, ${opacity})`;
+	})();
 
-		let defs = '';
-		let backgroundElements = '';
-		let borderElement = '';
+	let defs = '';
+	let backgroundElements = '';
+	let borderElement = '';
 
-		defs += `
+	defs += `
 			<clipPath id="borderClip">
 				<rect width="512" height="512" rx="${get(borderRadius)}" ry="${get(borderRadius)}" />
 			</clipPath>
 		`;
 
-		backgroundElements = `<image href="${backgroundImageData}" width="512" height="512" clip-path="url(#borderClip)" />`;
+	backgroundElements = `<image href="${backgroundImageData}" width="512" height="512" clip-path="url(#borderClip)" />`;
 
-		if (get(background3D)) {
-			defs += `
+	if (get(background3D)) {
+		defs += `
 				<linearGradient
 					id="edge3D"
 					x1="0%"
@@ -113,7 +113,7 @@ export async function getCompleteSVG(): Promise<string> {
 				</filter>
 			`;
 
-			backgroundElements += `
+		backgroundElements += `
 				<rect
 					width="512"
 					height="512"
@@ -126,10 +126,10 @@ export async function getCompleteSVG(): Promise<string> {
 					clip-path="url(#borderClip)"
 				/>
 			`;
-		}
+	}
 
-		if (get(borderStroke) > 0) {
-			borderElement = `
+	if (get(borderStroke) > 0) {
+		borderElement = `
 				<rect
 					width="512"
 					height="512"
@@ -140,17 +140,17 @@ export async function getCompleteSVG(): Promise<string> {
 					stroke-width="${get(borderStroke)}"
 				/>
 			`;
-		}
+	}
 
-		const iconContent = iconSvg.replace(/<svg[^>]*>/, '').replace(/<\/svg>$/, '');
+	const iconContent = iconSvg.replace(/<svg[^>]*>/, '').replace(/<\/svg>$/, '');
 
-		return `<svg width="512" height="512" viewBox="0 0 512 512" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+	return `<svg width="512" height="512" viewBox="0 0 512 512" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
 			${defs ? `<defs>${defs}</defs>` : ''}
 			${backgroundElements}
 			${borderElement}
 			${iconContent}
 		</svg>`;
-	}
+}
 
 export async function getProcessedSvg(
 	iconName: string,
@@ -165,7 +165,7 @@ export async function getProcessedSvg(
 		const svgAst = await parse(svg);
 		const svgAttributes = getSvgAttributes(svg);
 
-		if (iconName === 'Custom' && contentType && contentType === 'png') {
+		if ((iconName === 'Custom' && contentType && contentType === 'png')) {
 			iconGlow.set(false);
 			iconGlass.set(false);
 		}

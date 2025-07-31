@@ -12,7 +12,7 @@
 
 <Header />
 
-<main class="min-h-screen select-none overflow-hidden pt-16 md:pt-20">
+<main class="min-h-dvh select-none overflow-hidden pt-16 md:pt-20">
 	<div class="h-full px-4 md:px-6">
 		<div class="hidden h-[calc(100dvh-6rem)] grid-cols-12 gap-6 lg:grid">
 			<aside

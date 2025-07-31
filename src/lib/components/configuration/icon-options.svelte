@@ -13,28 +13,11 @@
 	import Slider from '$lib/components/ui/slider.svelte';
 	import { debounce } from '$lib/utils/debounce';
 
-	let isMobile = $state(false);
-
 	function updateIconColor(color: string) {
 		iconColor.set(color);
 	}
 	
 	const debouncedUpdateIconColor = debounce(updateIconColor, 150);
-
-	$effect(() => {
-		if (typeof window !== 'undefined') {
-			const updateMobile = () => {
-				isMobile = window.innerWidth < 1024;
-			};
-
-			updateMobile();
-			window.addEventListener('resize', updateMobile);
-
-			return () => {
-				window.removeEventListener('resize', updateMobile);
-			};
-		}
-	});
 </script>
 
 <div class="space-y-6 overflow-hidden">
@@ -99,15 +82,15 @@
 		/>
 	</div>
 
-	{#if !($selectedIcon === 'Custom' && $customContentType === 'png') && !isMobile}
+	{#if !($selectedIcon === 'Custom' && $customContentType === 'png')}
 		<div
-			class="rounded-2xl border border-black/10 bg-black/5 p-4 backdrop-blur-sm dark:border-[#333] dark:bg-[#1f1f1f57]"
+			class="hidden xl:block rounded-2xl border border-black/10 bg-black/5 p-4 backdrop-blur-sm dark:border-[#333] dark:bg-[#1f1f1f57]"
 		>
 			<Input type="checkbox" bind:value={$iconGlass} label="Glass Effect" />
 		</div>
 
 		<div
-			class="rounded-2xl border border-black/10 bg-black/5 p-4 backdrop-blur-sm dark:border-[#333] dark:bg-[#1f1f1f57]"
+			class="hidden xl:block rounded-2xl border border-black/10 bg-black/5 p-4 backdrop-blur-sm dark:border-[#333] dark:bg-[#1f1f1f57]"
 		>
 			<Input type="checkbox" bind:value={$iconGlow} label="Glow Effect" />
 		</div>
