@@ -1,0 +1,13 @@
+{
+  "name": "ZintIcon",
+  "short_name": "ZintIcon",
+	"description": "Minimalist Icon Generator.",
+	"start_url": "/",
+	"display": "standalone",
+	"background_color": "#141415",
+	"theme_color": "#141415",
+	"icons": [
+		{ "src": "/icon.png", "sizes": "512x512", "type": "image/png" },
+		{ "src": "/icon.svg", "sizes": "any", "type": "image/svg+xml" }
+	]
+}

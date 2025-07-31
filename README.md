@@ -1,38 +1,59 @@
-# sv
+## `ZintIcon` - makes icon creation simple, beautiful, and fast.
 
-Everything you need to build a Svelte project, powered by [`sv`](https://github.com/sveltejs/cli).
+<div align="center">
+<img src="static/og-image.png" width="650px">
 
-## Creating a project
+![Svelte](https://img.shields.io/badge/Svelte-111111?style=for-the-badge&logo=svelte&logoColor=FF3E00)
+![TailwindCSS](https://img.shields.io/badge/TailwindCSS-111111?style=for-the-badge&logo=tailwindcss&logoColor=38BDF8)
+![TypeScript](https://img.shields.io/badge/TypeScript-111111?style=for-the-badge&logo=typescript&logoColor=3178C6)
 
-If you're seeing this, you've probably already done this step. Congrats!
+</div>
 
-```bash
-# create a new project in the current directory
-npx sv create
+## Whats is ZintIcon?
 
-# create a new project in my-app
-npx sv create my-app
-```
+ZintIcon is a minimalist icon generator web app that lets designers and developers create beautiful icons with smooth gradients, customizable backgrounds, and instant previews. Export your icons in SVG or ICO format, and enjoy a modern, intuitive interface built with SvelteKit.
 
-## Developing
+### Features
 
-Once you've created a project and installed dependencies with `npm install` (or `pnpm install` or `yarn`), start a development server:
+- **Icon Generator**: Choose from a large library of SVG icons and customize them with gradients, colors, backgrounds, and more.
+- **Live Preview**: Instantly see your changes before downloading.
+- **Export Options**: Download your icons as SVG or ICO files.
+- **Modern UI**: Clean, responsive interface with reusable components and light/dark theme support.
+- **Extensive Icon Library**: Hundreds of ready-to-use SVG icons, with a wide variety of shapes, styles, and visual variations.
+- **Advanced Customization**: Adjust background, color, gradient, size, position, and more.
+- **Glass Effect**: Apply a frosted glass style to your icons for a modern look.
+- **Glow Effect**: Add glowing effects to make your icons stand out.
+- **Mesh Gradients & 3D Backgrounds**: Create smooth mesh gradients and enable 3D backgrounds with rotation and lighting controls.
+- **Noise, Contrast, Saturation, Brightness**: Fine-tune your icon backgrounds with advanced visual controls.
+- **Icon Variations**: Access a wide variety of icon shapes, styles, and visual effects.
+- **Theme Support**: Toggle between light and dark themes for optimal viewing.
+- **Responsive Design**: Works seamlessly on desktop and mobile devices.
+- **Custom Content**: Support for custom icons and content types.
+- **Instant Copy**: Copy SVG code or color values directly from the UI.
+- **Accessibility**: Designed with accessibility in mind for a better user experience.
 
-```bash
-npm run dev
+## Installation
 
-# or start the server and open the app in a new browser tab
-npm run dev -- --open
-```
+1. **Clone the repository**
+   ```bash
+   git clone https://github.com/gvrciary/zint-icon.git
+   cd zint-icon
+   ```
 
-## Building
+2. **Install dependencies**
+   ```bash
+   npm install
+   ```
 
-To create a production version of your app:
+3. **Run in development mode**
+    ```bash
+    npm run dev
+    ```
 
-```bash
-npm run build
-```
+## Credits
 
-You can preview the production build with `npm run preview`.
+This project uses [Heroicons](https://heroicons.com/) for the UI icons.
 
-> To deploy your app, you may need to install an [adapter](https://svelte.dev/docs/kit/adapters) for your target environment.
+## License
+
+[![LICENSE - Apache 2.0 by gvrciary](https://img.shields.io/badge/LICENSE-Apache%202.0-111111?style=for-the-badge&labelColor=111111&logo=open-source-initiative&logoColor=white)](LICENSE)
