@@ -1,6 +1,7 @@
 <script lang="ts">
 	import { Copy, Check } from 'lucide-svelte';
 	import Button from './button.svelte';
+	import { toast } from 'svelte-sonner';
 
 	interface Props {
 		text: string;
@@ -24,12 +25,13 @@
 			if (timeoutId) {
 				clearTimeout(timeoutId);
 			}
-
+			
+			toast.success('Copied to clipboard!');
 			timeoutId = setTimeout(() => {
 				copied = false;
 			}, 2000);
-		} catch (err) {
-			console.error('Failed to copy text:', err);
+		} catch {
+		  toast.error('Failed to copy');
 		}
 	}
 
