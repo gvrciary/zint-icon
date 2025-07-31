@@ -85,3 +85,43 @@ function createBMPFromImageData(imageData: ImageData, size: number): ArrayBuffer
 
 	return buffer;
 }
+
+export async function generateImageDataFromSVG(
+	svgData: string,
+	sizes = [16, 32, 48, 64, 128, 256]
+): Promise<ImageData[]> {
+	const images: ImageData[] = [];
+
+	for (const size of sizes) {
+		const canvas = document.createElement('canvas');
+		const ctx = canvas.getContext('2d');
+		const img = new Image();
+
+		canvas.width = size;
+		canvas.height = size;
+
+		await new Promise<void>((resolve, reject) => {
+			img.onload = () => {
+				try {
+					if (ctx) {
+						ctx.drawImage(img, 0, 0, size, size);
+						const imageData = ctx.getImageData(0, 0, size, size);
+						images.push(imageData);
+					}
+					resolve();
+				} catch (err) {
+					reject(err);
+				}
+			};
+			img.onerror = reject;
+
+			const svgBlob = new Blob([svgData], {
+				type: 'image/svg+xml;charset=utf-8'
+			});
+			const url = URL.createObjectURL(svgBlob);
+			img.src = url;
+		});
+	}
+
+	return images;
+}

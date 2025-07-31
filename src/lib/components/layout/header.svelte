@@ -5,40 +5,17 @@
 	import Input from '$lib/components/ui/input.svelte';
 	import ThemeToggle from '$lib/components/ui/theme-toggle.svelte';
 	import {
-		selectedIcon,
-		iconColor,
-		iconSize,
-		iconOffsetX,
-		iconOffsetY,
-		iconGlass,
-		iconGlow,
-		customSvg,
-		customPng,
-		customContentType,
-		borderRadius,
-		borderStroke,
-		borderColor,
-		borderOpacity,
-		background3D,
-		background3DRotation,
-		meshGradientColors,
-		noise,
-		contrast,
-		saturation,
-		brightness,
 		downloadResolution
 	} from '$lib/stores/icon';
-	import { getProcessedSvg } from '$lib/parser/svg';
-	import { initRender } from '$lib/webgl/mesh-render';
-	import vertexShader from '$lib/utils/shaders/shaders.vert?raw';
-	import fragmentShader from '$lib/utils/shaders/shaders.frag?raw';
 	import { onMount } from 'svelte';
-	import { createICOFile } from '$lib/parser/ico';
+	import { createICOFile, generateImageDataFromSVG } from '$lib/parser/ico';
+	import { toast } from 'svelte-sonner';
+	import { getCompleteSVG } from '$lib/parser/svg';
 
 	let isMobileMenuOpen = $state(false);
 	let isDownloadDropdownOpen = $state(false);
 	let dropdownRef: HTMLDivElement;
-	
+
 	onMount(() => {
 		function handleClickOutside(event: Event) {
 			if (dropdownRef && !dropdownRef.contains(event.target as Node)) {
@@ -60,136 +37,25 @@
 		isDownloadDropdownOpen = !isDownloadDropdownOpen;
 	}
 
-	async function getCompleteSVG(): Promise<string> {
-		const tempCanvas = document.createElement('canvas');
-		tempCanvas.width = 512;
-		tempCanvas.height = 512;
-
-		const renderContext = initRender(tempCanvas, vertexShader, fragmentShader, {
-			meshGradientColors: $meshGradientColors,
-			noise: $noise,
-			contrast: $contrast,
-			saturation: $saturation,
-			brightness: $brightness
-		});
-
-		renderContext.render();
-
-		const backgroundImageData = tempCanvas.toDataURL('image/png');
-
-		renderContext.cleanup();
-
-		const iconSvg = await getProcessedSvg(
-			$selectedIcon,
-			{
-				iconGlow: $iconGlow,
-				iconGlass: $iconGlass,
-				iconColor: $iconColor,
-				iconSize: $iconSize,
-				iconOffsetX: $iconOffsetX,
-				iconOffsetY: $iconOffsetY
-			},
-			$customSvg,
-			$customPng,
-			$customContentType
-		);
-
-		const borderStrokeStyle = (() => {
-			const opacity = $borderOpacity / 100;
-			const r = parseInt($borderColor.slice(1, 3), 16);
-			const g = parseInt($borderColor.slice(3, 5), 16);
-			const b = parseInt($borderColor.slice(5, 7), 16);
-			return `rgba(${r}, ${g}, ${b}, ${opacity})`;
-		})();
-
-		let defs = '';
-		let backgroundElements = '';
-		let borderElement = '';
-
-		defs += `
-			<clipPath id="borderClip">
-				<rect width="512" height="512" rx="${$borderRadius}" ry="${$borderRadius}" />
-			</clipPath>
-		`;
-
-		backgroundElements = `<image href="${backgroundImageData}" width="512" height="512" clip-path="url(#borderClip)" />`;
-
-		if ($background3D) {
-			defs += `
-				<linearGradient
-					id="edge3D"
-					x1="0%"
-					y1="0%"
-					x2="100%"
-					y2="100%"
-					gradientTransform="rotate(${$background3DRotation})"
-				>
-					<stop offset="0%" style="stop-color:rgba(255,255,255,0.5);stop-opacity:1" />
-					<stop offset="30%" style="stop-color:rgba(255,255,255,0.0);stop-opacity:1" />
-					<stop offset="70%" style="stop-color:rgba(255,255,255,0.0);stop-opacity:1" />
-					<stop offset="100%" style="stop-color:rgba(0,0,0,0.5);stop-opacity:1" />
-				</linearGradient>
-				<filter id="edge3DBlur" x="-10%" y="-10%" width="120%" height="120%">
-					<feGaussianBlur stdDeviation="2" result="blurred" />
-				</filter>
-			`;
-
-			backgroundElements += `
-				<rect
-					width="512"
-					height="512"
-					rx="${$borderRadius}"
-					ry="${$borderRadius}"
-					fill="none"
-					stroke="url(#edge3D)"
-					stroke-width="20"
-					filter="url(#edge3DBlur)"
-					clip-path="url(#borderClip)"
-				/>
-			`;
-		}
-
-		if ($borderStroke > 0) {
-			borderElement = `
-				<rect
-					width="512"
-					height="512"
-					rx="${$borderRadius}"
-					ry="${$borderRadius}"
-					fill="none"
-					stroke="${borderStrokeStyle}"
-					stroke-width="${$borderStroke}"
-				/>
-			`;
-		}
-
-		const iconContent = iconSvg.replace(/<svg[^>]*>/, '').replace(/<\/svg>$/, '');
-
-		return `<svg width="512" height="512" viewBox="0 0 512 512" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
-			${defs ? `<defs>${defs}</defs>` : ''}
-			${backgroundElements}
-			${borderElement}
-			${iconContent}
-		</svg>`;
-	}
-
 	let svgContent = $state('');
 
 	async function exportSVG() {
-		try {
-			const svgData = await getCompleteSVG();
-			const svgBlob = new Blob([svgData], { type: 'image/svg+xml;charset=utf-8' });
-			const url = URL.createObjectURL(svgBlob);
+		toast.promise(getCompleteSVG(), {
+			loading: 'Generating SVG...',
+			success: (svgData) => {
+				const svgBlob = new Blob([svgData], { type: 'image/svg+xml;charset=utf-8' });
+				const url = URL.createObjectURL(svgBlob);
 
-			const link = document.createElement('a');
-			link.download = `zin-icon.svg`;
-			link.href = url;
-			link.click();
+				const link = document.createElement('a');
+				link.download = `zin-icon.svg`;
+				link.href = url;
+				link.click();
 
-			URL.revokeObjectURL(url);
-		} catch (err) {
-			console.error('Failed to download SVG:', err);
-		}
+				URL.revokeObjectURL(url);
+				return 'SVG generated successfully!';
+			},
+			error: () => `Failed to generate SVG`
+		});
 	}
 
 	async function exportPNG() {
@@ -198,12 +64,11 @@
 			const canvas = document.createElement('canvas');
 			const ctx = canvas.getContext('2d');
 			const img = new Image();
-
 			const resolution = $downloadResolution || 512;
 			canvas.width = resolution;
 			canvas.height = resolution;
 
-			return new Promise<void>((resolve, reject) => {
+			const png = new Promise<void>((resolve, reject) => {
 				img.onload = function () {
 					try {
 						if (ctx) {
@@ -230,8 +95,16 @@
 				const url = URL.createObjectURL(svgBlob);
 				img.src = url;
 			});
-		} catch (err) {
-			console.error('Failed to export PNG:', err);
+
+			toast.promise(png, {
+				loading: 'Generating PNG...',
+				success: () => {
+					return 'PNG generated successfully!';
+				},
+				error: () => `Failed to generate PNG`
+			});
+		} catch {
+			toast.error('Failed to export PNG');
 		}
 	}
 
@@ -239,44 +112,26 @@
 		try {
 			const svgData = await getCompleteSVG();
 			const sizes = [16, 32, 48, 64, 128, 256];
-			const images: ImageData[] = [];
 
-			for (const size of sizes) {
-				const canvas = document.createElement('canvas');
-				const ctx = canvas.getContext('2d');
-				const img = new Image();
+			toast.promise(generateImageDataFromSVG(svgData, sizes), {
+				loading: 'Generating ICO...',
+				success: (images) => {
+					const icoData = createICOFile(images, sizes);
+					const blob = new Blob([icoData], { type: 'image/x-icon' });
+					const url = URL.createObjectURL(blob);
 
-				canvas.width = size;
-				canvas.height = size;
+					const link = document.createElement('a');
+					link.download = `zin-icon.ico`;
+					link.href = url;
+					link.click();
 
-				await new Promise<void>((resolve) => {
-					img.onload = () => {
-						if (ctx) {
-							ctx.drawImage(img, 0, 0, size, size);
-							const imageData = ctx.getImageData(0, 0, size, size);
-							images.push(imageData);
-						}
-						resolve();
-					};
-
-					const svgBlob = new Blob([svgData], { type: 'image/svg+xml;charset=utf-8' });
-					const url = URL.createObjectURL(svgBlob);
-					img.src = url;
-				});
-			}
-
-			const icoData = createICOFile(images, sizes);
-			const blob = new Blob([icoData], { type: 'image/x-icon' });
-			const url = URL.createObjectURL(blob);
-
-			const link = document.createElement('a');
-			link.download = `zin-icon.ico`;
-			link.href = url;
-			link.click();
-
-			URL.revokeObjectURL(url);
-		} catch (err) {
-			console.error('Failed to export ICO:', err);
+					URL.revokeObjectURL(url);
+					return 'ICO generated successfully!';
+				},
+				error: () => `Failed to generate ICO`
+			});
+		} catch {
+			toast.error('Failed to export ICO');
 		}
 	}
 </script>
@@ -286,9 +141,9 @@
 		<nav class="flex items-center justify-between">
 			<a href="/" class="group flex items-center space-x-3">
 				<div class="relative h-8 w-8 overflow-hidden">
-					<img src="/logo.svg" alt="Zin Icon Logo" class="h-full w-full object-cover" />
+					<img src="/icon.svg" alt="Zin Icon Logo" class="h-full w-full object-cover" />
 				</div>
-				<div class="flex items-center gap-2">
+				<div class="items-center gap-2 hidden md:flex">
 					<span class="text-xl text-black dark:text-white">ZintIcon</span>
 					<span
 						class="rounded-full border border-black/10 bg-black/5 px-2 py-0.5 text-xs font-medium text-gray-800 backdrop-blur-sm dark:border-[#333] dark:bg-[#1f1f1f57] dark:text-gray-300"

@@ -5,6 +5,7 @@
 	import Button from '$lib/components/ui/button.svelte';
 	import { Upload } from 'lucide-svelte';
 	import { selectedIcon, customSvg, customPng, customContentType } from '$lib/stores/icon';
+	import { toast } from 'svelte-sonner';
 
 	function selectRandomIcon() {
 		const randomIcon = getRandomIcon();
@@ -34,6 +35,7 @@
 					selectedIcon.set('Custom');
 				};
 				reader.readAsText(file);
+				toast.success('SVG icon uploaded successfully!');
 			} else if (file.type.startsWith('image/')) {
 				const reader = new FileReader();
 				reader.onload = (e) => {
@@ -44,6 +46,7 @@
 					selectedIcon.set('Custom');
 				};
 				reader.readAsDataURL(file);
+				toast.success('Image icon uploaded successfully!');
 			}
 		}
 		target.value = '';

@@ -11,7 +11,146 @@ import {
 	collectDrawingElements,
 	createGlowFilters
 } from '$lib/utils/svg';
-import { iconGlass, iconGlow } from '$lib/stores/icon';
+import { get } from 'svelte/store';
+import {
+		selectedIcon,
+		iconColor,
+		iconSize,
+		iconOffsetX,
+		iconOffsetY,
+		iconGlass,
+		iconGlow,
+		customSvg,
+		customPng,
+		customContentType,
+		borderRadius,
+		borderStroke,
+		borderColor,
+		borderOpacity,
+		background3D,
+		background3DRotation,
+		meshGradientColors,
+		noise,
+		contrast,
+		saturation,
+		brightness
+	} from '$lib/stores/icon';
+	import { initRender } from '$lib/webgl/mesh-render';
+	import vertexShader from '$lib/utils/shaders/shaders.vert?raw';
+	import fragmentShader from '$lib/utils/shaders/shaders.frag?raw';
+
+export async function getCompleteSVG(): Promise<string> {
+		const tempCanvas = document.createElement('canvas');
+		tempCanvas.width = 512;
+		tempCanvas.height = 512;
+
+		const renderContext = initRender(tempCanvas, vertexShader, fragmentShader, {
+			meshGradientColors: get(meshGradientColors),
+			noise: get(noise),
+			contrast: get(contrast),
+			saturation: get(saturation),
+			brightness: get(brightness)
+		});
+
+		renderContext.render();
+
+		const backgroundImageData = tempCanvas.toDataURL('image/png');
+
+		renderContext.cleanup();
+
+		const iconSvg = await getProcessedSvg(
+			get(selectedIcon),
+			{
+				iconGlow: get(iconGlow),
+				iconGlass: get(iconGlass),
+				iconColor: get(iconColor),
+				iconSize: get(iconSize),
+				iconOffsetX: get(iconOffsetX),
+				iconOffsetY: get(iconOffsetY)
+			},
+			get(customSvg),
+			get(customPng),
+			get(customContentType)
+		);
+
+		const borderStrokeStyle = (() => {
+			const opacity = get(borderOpacity) / 100;
+			const r = parseInt(get(borderColor).slice(1, 3), 16);
+			const g = parseInt(get(borderColor).slice(3, 5), 16);
+			const b = parseInt(get(borderColor).slice(5, 7), 16);
+			return `rgba(${r}, ${g}, ${b}, ${opacity})`;
+		})();
+
+		let defs = '';
+		let backgroundElements = '';
+		let borderElement = '';
+
+		defs += `
+			<clipPath id="borderClip">
+				<rect width="512" height="512" rx="${get(borderRadius)}" ry="${get(borderRadius)}" />
+			</clipPath>
+		`;
+
+		backgroundElements = `<image href="${backgroundImageData}" width="512" height="512" clip-path="url(#borderClip)" />`;
+
+		if (get(background3D)) {
+			defs += `
+				<linearGradient
+					id="edge3D"
+					x1="0%"
+					y1="0%"
+					x2="100%"
+					y2="100%"
+					gradientTransform="rotate(${get(background3DRotation)})"
+				>
+					<stop offset="0%" style="stop-color:rgba(255,255,255,0.5);stop-opacity:1" />
+					<stop offset="30%" style="stop-color:rgba(255,255,255,0.0);stop-opacity:1" />
+					<stop offset="70%" style="stop-color:rgba(255,255,255,0.0);stop-opacity:1" />
+					<stop offset="100%" style="stop-color:rgba(0,0,0,0.5);stop-opacity:1" />
+				</linearGradient>
+				<filter id="edge3DBlur" x="-10%" y="-10%" width="120%" height="120%">
+					<feGaussianBlur stdDeviation="2" result="blurred" />
+				</filter>
+			`;
+
+			backgroundElements += `
+				<rect
+					width="512"
+					height="512"
+					rx="${get(borderRadius)}"
+					ry="${get(borderRadius)}"
+					fill="none"
+					stroke="url(#edge3D)"
+					stroke-width="20"
+					filter="url(#edge3DBlur)"
+					clip-path="url(#borderClip)"
+				/>
+			`;
+		}
+
+		if (get(borderStroke) > 0) {
+			borderElement = `
+				<rect
+					width="512"
+					height="512"
+					rx="${get(borderRadius)}"
+					ry="${get(borderRadius)}"
+					fill="none"
+					stroke="${borderStrokeStyle}"
+					stroke-width="${get(borderStroke)}"
+				/>
+			`;
+		}
+
+		const iconContent = iconSvg.replace(/<svg[^>]*>/, '').replace(/<\/svg>$/, '');
+
+		return `<svg width="512" height="512" viewBox="0 0 512 512" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+			${defs ? `<defs>${defs}</defs>` : ''}
+			${backgroundElements}
+			${borderElement}
+			${iconContent}
+		</svg>`;
+	}
 
 export async function getProcessedSvg(
 	iconName: string,

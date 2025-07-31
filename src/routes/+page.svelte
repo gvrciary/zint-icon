@@ -14,7 +14,7 @@
 
 <main class="min-h-screen select-none overflow-hidden pt-16 md:pt-20">
 	<div class="h-full px-4 md:px-6">
-		<div class="hidden h-[calc(100vh-6rem)] grid-cols-12 gap-6 lg:grid">
+		<div class="hidden h-[calc(100dvh-6rem)] grid-cols-12 gap-6 lg:grid">
 			<aside
 				class="col-span-3 flex h-full flex-col overflow-hidden rounded-2xl border border-black/10 bg-black/5 backdrop-blur-sm dark:border-[#333] dark:bg-[#1f1f1f57]"
 			>
