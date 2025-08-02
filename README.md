@@ -18,14 +18,12 @@ ZintIcon is a minimalist icon generator web app that lets designers and develope
 - **Icon Generator**: Choose from a large library of SVG icons and customize them with gradients, colors, backgrounds, and more.
 - **Export Options**: Download your icons as SVG, ICO or PNG files.
 - **Modern UI**: Clean, responsive interface with reusable components and light/dark theme support.
-- **Extensive Icon Library**: Hundreds of ready-to-use SVG icons, with a wide variety of shapes, styles, and visual variations.
 - **Advanced Customization**: Adjust background, color, gradient, size, position, and more.
 - **Glass Effect**: Apply a frosted glass style to your icons for a modern look.
 - **Glow Effect**: Add glowing effects to make your icons stand out.
 - **Mesh Gradients & 3D Backgrounds**: Create smooth mesh gradients and enable 3D backgrounds with rotation and lighting controls.
 - **Noise, Contrast, Saturation, Brightness**: Fine-tune your icon backgrounds with advanced visual controls.
-- **Custom Content**: Support for custom icons and content types.
-- **Instant Copy**: Copy SVG code or color values directly from the UI.
+- **Custom Content**: Support for custom icons and images.
 
 ## Installation
 
