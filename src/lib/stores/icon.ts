@@ -4,7 +4,7 @@ import { generateRandomMeshColors } from '$lib/utils';
 
 export const selectedIcon: Writable<string> = writable(getRandomIcon());
 export const meshGradientColors: Writable<{ color: string; x: number; y: number }[]> = writable(
-	generateRandomMeshColors()
+  generateRandomMeshColors()
 );
 export const iconColor: Writable<string> = writable('#ffffff');
 export const noise: Writable<number> = writable(0);

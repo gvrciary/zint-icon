@@ -165,7 +165,7 @@ export async function getProcessedSvg(
 		const svgAst = await parse(svg);
 		const svgAttributes = getSvgAttributes(svg);
 
-		if ((iconName === 'Custom' && contentType && contentType === 'png')) {
+		if (iconName === 'Custom' && contentType && contentType === 'png') {
 			iconGlow.set(false);
 			iconGlass.set(false);
 		}

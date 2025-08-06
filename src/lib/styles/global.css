@@ -4,19 +4,19 @@
 @custom-variant dark (&:where(.dark, .dark *));
 
 :root {
-    --color-background: rgb(243, 245, 250);
-	--color-foreground: rgb(20, 20, 21);
+  --color-background: rgb(243, 245, 250);
+  --color-foreground: rgb(20, 20, 21);
 }
 
 .dark {
-    --color-background: rgb(20, 20, 21);
-	--color-foreground: rgb(243, 245, 250);
+  --color-background: rgb(20, 20, 21);
+  --color-foreground: rgb(243, 245, 250);
 }
 
 @layer base {
-	html {
-		font-family: 'Geist Mono Variable', system-ui, monospace;
-		color: var(--color-foreground);
-		background: var(--color-background);
-	}
+  html {
+    font-family: 'Geist Mono Variable', system-ui, monospace;
+    color: var(--color-foreground);
+    background: var(--color-background);
+  }
 }
