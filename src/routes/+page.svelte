@@ -13,38 +13,33 @@
 <Header />
 
 <main class="min-h-dvh select-none overflow-hidden px-4 pt-16 md:px-6 md:pt-20">
-  <div class="hidden h-[calc(100dvh-6rem)] grid-cols-12 gap-6 lg:grid">
+  <div class="hidden h-[calc(100dvh-6rem)] gap-6 md:flex">
     <aside
-      class="col-span-3 flex h-full flex-col overflow-hidden rounded-2xl border border-black/10 bg-black/5 backdrop-blur-sm dark:border-[#333] dark:bg-[#1f1f1f57]"
+      class="flex h-full md:max-w-[270px] lg:min-w-80 flex-[0_0_320px] flex-col overflow-hidden rounded-2xl border border-black/10 bg-black/5 backdrop-blur-sm dark:border-[#333] dark:bg-[#1f1f1f57]"
     >
-      <div class="flex-1 space-y-6 overflow-y-auto p-3">
-        <div class="space-y-4">
-          <IconSelector />
-        </div>
-
-        <div class="space-y-4">
-          <IconOptions />
-        </div>
+      <div class="flex-1 space-y-4 overflow-y-auto p-3">
+        <IconSelector />
+        <IconOptions />
       </div>
     </aside>
 
-    <section class="col-span-6 flex h-full items-center justify-center overflow-hidden py-8">
-      <Preview />
+    <section class="flex h-full flex-1 items-center justify-center overflow-hidden py-8">
+      <div class="md:scale-50 lg:scale-75 xl:scale-100">
+        <Preview />
+      </div>
     </section>
 
     <aside
-      class="col-span-3 flex h-full flex-col overflow-hidden rounded-2xl border border-black/10 bg-black/5 backdrop-blur-sm dark:border-[#333] dark:bg-[#1f1f1f57]"
+      class="flex h-full md:max-w-[270px] lg:min-w-80 flex-[0_0_320px] flex-col overflow-hidden rounded-2xl border border-black/10 bg-black/5 backdrop-blur-sm dark:border-[#333] dark:bg-[#1f1f1f57]"
     >
-      <div class="flex-1 space-y-6 overflow-y-auto p-3">
-        <div class="space-y-4">
-          <BackgroundOptions />
-        </div>
+      <div class="flex-1 space-y-4 overflow-y-auto p-3">
+        <BackgroundOptions />
       </div>
     </aside>
   </div>
 
-  <div class="flex h-[calc(100vh-5rem)] flex-col md:h-[calc(100vh-6rem)] lg:hidden">
-    <section class="flex flex-1 items-center justify-center overflow-hidden py-4">
+  <div class="flex h-[calc(100vh-5rem)] flex-col md:hidden">
+    <section class="flex flex-1 items-center justify-center overflow-hidden py-8">
       <div class="scale-50 sm:scale-75">
         <Preview />
       </div>
@@ -54,14 +49,9 @@
       class="flex flex-1 flex-col overflow-hidden rounded-t-2xl border border-black/10 bg-black/5 backdrop-blur-sm dark:border-[#333] dark:bg-[#1f1f1f57]"
     >
       <div class="{activeAside === 'icon' ? 'flex' : 'hidden'} h-full flex-col overflow-hidden">
-        <div class="flex-1 space-y-6 overflow-y-auto p-6">
-          <div class="space-y-4">
-            <IconSelector />
-          </div>
-
-          <div class="space-y-4">
-            <IconOptions />
-          </div>
+        <div class="flex-1 space-y-4 overflow-y-auto p-6">
+          <IconSelector />
+          <IconOptions />
         </div>
       </div>
 
@@ -70,9 +60,6 @@
       >
         <div class="flex-1 space-y-6 overflow-y-auto p-6">
           <div class="space-y-4">
-            <label for="" class="block text-sm font-medium text-gray-700 dark:text-gray-300">
-              Background
-            </label>
             <BackgroundOptions />
           </div>
         </div>
@@ -86,8 +73,8 @@
         variant="glass"
         size="sm"
         class="flex-1 flex-col gap-1 py-4 {activeAside === 'icon'
-          ? '!border-black/20 !bg-black/10 !text-black dark:!border-white/20 dark:!bg-white/10 dark:!text-white'
-          : ''}"
+          ? '!border-black/20 !bg-black/5 !text-black dark:!border-white/20 dark:!bg-white/10 dark:!text-white'
+          : ' bg-gray-100/5'}"
         onclick={() => (activeAside = 'icon')}
       >
         <FlameIcon class="h-5 w-5" />
@@ -97,8 +84,8 @@
         variant="glass"
         size="sm"
         class="flex-1 flex-col gap-1 py-4 {activeAside === 'background'
-          ? '!border-black/20 !bg-black/10 !text-black dark:!border-white/20 dark:!bg-white/10 dark:!text-white'
-          : ''}"
+          ? '!border-black/20 !bg-black/5 !text-black dark:!border-white/20 dark:!bg-white/10 dark:!text-white'
+          : ' bg-gray-100/5'}"
         onclick={() => (activeAside = 'background')}
       >
         <ImageIcon class="h-5 w-5" />

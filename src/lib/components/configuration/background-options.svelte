@@ -107,21 +107,23 @@
     <div class="max-h-80 space-y-3 overflow-y-auto">
       {#each $meshGradientColors as meshColor, index (index)}
         <div
-          class="flex items-center gap-3 rounded-xl border border-black/20 bg-white/5 p-3 backdrop-blur-sm dark:border-[#333] dark:bg-black/5"
+          class="flex items-center gap-3 rounded-xl border border-black/20 bg-white/5 p-3 backdrop-blur-sm dark:border-[#333] dark:bg-black/5 justify-between"
         >
-          <input
-            type="color"
-            bind:value={meshColor.color}
-            oninput={(e) => debouncedUpdateMeshGradientColor(index, e.currentTarget.value)}
-            class="h-8 w-10 flex-shrink-0 cursor-pointer rounded-lg border border-black/10 bg-transparent transition-colors hover:border-black/20 dark:border-[#333] dark:hover:border-white/30"
-          />
-          <Input
-            type="text"
-            bind:value={meshColor.color}
-            oninput={(e) => debouncedUpdateMeshGradientColor(index, e.currentTarget.value)}
-            class="min-w-0 flex-1"
-            placeholder="#000000"
-          />
+          <div class="flex flex-1 items-center gap-3 min-w-0">
+              <input
+                type="color"
+                bind:value={meshColor.color}
+                oninput={(e) => debouncedUpdateMeshGradientColor(index, e.currentTarget.value)}
+                class="h-8 w-10 flex-shrink-0 cursor-pointer rounded-lg border border-black/10 bg-transparent transition-colors hover:border-black/20 dark:border-[#333] dark:hover:border-white/30"
+              />
+              <Input
+                type="text"
+                bind:value={meshColor.color}
+                oninput={(e) => debouncedUpdateMeshGradientColor(index, e.currentTarget.value)}
+                class="min-w-0 flex-1"
+                placeholder="#000000"
+              />
+          </div>
           {#if $meshGradientColors.length > 1}
             <Button
               variant="glass"
