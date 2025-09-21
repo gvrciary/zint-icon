@@ -1,5 +1,6 @@
 import { createShaderProgram } from './shader';
 import { hexToRgb } from '$lib/utils/webgl';
+import { toast } from 'svelte-sonner';
 
 export function initRender(
   canvas: HTMLCanvasElement,
@@ -14,8 +15,9 @@ export function initRender(
   }
 ): { render: () => void; cleanup: () => void } {
   const gl = canvas.getContext('webgl');
+
   if (!gl) {
-    console.error('WebGL not supported');
+    toast.error('WebGL not supported in this browser.');
     return { render: () => {}, cleanup: () => {} };
   }
 

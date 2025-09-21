@@ -88,7 +88,7 @@
 
 <div class="space-y-6 overflow-hidden">
   <div
-    class="rounded-2xl border border-black/10 bg-black/5 p-4 backdrop-blur-sm dark:border-[#333] dark:bg-[#1f1f1f57]"
+    class="rounded-2xl border border-black/10 bg-gray-100/5 p-4 backdrop-blur-sm dark:border-[#333] dark:bg-[#1f1f1f57]"
   >
     <div class="mb-4 flex items-center justify-between">
       <span class="text-sm font-medium text-gray-700 dark:text-gray-300">Palette</span>
@@ -138,13 +138,13 @@
   </div>
 
   <div
-    class="rounded-2xl border border-black/10 bg-black/5 p-4 backdrop-blur-sm dark:border-[#333] dark:bg-[#1f1f1f57]"
+    class="rounded-2xl border border-black/10 bg-gray-100/5 p-4 backdrop-blur-sm dark:border-[#333] dark:bg-[#1f1f1f57]"
   >
     <Slider value={$noise} min={0} max={100} step={1} label="Noise" onChange={updateNoise} />
   </div>
 
   <div
-    class="rounded-2xl border border-black/10 bg-black/5 p-4 backdrop-blur-sm dark:border-[#333] dark:bg-[#1f1f1f57]"
+    class="rounded-2xl border border-black/10 bg-gray-100/5 p-4 backdrop-blur-sm dark:border-[#333] dark:bg-[#1f1f1f57]"
   >
     <Slider
       value={$contrast}
@@ -157,7 +157,7 @@
   </div>
 
   <div
-    class="rounded-2xl border border-black/10 bg-black/5 p-4 backdrop-blur-sm dark:border-[#333] dark:bg-[#1f1f1f57]"
+    class="rounded-2xl border border-black/10 bg-gray-100/5 p-4 backdrop-blur-sm dark:border-[#333] dark:bg-[#1f1f1f57]"
   >
     <Slider
       value={$saturation}
@@ -170,7 +170,7 @@
   </div>
 
   <div
-    class="rounded-2xl border border-black/10 bg-black/5 p-4 backdrop-blur-sm dark:border-[#333] dark:bg-[#1f1f1f57]"
+    class="rounded-2xl border border-black/10 bg-gray-100/5 p-4 backdrop-blur-sm dark:border-[#333] dark:bg-[#1f1f1f57]"
   >
     <Slider
       value={$brightness}
@@ -183,7 +183,7 @@
   </div>
 
   <div
-    class="rounded-2xl border border-black/10 bg-black/5 p-4 backdrop-blur-sm dark:border-[#333] dark:bg-[#1f1f1f57]"
+    class="rounded-2xl border border-black/10 bg-gray-100/5 p-4 backdrop-blur-sm dark:border-[#333] dark:bg-[#1f1f1f57]"
   >
     <Slider
       value={$borderRadius}
@@ -196,7 +196,7 @@
   </div>
 
   <div
-    class="rounded-2xl border border-black/10 bg-black/5 p-4 backdrop-blur-sm dark:border-[#333] dark:bg-[#1f1f1f57]"
+    class="rounded-2xl border border-black/10 bg-gray-100/5 p-4 backdrop-blur-sm dark:border-[#333] dark:bg-[#1f1f1f57]"
   >
     <Slider
       value={$borderStroke}
@@ -210,7 +210,7 @@
 
   {#if $borderStroke > 0}
     <div
-      class="rounded-2xl border border-black/10 bg-black/5 p-4 backdrop-blur-sm dark:border-[#333] dark:bg-[#1f1f1f57]"
+      class="rounded-2xl border border-black/10 bg-gray-100/5 p-4 backdrop-blur-sm dark:border-[#333] dark:bg-[#1f1f1f57]"
     >
       <div class="mb-3">
         <span class="text-sm font-medium text-gray-700 dark:text-gray-300">Border Color</span>
@@ -233,7 +233,7 @@
     </div>
 
     <div
-      class="rounded-2xl border border-black/10 bg-black/5 p-4 backdrop-blur-sm dark:border-[#333] dark:bg-[#1f1f1f57]"
+      class="rounded-2xl border border-black/10 bg-gray-100/5 p-4 backdrop-blur-sm dark:border-[#333] dark:bg-[#1f1f1f57]"
     >
       <Slider
         value={$borderOpacity}
@@ -247,14 +247,14 @@
   {/if}
 
   <div
-    class="rounded-2xl border border-black/10 bg-black/5 p-4 backdrop-blur-sm dark:border-[#333] dark:bg-[#1f1f1f57]"
+    class="rounded-2xl border border-black/10 bg-gray-100/5 p-4 backdrop-blur-sm dark:border-[#333] dark:bg-[#1f1f1f57]"
   >
     <Input type="checkbox" bind:value={$background3D} label="3D Effect" />
   </div>
 
   {#if $background3D}
     <div
-      class="rounded-2xl border border-black/10 bg-black/5 p-4 backdrop-blur-sm dark:border-[#333] dark:bg-[#1f1f1f57]"
+      class="rounded-2xl border border-black/10 bg-gray-100/5 p-4 backdrop-blur-sm dark:border-[#333] dark:bg-[#1f1f1f57]"
     >
       <Slider
         value={$background3DRotation}

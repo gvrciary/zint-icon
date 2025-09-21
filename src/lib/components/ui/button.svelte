@@ -53,6 +53,7 @@
 </script>
 
 <button
+  type="button"
   class={cn(
     baseClasses,
     variantClasses[variant],

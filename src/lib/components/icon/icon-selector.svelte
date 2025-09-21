@@ -66,7 +66,7 @@
 
 <div class="flex h-full flex-1 flex-col space-y-6 overflow-hidden">
   <div
-    class="rounded-2xl border border-black/10 bg-black/5 p-4 backdrop-blur-sm dark:border-[#333] dark:bg-[#1f1f1f57]"
+    class="rounded-2xl border border-black/10 bg-gray-100/5 p-4 backdrop-blur-sm dark:border-[#333] dark:bg-[#1f1f1f57]"
   >
     <div class="relative mb-5 flex items-center gap-2">
       <div class="relative flex-1">
@@ -108,7 +108,7 @@
       />
     </div>
 
-    <div class="max-h-64 overflow-y-auto">
+    <div class="max-h-64 min-h-64 overflow-y-auto">
       <div class="grid grid-cols-4 gap-3">
         {#each filteredIcons() as iconName (iconName)}
           <Button
@@ -118,7 +118,7 @@
             title={iconName}
             class={cn(
               'group flex flex-col items-center justify-center p-3',
-              $selectedIcon === iconName ? '!border-white/30 !bg-white/10 shadow-lg' : ''
+              $selectedIcon === iconName ? '!border-white/30 !bg-white/10' : ''
             )}
           >
             <div

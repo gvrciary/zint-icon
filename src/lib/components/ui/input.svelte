@@ -141,7 +141,7 @@
       ></div>
 
       <div
-        class="absolute left-[2px] top-[2px] h-5 w-5 rounded-full bg-gradient-to-br from-zinc-400 via-zinc-500 to-zinc-600 shadow-sm transition-all duration-200 ease-out peer-checked:translate-x-5 peer-checked:from-black peer-checked:via-zinc-900 peer-checked:to-zinc-800 dark:from-zinc-200 dark:via-zinc-300 dark:to-zinc-400 dark:peer-checked:from-white dark:peer-checked:via-gray-100 dark:peer-checked:to-gray-200"
+        class="absolute left-[2px] top-[2px] h-5 w-5 rounded-full bg-gradient-to-br from-zinc-300  to-zinc-500 shadow-sm transition-all duration-200 ease-out peer-checked:translate-x-5 peer-checked:from-black peer-checked:via-zinc-900 peer-checked:to-zinc-800 dark:from-zinc-200 dark:via-zinc-300 dark:to-zinc-400 dark:peer-checked:from-white dark:peer-checked:via-gray-100 dark:peer-checked:to-gray-200"
       >
         <div
           class="absolute inset-[1px] rounded-full bg-gradient-to-br from-white/40 to-transparent"

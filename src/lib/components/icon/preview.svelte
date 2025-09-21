@@ -28,7 +28,7 @@
   import { initRender } from '$lib/webgl/mesh-render';
   import { onMount } from 'svelte';
 
-  let canvasRef: HTMLCanvasElement;
+  let canvasRef = $state<HTMLCanvasElement | null>(null);
   let renderContext: { render: () => void; cleanup: () => void } | null = null;
   let processedSvg = $state('');
   let loading = $state(true);
@@ -65,7 +65,7 @@
   });
 
   $effect(() => {
-    if (!canvasRef && renderContext) return;
+    if (!canvasRef) return;
 
     renderContext = initRender(canvasRef, vertexShader, fragmentShader, {
       meshGradientColors: $meshGradientColors,

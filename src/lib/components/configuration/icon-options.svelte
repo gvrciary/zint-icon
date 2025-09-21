@@ -23,7 +23,7 @@
 <div class="space-y-6 overflow-hidden">
   {#if !($selectedIcon === 'Custom' && $customContentType === 'png')}
     <div
-      class="rounded-2xl border border-black/10 bg-black/5 p-4 backdrop-blur-sm dark:border-[#333] dark:bg-[#1f1f1f57]"
+      class="rounded-2xl border border-black/10 bg-gray-100/5 p-4 backdrop-blur-sm dark:border-[#333] dark:bg-[#1f1f1f57]"
     >
       <div class="flex items-center gap-3">
         <input
@@ -44,7 +44,7 @@
   {/if}
 
   <div
-    class="rounded-2xl border border-black/10 bg-black/5 p-4 backdrop-blur-sm dark:border-[#333] dark:bg-[#1f1f1f57]"
+    class="rounded-2xl border border-black/10 bg-gray-100/5 p-4 backdrop-blur-sm dark:border-[#333] dark:bg-[#1f1f1f57]"
   >
     <Slider
       value={$iconSize}
@@ -57,7 +57,7 @@
   </div>
 
   <div
-    class="rounded-2xl border border-black/10 bg-black/5 p-4 backdrop-blur-sm dark:border-[#333] dark:bg-[#1f1f1f57]"
+    class="rounded-2xl border border-black/10 bg-gray-100/5 p-4 backdrop-blur-sm dark:border-[#333] dark:bg-[#1f1f1f57]"
   >
     <Slider
       value={$iconOffsetX}
@@ -70,7 +70,7 @@
   </div>
 
   <div
-    class="rounded-2xl border border-black/10 bg-black/5 p-4 backdrop-blur-sm dark:border-[#333] dark:bg-[#1f1f1f57]"
+    class="rounded-2xl border border-black/10 bg-gray-100/5 p-4 backdrop-blur-sm dark:border-[#333] dark:bg-[#1f1f1f57]"
   >
     <Slider
       value={$iconOffsetY}
@@ -84,13 +84,13 @@
 
   {#if !($selectedIcon === 'Custom' && $customContentType === 'png')}
     <div
-      class="hidden rounded-2xl border border-black/10 bg-black/5 p-4 backdrop-blur-sm xl:block dark:border-[#333] dark:bg-[#1f1f1f57]"
+      class="hidden rounded-2xl border border-black/10 bg-gray-100/5 p-4 backdrop-blur-sm xl:block dark:border-[#333] dark:bg-[#1f1f1f57]"
     >
       <Input type="checkbox" bind:value={$iconGlass} label="Glass Effect" />
     </div>
 
     <div
-      class="hidden rounded-2xl border border-black/10 bg-black/5 p-4 backdrop-blur-sm xl:block dark:border-[#333] dark:bg-[#1f1f1f57]"
+      class="hidden rounded-2xl border border-black/10 bg-gray-100/5 p-4 backdrop-blur-sm xl:block dark:border-[#333] dark:bg-[#1f1f1f57]"
     >
       <Input type="checkbox" bind:value={$iconGlow} label="Glow Effect" />
     </div>
