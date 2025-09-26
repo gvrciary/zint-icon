@@ -102,19 +102,36 @@
 
   function handleKeydown(event: KeyboardEvent & { currentTarget: HTMLInputElement }) {
     if (type === 'number') {
-      if ([8, 9, 27, 13, 46, 35, 36, 37, 39, 38, 40].includes(event.keyCode)) {
+      const allowedKeys = [
+        'Backspace',
+        'Tab',
+        'Escape',
+        'Enter',
+        'Delete',
+        'Home',
+        'End',
+        'ArrowLeft',
+        'ArrowRight',
+        'ArrowUp',
+        'ArrowDown'
+      ];
+
+      if (allowedKeys.includes(event.key)) {
         return;
       }
-      if ((event.ctrlKey || event.metaKey) && [65, 67, 86, 88, 90].includes(event.keyCode)) {
+
+      if (
+        (event.ctrlKey || event.metaKey) &&
+        ['a', 'c', 'v', 'x', 'z'].includes(event.key.toLowerCase())
+      ) {
         return;
       }
+
       if (event.key === '.' || event.key === '-') {
         return;
       }
-      if (
-        (event.shiftKey || event.keyCode < 48 || event.keyCode > 57) &&
-        (event.keyCode < 96 || event.keyCode > 105)
-      ) {
+
+      if (!/^[0-9]$/.test(event.key)) {
         event.preventDefault();
       }
     }
@@ -137,11 +154,11 @@
       />
 
       <div
-        class="relative h-6 w-11 rounded-full border border-black/10 bg-black/5 backdrop-blur-sm transition-all duration-200 peer-checked:border-black/20 peer-checked:bg-black/10 peer-focus-visible:ring-1 peer-focus-visible:ring-black/20 peer-focus-visible:ring-offset-1 peer-focus-visible:ring-offset-white dark:border-[#333] dark:bg-[#1f1f1f57] dark:peer-checked:border-white/30 dark:peer-checked:bg-white/10 dark:peer-focus-visible:ring-white/20 dark:peer-focus-visible:ring-offset-zinc-900"
+        class="relative h-6 w-11 rounded-full border border-black/10 bg-gray-100/5 backdrop-blur-sm transition-all duration-200 peer-checked:border-gray-400/20 peer-checked:bg-gray-300/10 peer-focus-visible:ring-1 peer-focus-visible:ring-black/20 peer-focus-visible:ring-offset-1 peer-focus-visible:ring-offset-white dark:border-[#333] dark:bg-[#1f1f1f57] dark:peer-checked:border-white/30 dark:peer-checked:bg-white/10 dark:peer-focus-visible:ring-white/20 dark:peer-focus-visible:ring-offset-zinc-900"
       ></div>
 
       <div
-        class="absolute left-[2px] top-[2px] h-5 w-5 rounded-full bg-gradient-to-br from-zinc-300  to-zinc-500 shadow-sm transition-all duration-200 ease-out peer-checked:translate-x-5 peer-checked:from-black peer-checked:via-zinc-900 peer-checked:to-zinc-800 dark:from-zinc-200 dark:via-zinc-300 dark:to-zinc-400 dark:peer-checked:from-white dark:peer-checked:via-gray-100 dark:peer-checked:to-gray-200"
+        class="absolute left-[2px] top-[2px] h-5 w-5 rounded-full bg-gradient-to-br from-zinc-500 to-zinc-600 shadow-sm transition-all duration-200 ease-out peer-checked:translate-x-5 peer-checked:from-black peer-checked:via-zinc-900 peer-checked:to-zinc-800 dark:from-zinc-200 dark:via-zinc-300 dark:to-zinc-400 dark:peer-checked:from-white dark:peer-checked:via-gray-100 dark:peer-checked:to-gray-200"
       >
         <div
           class="absolute inset-[1px] rounded-full bg-gradient-to-br from-white/40 to-transparent"
@@ -152,7 +169,7 @@
 {:else}
   <div class="group relative">
     <div
-      class="relative overflow-hidden rounded-2xl border border-black/10 bg-black/5 p-[1px] backdrop-blur-sm transition-all duration-200 group-focus-within:border-black/20 group-focus-within:bg-black/10 dark:border-[#333] dark:bg-[#1f1f1f57] dark:group-focus-within:border-white/30 dark:group-focus-within:bg-white/5"
+      class="relative overflow-hidden rounded-2xl border border-black/10 bg-gray-100/5 p-[1px] backdrop-blur-sm transition-all duration-200 group-focus-within:border-gray-400/20 group-focus-within:bg-gray-300/10 dark:border-[#333] dark:bg-[#1f1f1f57] dark:group-focus-within:border-white/30 dark:group-focus-within:bg-white/5"
     >
       <div class="relative overflow-hidden rounded-[15px] bg-transparent">
         <div

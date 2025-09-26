@@ -5,7 +5,7 @@
   import BackgroundOptions from '$lib/components/configuration/background-options.svelte';
   import IconOptions from '$lib/components/configuration/icon-options.svelte';
   import Button from '$lib/components/ui/button.svelte';
-  import { FlameIcon, ImageIcon } from 'lucide-svelte';
+  import { ImageIcon, PencilIcon } from 'lucide-svelte';
 
   let activeAside: 'icon' | 'background' = 'icon';
 </script>
@@ -15,7 +15,7 @@
 <main class="min-h-dvh select-none overflow-hidden px-4 pt-16 md:px-6 md:pt-20">
   <div class="hidden h-[calc(100dvh-6rem)] gap-6 md:flex">
     <aside
-      class="flex h-full md:max-w-[270px] lg:min-w-80 flex-[0_0_320px] flex-col overflow-hidden rounded-2xl border border-black/10 bg-black/5 backdrop-blur-sm dark:border-[#333] dark:bg-[#1f1f1f57]"
+      class="flex h-full flex-[0_0_320px] flex-col overflow-hidden rounded-2xl border border-black/10 bg-black/5 backdrop-blur-sm md:max-w-[270px] lg:min-w-80 dark:border-[#333] dark:bg-[#1f1f1f57]"
     >
       <div class="flex-1 space-y-4 overflow-y-auto p-3">
         <IconSelector />
@@ -30,7 +30,7 @@
     </section>
 
     <aside
-      class="flex h-full md:max-w-[270px] lg:min-w-80 flex-[0_0_320px] flex-col overflow-hidden rounded-2xl border border-black/10 bg-black/5 backdrop-blur-sm dark:border-[#333] dark:bg-[#1f1f1f57]"
+      class="flex h-full flex-[0_0_320px] flex-col overflow-hidden rounded-2xl border border-black/10 bg-black/5 backdrop-blur-sm md:max-w-[270px] lg:min-w-80 dark:border-[#333] dark:bg-[#1f1f1f57]"
     >
       <div class="flex-1 space-y-4 overflow-y-auto p-3">
         <BackgroundOptions />
@@ -77,7 +77,7 @@
           : ' bg-gray-100/5'}"
         onclick={() => (activeAside = 'icon')}
       >
-        <FlameIcon class="h-5 w-5" />
+        <PencilIcon class="h-5 w-5" />
         <span class="text-xs font-medium">Icon</span>
       </Button>
       <Button

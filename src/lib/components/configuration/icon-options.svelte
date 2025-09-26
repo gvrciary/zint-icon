@@ -20,7 +20,7 @@
   const debouncedUpdateIconColor = debounce(updateIconColor, 150);
 </script>
 
-<div class="space-y-6 overflow-hidden">
+<div class="space-y-4 overflow-hidden">
   {#if !($selectedIcon === 'Custom' && $customContentType === 'png')}
     <div
       class="rounded-2xl border border-black/10 bg-gray-100/5 p-4 backdrop-blur-sm dark:border-[#333] dark:bg-[#1f1f1f57]"

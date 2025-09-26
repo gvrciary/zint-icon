@@ -86,7 +86,7 @@
   }
 </script>
 
-<div class="space-y-6 overflow-hidden">
+<div class="space-y-4 overflow-hidden">
   <div
     class="rounded-2xl border border-black/10 bg-gray-100/5 p-4 backdrop-blur-sm dark:border-[#333] dark:bg-[#1f1f1f57]"
   >
@@ -104,7 +104,7 @@
       </div>
     </div>
 
-    <div class="max-h-80 space-y-3 overflow-y-auto">
+    <div class="max-h-80 space-y-2 overflow-y-auto">
       {#each $meshGradientColors as meshColor, index (index)}
         <div
           class="flex items-center gap-3 rounded-xl border border-black/20 bg-white/5 p-3 backdrop-blur-sm dark:border-[#333] dark:bg-black/5 justify-between"
